@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.haulmont.addon.currency.web.currencyrate.CurrencyRateEdit"
+        datasource="currencyRateDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.haulmont.addon.currency.web.currencyrate">
+    <dsContext>
+        <datasource id="currencyRateDs"
+                    class="com.haulmont.addon.currency.entity.CurrencyRate"
+                    view="_local"/>
+    </dsContext>
+    <dialogMode forceDialog="true"
+                height="AUTO"
+                modal="true"
+                width="600"/>
+    <layout expand="windowActions"
+            spacing="true">
+        <fieldGroup id="fieldGroup"
+                    datasource="currencyRateDs">
+            <column width="250px">
+                <field property="date"/>
+                <field property="rate"/>
+            </column>
+        </fieldGroup>
+        <frame id="windowActions"
+               screen="editWindowActions"/>
+    </layout>
+</window>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="com.haulmont.addon.currency.web.currency.CurrencyBrowse"
+        focusComponent="currenciesTable"
+        lookupComponent="currenciesTable"
+        messagesPack="com.haulmont.addon.currency.web.currency">
+    <dsContext>
+        <groupDatasource id="currenciesDs"
+                         class="com.haulmont.addon.currency.entity.Currency"
+                         view="_local">
+            <query>
+                <![CDATA[select e from curraddon$Currency e]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="currenciesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="currenciesTable"
+                datasource="currenciesDs">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="currenciesTable"
+                    multiselect="true"
+                    width="100%">
+            <actions>
+                <action id="create"
+                        openType="DIALOG"/>
+                <action id="edit"
+                        openType="DIALOG"/>
+                <action id="remove"/>
+                <action id="excel"/>
+            </actions>
+            <columns>
+                <column id="code"/>
+                <column id="symbol"/>
+                <column id="name"/>
+            </columns>
+            <rows datasource="currenciesDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn"
+                        action="currenciesTable.create"/>
+                <button id="editBtn"
+                        action="currenciesTable.edit"/>
+                <button id="removeBtn"
+                        action="currenciesTable.remove"/>
+                <button id="excelBtn"
+                        action="currenciesTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+    </layout>
+</window>

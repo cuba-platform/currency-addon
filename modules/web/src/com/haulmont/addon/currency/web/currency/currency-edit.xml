@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.haulmont.addon.currency.web.currency.CurrencyEdit"
+        datasource="currencyDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.haulmont.addon.currency.web.currency">
+    <dsContext>
+        <datasource id="currencyDs"
+                    class="com.haulmont.addon.currency.entity.Currency"
+                    view="_local"/>
+    </dsContext>
+    <dialogMode forceDialog="true"
+                height="AUTO"
+                modal="true"
+                width="600"/>
+    <layout expand="windowActions"
+            spacing="true">
+        <fieldGroup id="fieldGroup"
+                    datasource="currencyDs">
+            <column width="250px">
+                <field property="code"/>
+                <field property="symbol"/>
+                <field property="name"/>
+            </column>
+        </fieldGroup>
+        <frame id="windowActions"
+               screen="editWindowActions"/>
+    </layout>
+</window>

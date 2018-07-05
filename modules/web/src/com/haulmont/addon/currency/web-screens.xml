@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<screen-config xmlns="http://schemas.haulmont.com/cuba/screens.xsd">
+    <screen id="curraddon$Currency.browse"
+            template="com/haulmont/addon/currency/web/currency/currency-browse.xml"/>
+    <screen id="curraddon$Currency.edit"
+            template="com/haulmont/addon/currency/web/currency/currency-edit.xml"/>
+    <screen id="curraddon$CurrencyRate.browse"
+            template="com/haulmont/addon/currency/web/currencyrate/currency-rate-browse.xml"/>
+    <screen id="curraddon$CurrencyRate.edit"
+            template="com/haulmont/addon/currency/web/currencyrate/currency-rate-edit.xml"/>
+</screen-config>
