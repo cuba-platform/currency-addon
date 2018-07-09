@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CurrencyRateProvider {
 
-    String NAME = "cubawebsiteback_CurrencyRateProvider";
+    String NAME = "curraddon_CurrencyRateProvider";
 
     List<CurrencyRate> getRates(Date date, Currency currency, List<Currency> targetCurrencies) throws Exception;
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<components xmlns="http://schemas.haulmont.com/cuba/components.xsd">
+    <component>
+        <name>currencyAddonField</name>
+        <componentLoader>com.haulmont.addon.currency.web.gui.xml.layout.loaders.CurrencyAddonFieldLoader</componentLoader>
+        <class>com.haulmont.addon.currency.web.gui.components.WebCurrencyAddonField</class>
+    </component>
+</components>

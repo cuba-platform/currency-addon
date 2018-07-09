@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        xmlns:curr="http://schemas.haulmont.com/curraddon/0.1/ui-component.xsd"
+        caption="msg://caption"
+        class="com.haulmont.addon.currency.web.screens.Screen"
+        messagesPack="com.haulmont.addon.currency.web.screens">
+    <dialogMode height="600"
+                width="800"/>
+    <layout>
+        <curr:currencyAddonField/>
+        <currencyField currency="USD"/>
+    </layout>
+</window>

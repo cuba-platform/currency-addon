@@ -5,6 +5,7 @@ import com.haulmont.addon.currency.entity.Currency;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public interface CurrencyService {
     String NAME = "curraddon_CurrencyService";
@@ -14,5 +15,7 @@ public interface CurrencyService {
     BigDecimal convertAmountToCurrentRate(BigDecimal amount, Currency currency, Currency targetCurrency);
 
     Currency getCurrencyByCode(String code);
+
+    List<Currency> getAvailableCurrencies();
     
 }

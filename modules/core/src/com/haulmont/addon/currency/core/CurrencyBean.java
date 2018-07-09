@@ -41,15 +41,7 @@ public class CurrencyBean implements CurrencyAPI {
     @Override
     public List<Currency> getAvailableCurrencies() {
         return dataManager.loadList(new LoadContext<>(Currency.class)
-                .setQuery(new LoadContext.Query("select r from cubawebsiteback$Currency r WHERE r.code <> 'RUB'")
-                        .setCacheable(true))
-                .setView(View.LOCAL));
-    }
-
-    @Override
-    public List<Currency> getAllAvailableCurrencies() {
-        return dataManager.loadList(new LoadContext<>(Currency.class)
-                .setQuery(new LoadContext.Query("select r from cubawebsiteback$Currency r ")
+                .setQuery(new LoadContext.Query("select r from curraddon$Currency r")
                         .setCacheable(true))
                 .setView(View.LOCAL));
     }
@@ -65,7 +57,7 @@ public class CurrencyBean implements CurrencyAPI {
     }
 
     public Currency getCurrencyByCode(String code) {
-        Optional<Currency> optionalCurrency = getAllAvailableCurrencies().stream()
+        Optional<Currency> optionalCurrency = getAvailableCurrencies().stream()
                 .filter(e -> e.getCode().equals(code))
                 .findFirst();
         if (optionalCurrency.isPresent()) {
@@ -132,7 +124,7 @@ public class CurrencyBean implements CurrencyAPI {
 
     public CurrencyRate getLocalRate(Date date, Currency currency, Currency targetCurrency) {
         List<CurrencyRate> list = dataManager.loadList(new LoadContext<>(CurrencyRate.class)
-                .setQuery(new LoadContext.Query("select r from cubawebsiteback$CurrencyRate r " +
+                .setQuery(new LoadContext.Query("select r from curraddon$CurrencyRate r " +
                         "where r.date <= :date " +
                         "and r.currency.id = :currency and r.targetCurrency.id = :targetCurrency " +
                         "order by r.date desc")

@@ -8,4 +8,6 @@
             template="com/haulmont/addon/currency/web/currencyrate/currency-rate-browse.xml"/>
     <screen id="curraddon$CurrencyRate.edit"
             template="com/haulmont/addon/currency/web/currencyrate/currency-rate-edit.xml"/>
+    <screen id="screen"
+            template="com/haulmont/addon/currency/web/screens/screen.xml"/>
 </screen-config>

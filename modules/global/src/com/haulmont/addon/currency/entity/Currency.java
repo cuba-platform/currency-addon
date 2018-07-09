@@ -32,6 +32,7 @@ public class Currency extends StandardEntity {
     @OneToMany(mappedBy = "currency")
     protected List<CurrencyRate> rates;
 
+
     public void setRates(List<CurrencyRate> rates) {
         this.rates = rates;
     }

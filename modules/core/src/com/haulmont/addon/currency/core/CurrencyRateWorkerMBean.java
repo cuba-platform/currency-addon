@@ -10,7 +10,7 @@ import java.util.Date;
 @ManagedResource
 public interface CurrencyRateWorkerMBean {
 
-    String NAME = "cubawebsiteback_CurrencyRateWorkerMBean";
+    String NAME = "curraddon_CurrencyRateWorkerMBean";
 
     @ManagedOperation(description = "Update currency rates")
     void updateCurrencies();

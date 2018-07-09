@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Service(CurrencyService.NAME)
 public class CurrencyServiceBean implements CurrencyService {
@@ -31,5 +32,10 @@ public class CurrencyServiceBean implements CurrencyService {
     @Transactional
     public Currency getCurrencyByCode(String code) {
         return currencyAPI.getCurrencyByCode(code);
+    }
+
+    @Override
+    public List<Currency> getAvailableCurrencies() {
+        return currencyAPI.getAvailableCurrencies();
     }
 }

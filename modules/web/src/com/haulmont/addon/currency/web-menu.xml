@@ -4,5 +4,6 @@
           insertBefore="administration">
         <item screen="curraddon$Currency.browse"/>
         <item screen="curraddon$CurrencyRate.browse"/>
+        <item screen="screen"/>
     </menu>
 </menu-config>
