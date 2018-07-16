@@ -3,7 +3,7 @@ package com.haulmont.addon.currency.core;
 
 import com.haulmont.addon.currency.entity.Currency;
 import com.haulmont.addon.currency.entity.CurrencyRate;
-import com.haulmont.addon.currency.entity.CurrencyValue;
+import com.haulmont.addon.currency.entity.CurrencyAddonValue;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,7 +19,7 @@ public interface CurrencyAPI {
 
     BigDecimal convertAmountToCurrentRate(BigDecimal amount, Currency currency, Currency targetCurrency);
 
-    BigDecimal convertAmount(CurrencyValue currencyValue, Currency targetCurrency);
+    BigDecimal convertAmount(CurrencyAddonValue currencyValue, Currency targetCurrency);
 
     Currency getCurrencyByCode(String code);
 

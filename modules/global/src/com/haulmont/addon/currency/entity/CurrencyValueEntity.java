@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 @NamePattern("%s|value")
 @Table(name = "CURRADDON_CURRENCY_VALUE")
 @Entity(name = "curraddon$CurrencyValueEntity")
-public class CurrencyValueEntity extends StandardEntity implements CurrencyValue {
+public class CurrencyValueEntity extends StandardEntity implements CurrencyAddonValue {
     private static final long serialVersionUID = 8530608597300769485L;
 
     @NotNull

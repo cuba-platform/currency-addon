@@ -1,6 +1,7 @@
 package com.haulmont.addon.currency.web.gui.components;
 
 import com.haulmont.addon.currency.entity.Currency;
+import com.haulmont.addon.currency.entity.CurrencyAddonValue;
 import com.haulmont.addon.currency.service.CurrencyService;
 import com.haulmont.addon.currency.web.toolkit.ui.cubacurrencyaddonfield.CubaCurrencyAddonField;
 import com.haulmont.bali.util.Preconditions;
@@ -17,6 +18,7 @@ import com.haulmont.cuba.web.gui.components.WebAbstractField;
 import com.haulmont.cuba.web.toolkit.ui.CubaPopupButton;
 import com.haulmont.cuba.web.toolkit.ui.CubaTextField;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +28,18 @@ public class WebCurrencyAddonField extends WebAbstractField<CubaCurrencyAddonFie
     protected PopupButton popupButton;
     protected CurrencyService currencyService;
 
+    protected Currency currency;
+    protected Object value;
+
     public WebCurrencyAddonField() {
         textField = AppBeans.get(ComponentsFactory.class).createComponent(TextField.class);
+        textField.addValueChangeListener(e -> {
+            if (value instanceof CurrencyAddonValue) {
+                ((CurrencyAddonValue) value).setValue((BigDecimal) e.getValue());
+            } else {
+                value = e.getValue();
+            }
+        });
         popupButton = AppBeans.get(ComponentsFactory.class).createComponent(PopupButton.class);
         currencyService = AppBeans.get(CurrencyService.NAME);
 
@@ -54,8 +66,15 @@ public class WebCurrencyAddonField extends WebAbstractField<CubaCurrencyAddonFie
     }
 
     @Override
-    public void setCurrency(String currency) {
-        component.setCurrency(currency);
+    public void setCurrency(String currencyName) {
+        currency = currencyService.getCurrencyByCode(currencyName);
+        if (currency != null) {
+            popupButton.setCaption(currency.getSymbol());
+            component.setCurrency(currency.getName());
+        } else {
+            component.setCurrency(currencyName);
+        }
+        component.setCurrency(currencyName);
     }
 
     @Override
@@ -96,13 +115,12 @@ public class WebCurrencyAddonField extends WebAbstractField<CubaCurrencyAddonFie
             MetaProperty metaProperty = datasource.getMetaClass().getPropertyNN(property);
 
             Object obj = metaProperty.getAnnotations().get(CurrencyValue.class.getName());
-            if (obj == null)
-                return;
-
-            //noinspection unchecked
-            Map<String, Object> currencyValue = (Map<String, Object>) obj;
-            String currencyName = (String) currencyValue.get("currency");
-            component.setCurrency(currencyName);
+            if (obj != null) {
+                //noinspection unchecked
+                Map<String, Object> currencyValue = (Map<String, Object>) obj;
+                String currencyName = (String) currencyValue.get("currency");
+                setCurrency(currencyName);
+            }
         }
     }
 
@@ -145,12 +163,29 @@ public class WebCurrencyAddonField extends WebAbstractField<CubaCurrencyAddonFie
 
     @Override
     public <V> V getValue() {
-        return textField.getValue();
+        return (V) value;
     }
 
     @Override
     public void setValue(Object value) {
-        textField.setValue(value);
+        this.value = value;
+        if (value instanceof CurrencyAddonValue) {
+            setCurrencyAddonValue((CurrencyAddonValue) value);
+        } else if (isCurrencyEntity()) {
+            setCurrencyAddonValue((CurrencyAddonValue) datasource.getItem());
+        } else {
+            textField.setValue(value);
+        }
+    }
+
+    private boolean isCurrencyEntity() {
+        return datasource != null && datasource.getItem() instanceof CurrencyAddonValue && "value".equals(metaProperty.getName());
+    }
+
+    private void setCurrencyAddonValue(CurrencyAddonValue value) {
+        textField.setValue(value.getValue());
+        currency = value.getCurrency();
+        popupButton.setCaption(currency.getSymbol());
     }
 
     @Override
