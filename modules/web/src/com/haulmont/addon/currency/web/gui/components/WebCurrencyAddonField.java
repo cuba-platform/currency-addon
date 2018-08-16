@@ -1,7 +1,7 @@
 package com.haulmont.addon.currency.web.gui.components;
 
 import com.haulmont.addon.currency.entity.Currency;
-import com.haulmont.addon.currency.entity.CurrencyAddonValue;
+import com.haulmont.addon.currency.entity.CurrencyValue;
 import com.haulmont.addon.currency.service.CurrencyService;
 import com.haulmont.addon.currency.web.toolkit.ui.cubacurrencyaddonfield.CubaCurrencyAddonField;
 import com.haulmont.bali.util.Preconditions;
@@ -9,7 +9,6 @@ import com.haulmont.chile.core.datatypes.Datatype;
 import com.haulmont.chile.core.model.MetaProperty;
 import com.haulmont.chile.core.model.MetaPropertyPath;
 import com.haulmont.cuba.core.app.dynamicattributes.DynamicAttributesUtils;
-import com.haulmont.cuba.core.entity.annotation.CurrencyValue;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.data.Datasource;
@@ -34,8 +33,8 @@ public class WebCurrencyAddonField extends WebAbstractField<CubaCurrencyAddonFie
     public WebCurrencyAddonField() {
         textField = AppBeans.get(ComponentsFactory.class).createComponent(TextField.class);
         textField.addValueChangeListener(e -> {
-            if (value instanceof CurrencyAddonValue) {
-                ((CurrencyAddonValue) value).setValue((BigDecimal) e.getValue());
+            if (value instanceof CurrencyValue) {
+                ((CurrencyValue) value).setValue((BigDecimal) e.getValue());
             } else {
                 value = e.getValue();
             }
@@ -114,7 +113,7 @@ public class WebCurrencyAddonField extends WebAbstractField<CubaCurrencyAddonFie
         if (datasource != null && !DynamicAttributesUtils.isDynamicAttribute(property)) {
             MetaProperty metaProperty = datasource.getMetaClass().getPropertyNN(property);
 
-            Object obj = metaProperty.getAnnotations().get(CurrencyValue.class.getName());
+            Object obj = metaProperty.getAnnotations().get(com.haulmont.cuba.core.entity.annotation.CurrencyValue.class.getName());
             if (obj != null) {
                 //noinspection unchecked
                 Map<String, Object> currencyValue = (Map<String, Object>) obj;
@@ -169,20 +168,20 @@ public class WebCurrencyAddonField extends WebAbstractField<CubaCurrencyAddonFie
     @Override
     public void setValue(Object value) {
         this.value = value;
-        if (value instanceof CurrencyAddonValue) {
-            setCurrencyAddonValue((CurrencyAddonValue) value);
+        if (value instanceof CurrencyValue) {
+            setCurrencyAddonValue((CurrencyValue) value);
         } else if (isCurrencyEntity()) {
-            setCurrencyAddonValue((CurrencyAddonValue) datasource.getItem());
+            setCurrencyAddonValue((CurrencyValue) datasource.getItem());
         } else {
             textField.setValue(value);
         }
     }
 
     private boolean isCurrencyEntity() {
-        return datasource != null && datasource.getItem() instanceof CurrencyAddonValue && "value".equals(metaProperty.getName());
+        return datasource != null && datasource.getItem() instanceof CurrencyValue && "value".equals(metaProperty.getName());
     }
 
-    private void setCurrencyAddonValue(CurrencyAddonValue value) {
+    private void setCurrencyAddonValue(CurrencyValue value) {
         textField.setValue(value.getValue());
         currency = value.getCurrency();
         popupButton.setCaption(currency.getSymbol());
