@@ -11,5 +11,13 @@ public interface CurrencyRateProvider {
 
     String NAME = "curraddon_CurrencyRateProvider";
 
+    /**
+     * Fetch rates from external service
+     * @param date date for fetching rates
+     * @param currency convert rate from this currency
+     * @param targetCurrencies target currencies for convert fetching
+     * @return return not null list with rate values
+     * @throws Exception in any exceptional case will be thrown exception
+     */
     List<CurrencyRate> getRates(Date date, Currency currency, List<Currency> targetCurrencies) throws Exception;
 }

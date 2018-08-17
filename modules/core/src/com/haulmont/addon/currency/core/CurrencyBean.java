@@ -39,11 +39,23 @@ public class CurrencyBean implements CurrencyAPI {
     private Metadata metadata;
 
     @Override
-    public List<Currency> getAvailableCurrencies() {
-        return dataManager.loadList(new LoadContext<>(Currency.class)
-                .setQuery(new LoadContext.Query("select r from curraddon$Currency r")
-                        .setCacheable(true))
-                .setView(View.LOCAL));
+    public List<Currency> getAllCurrencies() {
+        LoadContext<Currency> loadContext = createCurrencyLoadContext("select r from curraddon$Currency r");
+        return dataManager.loadList(loadContext);
+    }
+
+    @Override
+    public List<Currency> getActiveCurrencies() {
+        LoadContext<Currency> loadContext = createCurrencyLoadContext("select r from curraddon$Currency r where r.active = true");
+        return dataManager.loadList(loadContext);
+    }
+
+    private LoadContext<Currency> createCurrencyLoadContext(String queryString) {
+        LoadContext.Query query = new LoadContext.Query(queryString)
+                .setCacheable(true);
+        return new LoadContext<>(Currency.class)
+                .setQuery(query)
+                .setView(View.LOCAL);
     }
 
     @Override
@@ -57,7 +69,7 @@ public class CurrencyBean implements CurrencyAPI {
     }
 
     public Currency getCurrencyByCode(String code) {
-        Optional<Currency> optionalCurrency = getAvailableCurrencies().stream()
+        Optional<Currency> optionalCurrency = getAllCurrencies().stream()
                 .filter(e -> e.getCode().equals(code))
                 .findFirst();
         if (optionalCurrency.isPresent()) {
