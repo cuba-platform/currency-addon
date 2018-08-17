@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <views xmlns="http://schemas.haulmont.com/cuba/view.xsd">
-
+    <view class="com.haulmont.addon.currency.entity.CurrencyRate"
+          extends="_local"
+          name="currencyRate-with-currencies">
+        <property name="currency"
+                  view="_minimal"/>
+        <property name="targetCurrency"
+                  view="_minimal"/>
+    </view>
 </views>
