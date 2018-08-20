@@ -13,7 +13,9 @@ public interface CurrencyAPI {
 
     String NAME = "curraddon_CurrencyRateAPI";
 
-    List<Currency> getAvailableCurrencies();
+    List<Currency> getAllCurrencies();
+
+    List<Currency> getActiveCurrencies();
 
     BigDecimal convertAmount(BigDecimal amount, Date date, Currency currency, Currency targetCurrency);
 

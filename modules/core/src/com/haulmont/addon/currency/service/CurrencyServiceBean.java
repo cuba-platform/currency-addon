@@ -36,6 +36,6 @@ public class CurrencyServiceBean implements CurrencyService {
 
     @Override
     public List<Currency> getAvailableCurrencies() {
-        return currencyAPI.getAvailableCurrencies();
+        return currencyAPI.getActiveCurrencies();
     }
 }

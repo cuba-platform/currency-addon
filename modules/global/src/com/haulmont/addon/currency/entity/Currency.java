@@ -21,6 +21,10 @@ public class Currency extends StandardEntity {
     @Column(name = "CODE", nullable = false, unique = true, length = 20)
     protected String code;
 
+    @NotNull
+    @Column(name = "ACTIVE", nullable = false)
+    protected Boolean active = false;
+
     @Column(name = "SYMBOL", length = 4)
     protected String symbol;
 
@@ -31,6 +35,15 @@ public class Currency extends StandardEntity {
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "currency")
     protected List<CurrencyRate> rates;
+
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
 
 
     public void setRates(List<CurrencyRate> rates) {

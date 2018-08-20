@@ -8,7 +8,7 @@
     <dsContext>
         <groupDatasource id="currencyRatesDs"
                          class="com.haulmont.addon.currency.entity.CurrencyRate"
-                         view="_local">
+                         view="currencyRate-with-currencies">
             <query>
                 <![CDATA[select e from curraddon$CurrencyRate e]]>
             </query>
@@ -36,6 +36,8 @@
             </actions>
             <columns>
                 <column id="date"/>
+                <column id="currency.name"/>
+                <column id="targetCurrency.name"/>
                 <column id="rate"/>
             </columns>
             <rows datasource="currencyRatesDs"/>

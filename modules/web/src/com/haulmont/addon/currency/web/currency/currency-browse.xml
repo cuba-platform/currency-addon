@@ -38,6 +38,7 @@
                 <column id="code"/>
                 <column id="symbol"/>
                 <column id="name"/>
+                <column id="active"/>
             </columns>
             <rows datasource="currenciesDs"/>
             <rowsCount/>
