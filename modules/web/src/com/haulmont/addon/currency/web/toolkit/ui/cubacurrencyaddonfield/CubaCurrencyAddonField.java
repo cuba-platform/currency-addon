@@ -3,8 +3,6 @@ package com.haulmont.addon.currency.web.toolkit.ui.cubacurrencyaddonfield;
 import com.haulmont.cuba.web.toolkit.ui.CubaCurrencyField;
 import com.haulmont.cuba.web.toolkit.ui.CubaPopupButton;
 import com.haulmont.cuba.web.toolkit.ui.CubaTextField;
-import com.vaadin.ui.AbstractJavaScriptComponent;
-import com.vaadin.annotations.JavaScript;
 
 public class CubaCurrencyAddonField extends CubaCurrencyField {
 
