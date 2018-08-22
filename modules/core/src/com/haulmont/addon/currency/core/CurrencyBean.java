@@ -63,14 +63,14 @@ public class CurrencyBean implements CurrencyAPI {
 
 
     @Override
-    public BigDecimal convertAmountToCurrentRate(BigDecimal amount, Currency currency, Currency targetCurrency) {
-        return convertAmount(amount, timeSource.currentTimestamp(), currency, targetCurrency);
+    public BigDecimal convertAmountToCurrentRate(BigDecimal amount, Currency sourceCurrency, Currency targetCurrency) {
+        return convertAmount(amount, timeSource.currentTimestamp(), sourceCurrency, targetCurrency);
     }
 
 
     @Override
-    public BigDecimal convertAmount(CurrencyValue currencyValue, Currency targetCurrency) {
-        return convertAmount(currencyValue.getValue(), currencyValue.getDate(), currencyValue.getCurrency(), targetCurrency);
+    public BigDecimal convertAmount(CurrencyValue sourceCurrencyValue, Currency targetCurrency) {
+        return convertAmount(sourceCurrencyValue.getValue(), sourceCurrencyValue.getDate(), sourceCurrencyValue.getCurrency(), targetCurrency);
     }
 
 
@@ -87,17 +87,17 @@ public class CurrencyBean implements CurrencyAPI {
 
 
     @Override
-    public BigDecimal convertAmount(BigDecimal amount, Date date, Currency currency, Currency targetCurrency) {
+    public BigDecimal convertAmount(BigDecimal amount, Date date, Currency sourceCurrency, Currency targetCurrency) {
         if (amount == null) {
             return null;
         }
-        if (currency.getCode().equals(targetCurrency.getCode())) {
+        if (sourceCurrency.getCode().equals(targetCurrency.getCode())) {
             return amount;
         }
-        CurrencyRate currencyRate = getRate(date, currency, targetCurrency);
+        CurrencyRate currencyRate = getRate(date, sourceCurrency, targetCurrency);
         if (currencyRate == null) {
             LOG.error(String.format("Currency rate %s/%s is not found for date %s",
-                    currency.getCode(), targetCurrency.getCode(), date));
+                    sourceCurrency.getCode(), targetCurrency.getCode(), date));
             return null;
         }
         return amount.multiply(currencyRate.getRate());
@@ -105,17 +105,17 @@ public class CurrencyBean implements CurrencyAPI {
 
 
     @Override
-    public BigDecimal convertAmountToRateReverse(BigDecimal amount, Date date, Currency currency, Currency targetCurrency) {
+    public BigDecimal convertAmountToRateReverse(BigDecimal amount, Date date, Currency sourceCurrency, Currency targetCurrency) {
         if (amount == null) {
             return null;
         }
-        if (currency.getCode().equals(targetCurrency.getCode())) {
+        if (sourceCurrency.getCode().equals(targetCurrency.getCode())) {
             return amount;
         }
-        CurrencyRate currencyRate = getRate(date, targetCurrency, currency);
+        CurrencyRate currencyRate = getRate(date, targetCurrency, sourceCurrency);
         if (currencyRate == null) {
             LOG.error(String.format("Currency rate %s/%s is not found for date %s",
-                    currency.getCode(), targetCurrency.getCode(), date));
+                    sourceCurrency.getCode(), targetCurrency.getCode(), date));
             return null;
         }
         BigDecimal rate = currencyRate.getRate();
@@ -144,7 +144,7 @@ public class CurrencyBean implements CurrencyAPI {
     }
 
 
-    public CurrencyRate getLocalRate(Date date, Currency currency, Currency targetCurrency) {
+    public CurrencyRate getLocalRate(Date date, Currency sourceCurrency, Currency targetCurrency) {
         List<CurrencyRate> list = dataManager.loadList(new LoadContext<>(CurrencyRate.class)
                 .setQuery(new LoadContext.Query("select r from curraddon$CurrencyRate r " +
                         "where r.date <= :date " +
@@ -152,7 +152,7 @@ public class CurrencyBean implements CurrencyAPI {
                         "and r.targetCurrency.id = :targetCurrency " +
                         "order by r.date desc")
                         .setParameter("date", date)
-                        .setParameter("currency", currency.getId())
+                        .setParameter("currency", sourceCurrency.getId())
                         .setParameter("targetCurrency", targetCurrency.getId())
                         .setMaxResults(1)
                         .setCacheable(true))
