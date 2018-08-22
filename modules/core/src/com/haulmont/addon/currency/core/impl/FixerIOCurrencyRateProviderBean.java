@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 @Component(CurrencyRateProvider.NAME)
 public class FixerIOCurrencyRateProviderBean implements CurrencyRateProvider {
-    private static final Logger logger = LoggerFactory.getLogger(FixerIOCurrencyRateProviderBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FixerIOCurrencyRateProviderBean.class);
 
     private static final String URL = "http://data.fixer.io/api/";
 
@@ -70,8 +70,10 @@ public class FixerIOCurrencyRateProviderBean implements CurrencyRateProvider {
     }
 
 
-    private List<CurrencyRate> parseRates(Date date, Currency currency, Map<String, Currency> targetCurrencyMap, HttpResponse<JsonNode> httpResponse) throws Exception {
-        logger.trace("Service response: {}", httpResponse.getBody());
+    private List<CurrencyRate> parseRates(
+            Date date, Currency currency, Map<String, Currency> targetCurrencyMap, HttpResponse<JsonNode> httpResponse
+    ) throws Exception {
+        LOG.trace("Service response: {}", httpResponse.getBody());
         List<CurrencyRate> currencyRates = new ArrayList<>();
         JSONObject responseJsonObject = httpResponse.getBody()
                 .getObject();
