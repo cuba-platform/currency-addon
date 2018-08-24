@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Component(CurrencyRateWorkerMBean.NAME)
 public class CurrencyRateWorkerMBeanImpl implements CurrencyRateWorkerMBean {
-    private static final Logger logger = LoggerFactory.getLogger(CurrencyRateWorkerMBeanImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CurrencyRateWorkerMBeanImpl.class);
 
     @Inject
     private CurrencyAPI currencyAPI;
@@ -58,7 +58,7 @@ public class CurrencyRateWorkerMBeanImpl implements CurrencyRateWorkerMBean {
 
         List<Currency> availableCurrencies = currencyAPI.getActiveCurrencies();
         for (Currency currency : availableCurrencies) {
-            logger.debug("Update rate for {} at {}", currency.getCode(), date);
+            LOG.debug("Update rate for {} at {}", currency.getCode(), date);
 
             List<Currency> targetCurrencies = availableCurrencies.stream()
                     .filter(e -> !e.equals(currency) && currencyAPI.getLocalRate(date, currency, e) == null)
@@ -67,7 +67,7 @@ public class CurrencyRateWorkerMBeanImpl implements CurrencyRateWorkerMBean {
                 List<CurrencyRate> currencyRates = currencyRateProvider.getRates(date, currency, targetCurrencies);
                 commitInstances.addAll(currencyRates);
             } catch (Exception e) {
-                logger.error("Can't fetch rates for {} at {} for converting to {} from external service", currency, date, targetCurrencies, e);
+                LOG.error("Can't fetch rates for {} at {} for converting to {} from external service", currency, date, targetCurrencies, e);
             }
         }
         dataManager.commit(commitContext);
