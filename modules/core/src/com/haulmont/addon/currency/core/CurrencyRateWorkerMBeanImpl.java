@@ -2,6 +2,8 @@ package com.haulmont.addon.currency.core;
 
 import com.haulmont.addon.currency.entity.Currency;
 import com.haulmont.addon.currency.entity.CurrencyRate;
+import com.haulmont.cuba.core.EntityManager;
+import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.CommitContext;
 import com.haulmont.cuba.core.global.DataManager;
@@ -11,12 +13,15 @@ import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
 
 @Component(CurrencyRateWorkerMBean.NAME)
 public class CurrencyRateWorkerMBeanImpl implements CurrencyRateWorkerMBean {
@@ -30,6 +35,8 @@ public class CurrencyRateWorkerMBeanImpl implements CurrencyRateWorkerMBean {
     private TimeSource timeSource;
     @Inject
     private DataManager dataManager;
+    @Inject
+    private Persistence persistence;
 
 
     @Override
@@ -49,6 +56,23 @@ public class CurrencyRateWorkerMBeanImpl implements CurrencyRateWorkerMBean {
             start = DateUtils.addDays(start, 1);
         }
 
+    }
+
+
+    @Override
+    @Authenticated
+    @Transactional
+    public void removeRatesOlderWhen(long days) {
+        Date keepRecordsBorder = new Date();
+        keepRecordsBorder.setTime(keepRecordsBorder.getTime() - TimeUnit.MILLISECONDS.convert(days, TimeUnit.DAYS));
+
+        List<CurrencyRate> rates = dataManager.load(CurrencyRate.class)
+                .query("select r from curraddon$CurrencyRate r where r.date < :keepRecordsBorder")
+                .parameter("keepRecordsBorder", keepRecordsBorder)
+                .list();
+        EntityManager entityManager = persistence.getEntityManager();
+
+        rates.forEach(entityManager::remove);
     }
 
 

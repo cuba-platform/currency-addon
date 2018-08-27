@@ -18,9 +18,16 @@ public interface CurrencyRateWorkerMBean {
 
 
     @ManagedOperation(description = "Update currency rates for active currencies at passed days interval including borders")
-    @ManagedOperationParameters(
-            {@ManagedOperationParameter(name = "from", description = "From date"),
-                    @ManagedOperationParameter(name = "to", description = "To date")})
+    @ManagedOperationParameters({
+        @ManagedOperationParameter(name = "from", description = "From date"),
+        @ManagedOperationParameter(name = "to", description = "To date")
+    })
     void updateCurrenciesRate(Date from, Date to);
 
+
+    @ManagedOperation(description = "Remove old rate records")
+    @ManagedOperationParameters(
+       @ManagedOperationParameter(name = "days", description = "Days to keep old rate records")
+    )
+    void removeRatesOlderWhen(long days);
 }
