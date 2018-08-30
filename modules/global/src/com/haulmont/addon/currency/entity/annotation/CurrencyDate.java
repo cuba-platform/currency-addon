@@ -27,7 +27,8 @@ import java.lang.annotation.Target;
  * Date orderTransactionDate;
  *
  *
- * So for transfer amount from field 'orderAmount' to other currencies will be used date specified in field 'orderTransactionDate' or current date if it will be NULL
+ * So for transfer amount from field 'orderAmount' to other currencies
+ * will be used date specified in field 'orderTransactionDate' or current date if it will be NULL
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
