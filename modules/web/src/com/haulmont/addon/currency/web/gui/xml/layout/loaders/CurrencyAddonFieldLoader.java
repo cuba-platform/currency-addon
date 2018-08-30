@@ -17,6 +17,7 @@ public class CurrencyAddonFieldLoader extends AbstractFieldLoader<CurrencyAddonF
         loadId(resultComponent, element);
     }
 
+
     @Override
     public void loadComponent() {
         super.loadComponent();
@@ -27,12 +28,14 @@ public class CurrencyAddonFieldLoader extends AbstractFieldLoader<CurrencyAddonF
         loadDatatype(resultComponent, element);
     }
 
+
     protected void loadCurrencyLabelPosition(CurrencyAddonField resultComponent, Element element) {
         String currencyLabelPosition = element.attributeValue("currencyLabelPosition");
         if (StringUtils.isNotEmpty(currencyLabelPosition)) {
             resultComponent.setCurrencyLabelPosition(CurrencyAddonField.CurrencyLabelPosition.valueOf(currencyLabelPosition));
         }
     }
+
 
     protected void loadShowCurrencyLabel(CurrencyAddonField resultComponent, Element element) {
         String showCurrency = element.attributeValue("showCurrencyLabel");
@@ -41,12 +44,14 @@ public class CurrencyAddonFieldLoader extends AbstractFieldLoader<CurrencyAddonF
         }
     }
 
+
     protected void loadCurrency(CurrencyAddonField resultComponent, Element element) {
         String currency = element.attributeValue("currency");
         if (StringUtils.isNotEmpty(currency)) {
             resultComponent.setCurrency(currency);
         }
     }
+
 
     protected void loadDatatype(CurrencyAddonField resultComponent, Element element) {
         if (resultComponent.getDatasource() != null) {
@@ -58,6 +63,7 @@ public class CurrencyAddonFieldLoader extends AbstractFieldLoader<CurrencyAddonF
             resultComponent.setDatatype(Datatypes.get(datatype));
         }
     }
+
 
     @Override
     protected void loadDatasource(DatasourceComponent component, Element element) {

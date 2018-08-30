@@ -10,6 +10,7 @@ public class CubaCurrencyAddonField extends CubaCurrencyField {
 
     public CubaCurrencyAddonField(CubaTextField textField, CubaPopupButton currencySelector) {
         super(textField);
+        setShowCurrencyLabel(false);
         this.currencySelector = currencySelector;
         this.currencySelector.addStyleName(CURRENCY_STYLENAME);
         container.addStyleName(CURRENCY_VISIBLE);
