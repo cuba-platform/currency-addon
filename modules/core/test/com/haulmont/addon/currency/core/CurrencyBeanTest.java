@@ -1,9 +1,9 @@
 package com.haulmont.addon.currency.core;
 
 import com.haulmont.addon.currency.core.integration_tests.CurrencyIntegrationTestUtil;
+import com.haulmont.addon.currency.entity.AddonCurrencyValue;
 import com.haulmont.addon.currency.entity.Currency;
 import com.haulmont.addon.currency.entity.CurrencyRate;
-import com.haulmont.addon.currency.entity.CurrencyValue;
 import com.haulmont.addon.currency.entity.CurrencyValueEntity;
 import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Transaction;
@@ -121,7 +121,7 @@ public class CurrencyBeanTest {
         BigDecimal value = BigDecimal.valueOf(4);
         BigDecimal expectedResult = value.multiply(rateCurrency1toCurrency2.getRate());
 
-        CurrencyValue currencyValue = metadata.create(CurrencyValueEntity.class);
+        AddonCurrencyValue currencyValue = metadata.create(CurrencyValueEntity.class);
         currencyValue.setDate(rateActualDate);
         currencyValue.setCurrency(currency1);
         currencyValue.setValue(value);

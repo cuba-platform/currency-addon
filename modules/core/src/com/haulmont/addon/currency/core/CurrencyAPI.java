@@ -3,7 +3,7 @@ package com.haulmont.addon.currency.core;
 
 import com.haulmont.addon.currency.entity.Currency;
 import com.haulmont.addon.currency.entity.CurrencyRate;
-import com.haulmont.addon.currency.entity.CurrencyValue;
+import com.haulmont.addon.currency.entity.AddonCurrencyValue;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
@@ -97,15 +97,14 @@ public interface CurrencyAPI {
      * convertAmount({CUR2, 4.0, (11:00 22.08.2018)}, CUR1) = null
      */
     @Nullable
-    BigDecimal convertAmount(CurrencyValue sourceCurrencyValue, Currency targetCurrency);
+    BigDecimal convertAmount(AddonCurrencyValue sourceCurrencyValue, Currency targetCurrency);
 
 
     /**
-     * Looking for created currency in storage by currency code
+     * Looking for created currency in storage by currency code. If currency not found exception will be thrown.
      * @param code Code of currency
-     * @return Currency or null
+     * @return Currency
      */
-    @Nullable
     Currency getCurrencyByCode(String code);
 
     /**

@@ -1,8 +1,8 @@
 package com.haulmont.addon.currency.core;
 
+import com.haulmont.addon.currency.entity.AddonCurrencyValue;
 import com.haulmont.addon.currency.entity.Currency;
 import com.haulmont.addon.currency.entity.CurrencyRate;
-import com.haulmont.addon.currency.entity.CurrencyValue;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.LoadContext;
 import com.haulmont.cuba.core.global.TimeSource;
@@ -69,7 +69,7 @@ public class CurrencyBean implements CurrencyAPI {
 
 
     @Override
-    public BigDecimal convertAmount(CurrencyValue sourceCurrencyValue, Currency targetCurrency) {
+    public BigDecimal convertAmount(AddonCurrencyValue sourceCurrencyValue, Currency targetCurrency) {
         return convertAmount(sourceCurrencyValue.getValue(), sourceCurrencyValue.getDate(), sourceCurrencyValue.getCurrency(), targetCurrency);
     }
 

@@ -1,13 +1,14 @@
 package com.haulmont.addon.currency.web.gui.components;
 
+import com.haulmont.addon.currency.entity.AddonCurrencyValue;
 import com.haulmont.addon.currency.entity.Currency;
-import com.haulmont.addon.currency.entity.CurrencyValue;
 import com.haulmont.addon.currency.entity.annotation.CurrencyDate;
 import com.haulmont.addon.currency.service.CurrencyService;
 import com.haulmont.addon.currency.web.toolkit.ui.cubacurrencyaddonfield.CubaCurrencyAddonField;
 import com.haulmont.chile.core.model.MetaProperty;
 import com.haulmont.cuba.core.app.dynamicattributes.DynamicAttributesUtils;
 import com.haulmont.cuba.core.entity.Entity;
+import com.haulmont.cuba.core.entity.annotation.CurrencyValue;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.gui.components.PopupButton;
 import com.haulmont.cuba.gui.components.ValidationException;
@@ -34,8 +35,8 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField {
         changeCurrencyPopupButton = componentsFactory.createComponent(PopupButton.class);
 
         textField.addValueChangeListener(e -> {
-            if (value instanceof CurrencyValue) {
-                ((CurrencyValue) value).setValue((BigDecimal) e.getValue());
+            if (value instanceof AddonCurrencyValue) {
+                ((AddonCurrencyValue) value).setValue((BigDecimal) e.getValue());
             } else {
                 value = e.getValue();
                 amountChanged();
@@ -122,8 +123,8 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField {
         if (!DynamicAttributesUtils.isDynamicAttribute(propertyName)) {
             MetaProperty metaProperty = datasource.getMetaClass().getPropertyNN(propertyName);
 
-            com.haulmont.cuba.core.entity.annotation.CurrencyValue currencyValueAnnotation =
-                    metaProperty.getAnnotatedElement().getDeclaredAnnotation(com.haulmont.cuba.core.entity.annotation.CurrencyValue.class);
+            CurrencyValue currencyValueAnnotation =
+                    metaProperty.getAnnotatedElement().getDeclaredAnnotation(CurrencyValue.class);
             if (currencyValueAnnotation != null) {
                 String currencyName = currencyValueAnnotation.currency();
                 setCurrency(currencyName);

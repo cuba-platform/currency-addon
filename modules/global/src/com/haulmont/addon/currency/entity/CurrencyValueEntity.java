@@ -1,23 +1,17 @@
 package com.haulmont.addon.currency.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.math.BigDecimal;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.chile.core.annotations.NamePattern;
+import com.haulmont.cuba.core.entity.StandardEntity;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @NamePattern("%s|value")
 @Table(name = "CURRADDON_CURRENCY_VALUE")
 @Entity(name = "curraddon$CurrencyValueEntity")
-public class CurrencyValueEntity extends StandardEntity implements CurrencyValue {
+public class CurrencyValueEntity extends StandardEntity implements AddonCurrencyValue {
     private static final long serialVersionUID = 8530608597300769485L;
 
     @NotNull
