@@ -30,5 +30,6 @@ public class CurrencyEdit extends AbstractEditor<Currency> {
     @Override
     protected void initNewItem(Currency item) {
         item.setActive(true);
+        item.setIsDefault(false);
     }
 }

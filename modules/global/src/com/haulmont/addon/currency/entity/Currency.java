@@ -1,16 +1,19 @@
 package com.haulmont.addon.currency.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
-import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.chile.core.annotations.NamePattern;
+import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.entity.annotation.Listeners;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.global.DeletePolicy;
-import java.util.List;
-import javax.persistence.OneToMany;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+@Listeners({"curraddon_DefaultCurrencyEntityListener", "curraddon_DefaultCurrencyEntityListener", "curraddon_FirstCurrencyAsDefaultEntityListener"})
 @NamePattern("%s|name")
 @Table(name = "CURRADDON_CURRENCY")
 @Entity(name = "curraddon$Currency")
@@ -35,6 +38,19 @@ public class Currency extends StandardEntity {
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "currency")
     protected List<CurrencyRate> rates;
+
+
+    @NotNull
+    @Column(name = "IS_DEFAULT", nullable = false)
+    protected Boolean isDefault = false;
+
+    public void setIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    public Boolean getIsDefault() {
+        return isDefault;
+    }
 
 
     public void setActive(Boolean active) {

@@ -4,8 +4,12 @@
           extends="_local"
           name="currencyRate-with-currencies">
         <property name="currency"
-                  view="_minimal"/>
+                  view="_minimal">
+            <property name="name"/>
+        </property>
         <property name="targetCurrency"
-                  view="_minimal"/>
+                  view="_minimal">
+            <property name="name"/>
+        </property>
     </view>
 </views>

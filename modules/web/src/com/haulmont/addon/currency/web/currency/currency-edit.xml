@@ -23,6 +23,7 @@
                 <field property="symbol"/>
                 <field property="name"/>
                 <field property="active"/>
+                <field property="isDefault"/>
             </column>
         </fieldGroup>
         <frame id="windowActions"

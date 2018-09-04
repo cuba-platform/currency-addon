@@ -28,8 +28,6 @@ public class CurrencyBean implements CurrencyAPI {
 
     private final static RoundingMode FINANCIAL_ROUNDING_MODE = RoundingMode.HALF_UP;
 
-
-
     @Inject
     private DataManager dataManager;
     @Inject
@@ -40,7 +38,9 @@ public class CurrencyBean implements CurrencyAPI {
 
     @Override
     public Currency getDefaultCurrency() {
-        return getActiveCurrencies().get(0);
+        return dataManager.load(Currency.class)
+                .query("select c from curraddon$Currency c where c.isDefault = true")
+                .one();
     }
 
 
