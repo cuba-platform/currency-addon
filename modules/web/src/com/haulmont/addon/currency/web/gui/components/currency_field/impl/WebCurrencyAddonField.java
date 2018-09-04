@@ -84,7 +84,9 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
             Class<?> fieldClass = metaProperty.getJavaType();
 
             if (AddonCurrencyValue.class.isAssignableFrom(fieldClass)) {
-                SeparateEntityCurrencyValueDataProvider currencyValueDataProvider = new SeparateEntityCurrencyValueDataProvider(datasource, propertyName, this);
+                SeparateEntityCurrencyValueDataProvider currencyValueDataProvider = new SeparateEntityCurrencyValueDataProvider(
+                        datasource, propertyName, this
+                );
                 this.currencyValueDataProvider = currencyValueDataProvider;
                 popupContentCreator = createWriteApplicableContentCreator(datasource, propertyName, currencyValueDataProvider);
                 amountField.setDatasource(datasource, propertyName + "." + AddonCurrencyValue.VALUE_PATH);
@@ -94,7 +96,9 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
                     popupContentCreator = createReadOnlyContentCreator(datasource, metaProperty, currencyValueAnnotation);
                     amountField.setDatasource(datasource, propertyName);
                 } else {
-                    throw new RuntimeException("Not applicable addon currency field component for field " + datasource.getMetaClass().getJavaClass() + "." + propertyName);
+                    throw new RuntimeException(
+                            "Not applicable addon currency field component for field " + datasource.getMetaClass().getJavaClass() + "." + propertyName
+                    );
                 }
             }
             amountField.addValueChangeListener(e -> updatePopupContent());
@@ -103,7 +107,9 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
     }
 
 
-    private AbstractCurrencyButtonPopupContentProvider createWriteApplicableContentCreator(Datasource datasource, String propertyName, SeparateEntityCurrencyValueDataProvider currencyValueDataProvider) {
+    private AbstractCurrencyButtonPopupContentProvider createWriteApplicableContentCreator(
+            Datasource datasource, String propertyName, SeparateEntityCurrencyValueDataProvider currencyValueDataProvider
+    ) {
         AbstractCurrencyButtonPopupContentProvider popupContentCreator;
         popupContentCreator = new WriteApplicablePopupProvider(currencyValueDataProvider, this);
         changeCurrencyPopupButton.setAutoClose(false);
@@ -130,7 +136,9 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
     }
 
 
-    private AbstractCurrencyButtonPopupContentProvider createReadOnlyContentCreator(Datasource datasource, MetaProperty metaProperty, CurrencyValue currencyValueAnnotation) {
+    private AbstractCurrencyButtonPopupContentProvider createReadOnlyContentCreator(
+            Datasource datasource, MetaProperty metaProperty, CurrencyValue currencyValueAnnotation
+    ) {
         AbstractCurrencyButtonPopupContentProvider popupContentCreator;
         String currencyName = currencyValueAnnotation.currency();
 

@@ -22,7 +22,9 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
     private final CurrencyValueChangedEventSupplier changeEventSupplier;
 
 
-    public SeparateEntityCurrencyValueDataProvider(Datasource datasource, String entityReferencePropertyName, CurrencyValueChangedEventSupplier changeEventSupplier) {
+    public SeparateEntityCurrencyValueDataProvider(
+            Datasource datasource, String entityReferencePropertyName, CurrencyValueChangedEventSupplier changeEventSupplier
+    ) {
         this.datasource = datasource;
         this.entityReferencePropertyName = entityReferencePropertyName;
         this.changeEventSupplier = changeEventSupplier;

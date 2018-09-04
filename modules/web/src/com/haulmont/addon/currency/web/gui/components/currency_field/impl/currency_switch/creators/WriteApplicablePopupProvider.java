@@ -19,7 +19,9 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
     private final CurrencyValueChangedEventSupplier valueChangedEventSupplier;
 
 
-    public WriteApplicablePopupProvider(SeparateEntityCurrencyValueDataProvider dataProvider, CurrencyValueChangedEventSupplier valueChangedEventSupplier) {
+    public WriteApplicablePopupProvider(
+            SeparateEntityCurrencyValueDataProvider dataProvider, CurrencyValueChangedEventSupplier valueChangedEventSupplier
+    ) {
         super(dataProvider);
 
         this.valueChangedEventSupplier = valueChangedEventSupplier;
