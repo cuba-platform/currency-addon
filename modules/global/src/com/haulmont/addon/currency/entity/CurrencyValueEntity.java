@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@NamePattern("%s|value")
+@NamePattern("%s %s|value,currency")
 @Table(name = "CURRADDON_CURRENCY_VALUE")
 @Entity(name = "curraddon$CurrencyValueEntity")
 public class CurrencyValueEntity extends StandardEntity implements AddonCurrencyValue {

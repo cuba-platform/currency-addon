@@ -1,6 +1,6 @@
 package com.haulmont.addon.currency.web.gui.xml.layout.loaders;
 
-import com.haulmont.addon.currency.web.gui.components.CurrencyAddonField;
+import com.haulmont.addon.currency.web.gui.components.currency_field.CurrencyAddonField;
 import com.haulmont.chile.core.datatypes.Datatypes;
 import com.haulmont.cuba.core.entity.annotation.CurrencyValue;
 import com.haulmont.cuba.gui.components.DatasourceComponent;

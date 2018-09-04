@@ -14,28 +14,39 @@ import java.util.List;
 public class CurrencyServiceBean implements CurrencyService {
 
     @Inject
-    private CurrencyAPI currencyAPI;
+    private CurrencyAPI currencyApi;
+
 
     @Override
     @Transactional
     public BigDecimal convertAmountToRate(BigDecimal amount, Date date, Currency currency, Currency targetCurrency) {
-        return currencyAPI.convertAmount(amount, date, currency, targetCurrency);
+        return currencyApi.convertAmount(amount, date, currency, targetCurrency);
     }
+
 
     @Override
     @Transactional
     public BigDecimal convertAmountToCurrentRate(BigDecimal amount, Currency currency, Currency targetCurrency) {
-        return currencyAPI.convertAmountToCurrentRate(amount, currency, targetCurrency);
+        return currencyApi.convertAmountToCurrentRate(amount, currency, targetCurrency);
     }
+
 
     @Override
     @Transactional
     public Currency getCurrencyByCode(String code) {
-        return currencyAPI.getCurrencyByCode(code);
+        return currencyApi.getCurrencyByCode(code);
     }
+
 
     @Override
     public List<Currency> getAvailableCurrencies() {
-        return currencyAPI.getActiveCurrencies();
+        return currencyApi.getActiveCurrencies();
     }
+
+
+    @Override
+    public Currency getDefaultCurrency() {
+        return currencyApi.getDefaultCurrency();
+    }
+
 }

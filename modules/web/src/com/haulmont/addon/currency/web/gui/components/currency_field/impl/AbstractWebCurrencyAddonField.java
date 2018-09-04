@@ -1,5 +1,6 @@
-package com.haulmont.addon.currency.web.gui.components;
+package com.haulmont.addon.currency.web.gui.components.currency_field.impl;
 
+import com.haulmont.addon.currency.web.gui.components.currency_field.CurrencyAddonField;
 import com.haulmont.addon.currency.web.toolkit.ui.cubacurrencyaddonfield.CubaCurrencyAddonField;
 import com.haulmont.bali.util.Preconditions;
 import com.haulmont.chile.core.datatypes.Datatype;
@@ -15,77 +16,82 @@ public abstract class AbstractWebCurrencyAddonField extends WebAbstractField<Cub
 
     protected final ComponentsFactory componentsFactory = AppBeans.get(ComponentsFactory.class);
 
-    protected TextField textField;
+    protected TextField amountField = componentsFactory.createComponent(TextField.class);
 
 
     public AbstractWebCurrencyAddonField() {
-        textField = componentsFactory.createComponent(TextField.class);
     }
 
 
     @Override
     public void commit() {
-        textField.commit();
+        amountField.commit();
     }
+
 
     @Override
     public void discard() {
-        textField.discard();
+        amountField.discard();
     }
+
 
     @Override
     public boolean isRequired() {
-        return textField.isRequired();
+        return amountField.isRequired();
     }
+
 
     @Override
     public void setRequired(boolean required) {
-        textField.setRequired(required);
+        amountField.setRequired(required);
     }
+
 
     @Override
     public void setBuffered(boolean buffered) {
-        textField.setBuffered(buffered);
+        amountField.setBuffered(buffered);
     }
+
 
     @Override
     public boolean isBuffered() {
-        return textField.isBuffered();
+        return amountField.isBuffered();
     }
 
 
     @Override
     public boolean isModified() {
-        return textField.isModified();
+        return amountField.isModified();
     }
 
 
     @Override
     public void addValueChangeListener(ValueChangeListener listener) {
-        textField.addValueChangeListener(listener);
+        amountField.addValueChangeListener(listener);
     }
+
 
     @Override
     public void removeValueChangeListener(ValueChangeListener listener) {
-        textField.removeValueChangeListener(listener);
+        amountField.removeValueChangeListener(listener);
     }
 
 
     @Override
     public Datasource getDatasource() {
-        return textField.getDatasource();
+        return amountField.getDatasource();
     }
 
 
     @Override
     public MetaProperty getMetaProperty() {
-        return textField.getMetaProperty();
+        return amountField.getMetaProperty();
     }
 
 
     @Override
     public MetaPropertyPath getMetaPropertyPath() {
-        return textField.getMetaPropertyPath();
+        return amountField.getMetaPropertyPath();
     }
 
 
@@ -120,6 +126,7 @@ public abstract class AbstractWebCurrencyAddonField extends WebAbstractField<Cub
         return component.getDatatype();
     }
 
+
     @Override
     public void setCurrencyLabelPosition(CurrencyLabelPosition currencyLabelPosition) {
         Preconditions.checkNotNullArgument(currencyLabelPosition);
@@ -129,6 +136,7 @@ public abstract class AbstractWebCurrencyAddonField extends WebAbstractField<Cub
 
         component.setCurrencyLabelPosition(wAlign);
     }
+
 
     @Override
     public CurrencyLabelPosition getCurrencyLabelPosition() {

@@ -17,6 +17,10 @@ public interface CurrencyAPI {
 
     String NAME = "curraddon_CurrencyRateAPI";
 
+    /**
+     * @return default currency in system
+     */
+    Currency getDefaultCurrency();
 
     /**
      * Return all created currencies (include not active)

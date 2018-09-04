@@ -8,11 +8,10 @@
     <dsContext>
         <datasource id="currencyRateDs"
                     class="com.haulmont.addon.currency.entity.CurrencyRate"
-                    view="_local"/>
+                    view="currencyRate-with-currencies"/>
     </dsContext>
     <dialogMode forceDialog="true"
                 height="AUTO"
-                modal="true"
                 width="600"/>
     <layout expand="windowActions"
             spacing="true">
@@ -21,6 +20,8 @@
             <column width="250px">
                 <field property="date"/>
                 <field property="rate"/>
+                <field property="currency"/>
+                <field property="targetCurrency"/>
             </column>
         </fieldGroup>
         <frame id="windowActions"

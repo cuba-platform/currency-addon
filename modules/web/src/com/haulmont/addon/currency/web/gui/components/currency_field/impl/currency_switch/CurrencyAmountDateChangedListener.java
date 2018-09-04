@@ -1,5 +1,6 @@
-package com.haulmont.addon.currency.web.gui.components;
+package com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch;
 
+import com.haulmont.addon.currency.web.gui.components.currency_field.impl.WebCurrencyAddonField;
 import com.haulmont.cuba.gui.data.Datasource;
 
 public class CurrencyAmountDateChangedListener implements Datasource.ItemPropertyChangeListener {
@@ -17,7 +18,7 @@ public class CurrencyAmountDateChangedListener implements Datasource.ItemPropert
     @Override
     public void itemPropertyChanged(Datasource.ItemPropertyChangeEvent e) {
         if (e.getProperty().equals(dateFieldName)) {
-            callback.amountDateChanged();
+            callback.updatePopupContent();
         }
     }
 }

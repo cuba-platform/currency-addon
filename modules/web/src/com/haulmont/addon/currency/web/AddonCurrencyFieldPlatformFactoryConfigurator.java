@@ -1,6 +1,6 @@
 package com.haulmont.addon.currency.web;
 
-import com.haulmont.addon.currency.web.gui.components.WebCurrencyAddonField;
+import com.haulmont.addon.currency.web.gui.components.currency_field.impl.WebCurrencyAddonField;
 import com.haulmont.cuba.gui.components.CurrencyField;
 import com.haulmont.cuba.web.gui.WebComponentsFactory;
 import org.springframework.stereotype.Component;

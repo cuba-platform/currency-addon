@@ -17,5 +17,7 @@ public interface CurrencyService {
     Currency getCurrencyByCode(String code);
 
     List<Currency> getAvailableCurrencies();
-    
+
+    Currency getDefaultCurrency();
+
 }

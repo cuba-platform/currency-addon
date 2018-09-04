@@ -38,6 +38,11 @@ public class CurrencyBean implements CurrencyAPI {
     private CurrencyRateProvider currencyRateProvider;
 
 
+    @Override
+    public Currency getDefaultCurrency() {
+        return getActiveCurrencies().get(0);
+    }
+
 
     @Override
     public List<Currency> getAllCurrencies() {

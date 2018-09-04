@@ -3,6 +3,6 @@
     <component>
         <name>currencyAddonField</name>
         <componentLoader>com.haulmont.addon.currency.web.gui.xml.layout.loaders.CurrencyAddonFieldLoader</componentLoader>
-        <class>com.haulmont.addon.currency.web.gui.components.WebCurrencyAddonField</class>
+        <class>com.haulmont.addon.currency.web.gui.components.currency_field.impl.WebCurrencyAddonField</class>
     </component>
 </components>
