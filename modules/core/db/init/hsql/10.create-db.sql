@@ -13,6 +13,7 @@ create table CURRADDON_CURRENCY (
     ACTIVE boolean not null,
     SYMBOL varchar(4),
     NAME varchar(255) not null,
+    IS_DEFAULT boolean not null,
     --
     primary key (ID)
 )^
