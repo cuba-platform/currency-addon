@@ -139,7 +139,6 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
     private AbstractCurrencyButtonPopupContentProvider createReadOnlyContentCreator(
             Datasource datasource, MetaProperty metaProperty, CurrencyValue currencyValueAnnotation
     ) {
-        AbstractCurrencyButtonPopupContentProvider popupContentCreator;
         String currencyName = currencyValueAnnotation.currency();
 
         CurrencyDate currencyDateAnnotation = metaProperty.getAnnotatedElement().getDeclaredAnnotation(CurrencyDate.class);
@@ -154,8 +153,8 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
 
         setCurrency(currencyName);
 
-        popupContentCreator = new ReadOnlyPopupContentProvider(currencyValueDataProvider);
-        return popupContentCreator;
+        datasource.addItemChangeListener(e -> updatePopupContent());
+        return new ReadOnlyPopupContentProvider(currencyValueDataProvider);
     }
 
 
