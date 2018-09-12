@@ -36,8 +36,10 @@
             </actions>
             <columns>
                 <column id="date"/>
-                <column id="currency.name"/>
-                <column id="targetCurrency.name"/>
+                <column id="currency.name"
+                        caption="currencyFromCaption"/>
+                <column id="targetCurrency.name"
+                        caption="currencyToCaption"/>
                 <column id="rate"/>
             </columns>
             <rows datasource="currencyRatesDs"/>
