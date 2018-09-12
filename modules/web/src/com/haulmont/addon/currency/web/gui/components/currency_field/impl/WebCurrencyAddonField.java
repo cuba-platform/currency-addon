@@ -2,9 +2,7 @@ package com.haulmont.addon.currency.web.gui.components.currency_field.impl;
 
 import com.haulmont.addon.currency.entity.AddonCurrencyValue;
 import com.haulmont.addon.currency.entity.Currency;
-import com.haulmont.addon.currency.entity.annotation.CurrencyDate;
 import com.haulmont.addon.currency.service.CurrencyService;
-import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyAmountDateChangedListener;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyValueChangedEventSupplier;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators.AbstractCurrencyButtonPopupContentProvider;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators.ReadOnlyPopupContentProvider;
@@ -12,7 +10,6 @@ import com.haulmont.addon.currency.web.gui.components.currency_field.impl.curren
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.CurrencyValueDataProvider;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.SeparateEntityCurrencyValueDataProvider;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.SimpleSameEntityCurrencyValueDataProvider;
-import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.WithDateSameEntityCurrencyValueDataProvider;
 import com.haulmont.addon.currency.web.toolkit.ui.cubacurrencyaddonfield.CubaCurrencyAddonField;
 import com.haulmont.chile.core.model.MetaProperty;
 import com.haulmont.cuba.core.app.dynamicattributes.DynamicAttributesUtils;
@@ -141,15 +138,7 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
     ) {
         String currencyName = currencyValueAnnotation.currency();
 
-        CurrencyDate currencyDateAnnotation = metaProperty.getAnnotatedElement().getDeclaredAnnotation(CurrencyDate.class);
-        if (currencyDateAnnotation != null) {
-            String amountDateFieldName = currencyDateAnnotation.value();
-            currencyValueDataProvider = new WithDateSameEntityCurrencyValueDataProvider(amountField, datasource, amountDateFieldName);
-
-            datasource.addItemPropertyChangeListener(new CurrencyAmountDateChangedListener(amountDateFieldName, this));
-        } else {
-            currencyValueDataProvider = new SimpleSameEntityCurrencyValueDataProvider(amountField);
-        }
+        currencyValueDataProvider = new SimpleSameEntityCurrencyValueDataProvider(amountField);
 
         setCurrency(currencyName);
 
