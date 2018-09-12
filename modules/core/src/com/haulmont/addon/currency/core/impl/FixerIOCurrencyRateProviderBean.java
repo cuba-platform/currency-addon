@@ -1,7 +1,7 @@
 package com.haulmont.addon.currency.core.impl;
 
 import com.haulmont.addon.currency.core.CurrencyRateProvider;
-import com.haulmont.addon.currency.entity.Currency;
+import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRate;
 import com.haulmont.cuba.core.global.Configuration;
 import com.haulmont.cuba.core.global.Metadata;
@@ -39,14 +39,14 @@ public class FixerIOCurrencyRateProviderBean implements CurrencyRateProvider {
     private Configuration configuration;
 
     @Override
-    public List<CurrencyRate> getRates(Date date, Currency currency, List<Currency> targetCurrencies) throws Exception {
+    public List<CurrencyRate> getRates(Date date, CurrencyDescriptor currency, List<CurrencyDescriptor> targetCurrencies) throws Exception {
         String dateParam = date != null ? FIXERIO_DATE_FORMAT.format(date) : "latest";
         String targetCurrencyCodes = targetCurrencies.stream()
-                .map(Currency::getCode)
+                .map(CurrencyDescriptor::getCode)
                 .collect(Collectors.joining(","));
         try {
-            Map<String, Currency> targetCurrencyMap = targetCurrencies.stream()
-                    .collect(Collectors.toMap(Currency::getCode, e -> e));
+            Map<String, CurrencyDescriptor> targetCurrencyMap = targetCurrencies.stream()
+                    .collect(Collectors.toMap(CurrencyDescriptor::getCode, e -> e));
             String apiKey = configuration.getConfig(FixerIOConfig.class).getApiKey();
             if (StringUtils.isBlank(apiKey)) {
                 throw new Exception("REST API key is empty, please specify it by parameter " + FixerIOConfig.REST_API_KEY_ID);
@@ -71,7 +71,7 @@ public class FixerIOCurrencyRateProviderBean implements CurrencyRateProvider {
 
 
     private List<CurrencyRate> parseRates(
-            Date date, Currency currency, Map<String, Currency> targetCurrencyMap, HttpResponse<JsonNode> httpResponse
+            Date date, CurrencyDescriptor currency, Map<String, CurrencyDescriptor> targetCurrencyMap, HttpResponse<JsonNode> httpResponse
     ) throws Exception {
         LOG.trace("Service response: {}", httpResponse.getBody());
         List<CurrencyRate> currencyRates = new ArrayList<>();

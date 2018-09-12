@@ -1,7 +1,7 @@
 package com.haulmont.addon.currency.core;
 
 
-import com.haulmont.addon.currency.entity.Currency;
+import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRate;
 
 import java.util.Date;
@@ -19,5 +19,5 @@ public interface CurrencyRateProvider {
      * @return return not null list with rate values
      * @throws Exception in any exceptional case will be thrown exception
      */
-    List<CurrencyRate> getRates(Date date, Currency currency, List<Currency> targetCurrencies) throws Exception;
+    List<CurrencyRate> getRates(Date date, CurrencyDescriptor currency, List<CurrencyDescriptor> targetCurrencies) throws Exception;
 }

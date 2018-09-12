@@ -1,10 +1,7 @@
 package com.haulmont.addon.currency.core;
 
 import com.haulmont.addon.currency.core.integration_tests.CurrencyIntegrationTestUtil;
-import com.haulmont.addon.currency.entity.AddonCurrencyValue;
-import com.haulmont.addon.currency.entity.Currency;
-import com.haulmont.addon.currency.entity.CurrencyRate;
-import com.haulmont.addon.currency.entity.CurrencyValueEntity;
+import com.haulmont.addon.currency.entity.*;
 import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Transaction;
 import com.haulmont.cuba.core.global.Metadata;
@@ -35,12 +32,12 @@ public class CurrencyBeanTest {
 
     static Metadata metadata;
 
-    static Set<Currency> activeCurrencies = new HashSet<>();
-    static Set<Currency> allCurrencies = new HashSet<>();
+    static Set<CurrencyDescriptor> activeCurrencies = new HashSet<>();
+    static Set<CurrencyDescriptor> allCurrencies = new HashSet<>();
 
-    static Currency currency1;
-    static Currency currency2;
-    static Currency currency3;
+    static CurrencyDescriptor currency1;
+    static CurrencyDescriptor currency2;
+    static CurrencyDescriptor currency3;
 
     static CurrencyRate rateCurrency1toCurrency2;
 
@@ -77,7 +74,7 @@ public class CurrencyBeanTest {
 
 
     private static void fillCurrencies(EntityManager em) {
-        currency1 = metadata.create(Currency.class);
+        currency1 = metadata.create(CurrencyDescriptor.class);
         currency1.setName("Name1");
         currency1.setCode("C1");
         currency1.setActive(true);
@@ -85,7 +82,7 @@ public class CurrencyBeanTest {
         activeCurrencies.add(currency1);
         allCurrencies.add(currency1);
 
-        currency2 = metadata.create(Currency.class);
+        currency2 = metadata.create(CurrencyDescriptor.class);
         currency2.setName("Name2");
         currency2.setCode("C2");
         currency2.setActive(true);
@@ -93,7 +90,7 @@ public class CurrencyBeanTest {
         activeCurrencies.add(currency2);
         allCurrencies.add(currency2);
 
-        currency3 = metadata.create(Currency.class);
+        currency3 = metadata.create(CurrencyDescriptor.class);
         currency3.setName("Name3");
         currency3.setCode("C3");
         currency3.setActive(false);
@@ -104,14 +101,14 @@ public class CurrencyBeanTest {
 
     @Test
     public void testGetActiveCurrencies() {
-        List<Currency> resultActiveCurrencies = api.getActiveCurrencies();
+        List<CurrencyDescriptor> resultActiveCurrencies = api.getActiveCurrencies();
         Assert.assertEquals(activeCurrencies, new HashSet<>(resultActiveCurrencies));
     }
 
 
     @Test
     public void testGetAllCurrencies() {
-        List<Currency> resultAllCurrencies = api.getAllCurrencies();
+        List<CurrencyDescriptor> resultAllCurrencies = api.getAllCurrencies();
         Assert.assertEquals(allCurrencies, new HashSet<>(resultAllCurrencies));
     }
 
@@ -121,7 +118,7 @@ public class CurrencyBeanTest {
         BigDecimal value = BigDecimal.valueOf(4);
         BigDecimal expectedResult = value.multiply(rateCurrency1toCurrency2.getRate());
 
-        AddonCurrencyValue currencyValue = metadata.create(CurrencyValueEntity.class);
+        CurrencyRateAware currencyValue = metadata.create(Currency.class);
         currencyValue.setDate(rateActualDate);
         currencyValue.setCurrency(currency1);
         currencyValue.setValue(value);
@@ -160,7 +157,7 @@ public class CurrencyBeanTest {
 
     @Test
     public void testGetCurrencyByCode() {
-        Currency actualResult = api.getCurrencyByCode(currency3.getCode());
+        CurrencyDescriptor actualResult = api.getCurrencyByCode(currency3.getCode());
 
         Assert.assertEquals(currency3, actualResult);
     }

@@ -7,12 +7,11 @@
         messagesPack="com.haulmont.addon.currency.web.currency">
     <dsContext>
         <datasource id="currencyDs"
-                    class="com.haulmont.addon.currency.entity.Currency"
+                    class="com.haulmont.addon.currency.entity.CurrencyDescriptor"
                     view="_local"/>
     </dsContext>
     <dialogMode forceDialog="true"
                 height="AUTO"
-                modal="true"
                 width="600"/>
     <layout expand="windowActions"
             spacing="true">

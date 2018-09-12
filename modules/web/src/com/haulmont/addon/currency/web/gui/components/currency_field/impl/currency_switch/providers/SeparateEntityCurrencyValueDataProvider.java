@@ -1,8 +1,8 @@
 package com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers;
 
-import com.haulmont.addon.currency.entity.AddonCurrencyValue;
 import com.haulmont.addon.currency.entity.Currency;
-import com.haulmont.addon.currency.entity.CurrencyValueEntity;
+import com.haulmont.addon.currency.entity.CurrencyDescriptor;
+import com.haulmont.addon.currency.entity.CurrencyRateAware;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyValueChangedEventSupplier;
 import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.AppBeans;
@@ -44,20 +44,20 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
     }
 
 
-    private AddonCurrencyValue getEntity() {
+    private CurrencyRateAware getEntity() {
         Entity item = datasource.getItem();
 
         return item != null ? item.getValue(entityReferencePropertyName) : null;
     }
 
-    private AddonCurrencyValue getOrCreateEntity() {
+    private CurrencyRateAware getOrCreateEntity() {
         Entity item = datasource.getItem();
 
-        AddonCurrencyValue value = null;
+        CurrencyRateAware value = null;
         if (item != null) {
             value = item.getValue(entityReferencePropertyName);
             if (value == null) {
-                value = metadata.create(CurrencyValueEntity.class);
+                value = metadata.create(Currency.class);
                 item.setValue(entityReferencePropertyName, value);
             }
         }
@@ -67,28 +67,28 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
 
     @Override
     public Date getDate() {
-        AddonCurrencyValue entity = getEntity();
+        CurrencyRateAware entity = getEntity();
         return entity != null ? entity.getDate() : null;
     }
 
 
     @Override
-    public Currency getCurrency() {
-        AddonCurrencyValue entity = getEntity();
+    public CurrencyDescriptor getCurrency() {
+        CurrencyRateAware entity = getEntity();
         return entity != null ? entity.getCurrency() : null;
     }
 
 
     @Override
     public BigDecimal getAmount() {
-        AddonCurrencyValue entity = getEntity();
+        CurrencyRateAware entity = getEntity();
         return entity != null ? entity.getValue() : null;
     }
 
 
     @Override
-    public void setCurrency(Currency newCurrency) {
-        AddonCurrencyValue entity = getOrCreateEntity();
+    public void setCurrency(CurrencyDescriptor newCurrency) {
+        CurrencyRateAware entity = getOrCreateEntity();
         if (entity != null) {
             entity.setCurrency(newCurrency);
         }
@@ -97,7 +97,7 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
 
 
     public void setAmount(BigDecimal newAmount) {
-        AddonCurrencyValue entity = getOrCreateEntity();
+        CurrencyRateAware entity = getOrCreateEntity();
         if (entity != null) {
             entity.setValue(newAmount);
         }
@@ -106,7 +106,7 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
 
 
     public void setDate(Date value) {
-        AddonCurrencyValue entity = getOrCreateEntity();
+        CurrencyRateAware entity = getOrCreateEntity();
         if (entity != null) {
             entity.setDate(value);
         }

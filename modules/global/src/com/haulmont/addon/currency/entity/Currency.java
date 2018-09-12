@@ -2,97 +2,57 @@ package com.haulmont.addon.currency.entity;
 
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
-import com.haulmont.cuba.core.entity.annotation.Listeners;
-import com.haulmont.cuba.core.entity.annotation.OnDelete;
-import com.haulmont.cuba.core.global.DeletePolicy;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.Date;
 
-@Listeners({"curraddon_DefaultCurrencyEntityListener", "curraddon_DefaultCurrencyEntityListener", "curraddon_FirstCurrencyAsDefaultEntityListener"})
-@NamePattern("%s|name")
+@NamePattern("%s %s|value,currency")
 @Table(name = "CURRADDON_CURRENCY")
 @Entity(name = "curraddon$Currency")
-public class Currency extends StandardEntity {
-    private static final long serialVersionUID = 9158629870540811438L;
+public class Currency extends StandardEntity implements CurrencyRateAware {
+    private static final long serialVersionUID = 8530608597300769485L;
 
     @NotNull
-    @Column(name = "CODE", nullable = false, unique = true, length = 20)
-    protected String code;
+    @Column(name = "VALUE_", nullable = false)
+    protected BigDecimal value;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
+    @Column(name = "DATE_", nullable = false)
+    protected Date date;
 
     @NotNull
-    @Column(name = "ACTIVE", nullable = false)
-    protected Boolean active = false;
-
-    @Column(name = "SYMBOL", length = 4)
-    protected String symbol;
-
-    @NotNull
-    @Column(name = "NAME", nullable = false)
-    protected String name;
-
-    @OnDelete(DeletePolicy.CASCADE)
-    @OneToMany(mappedBy = "currency")
-    protected List<CurrencyRate> rates;
-
-
-    @NotNull
-    @Column(name = "IS_DEFAULT", nullable = false)
-    protected Boolean isDefault = false;
-
-    public void setIsDefault(Boolean isDefault) {
-        this.isDefault = isDefault;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "CURRENCY_ID")
+    protected CurrencyDescriptor currency;
+    public CurrencyDescriptor getCurrency() {
+        return currency;
     }
 
-    public Boolean getIsDefault() {
-        return isDefault;
+    public void setCurrency(CurrencyDescriptor currency) {
+        this.currency = currency;
     }
 
 
-    public void setActive(Boolean active) {
-        this.active = active;
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-
-    public void setRates(List<CurrencyRate> rates) {
-        this.rates = rates;
-    }
-
-    public List<CurrencyRate> getRates() {
-        return rates;
+    public Date getDate() {
+        return date;
     }
 
 
-    public void setCode(String code) {
-        this.code = code;
+
+    public void setValue(BigDecimal value) {
+        this.value = value;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
+    public BigDecimal getValue() {
+        return value;
     }
 
 

@@ -1,6 +1,6 @@
 package com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators;
 
-import com.haulmont.addon.currency.entity.Currency;
+import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.service.CurrencyService;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.CurrencyValueDataProvider;
 import com.haulmont.cuba.core.global.AppBeans;
@@ -57,7 +57,7 @@ public abstract class AbstractCurrencyButtonPopupContentProvider<DataProviderTyp
     }
 
 
-    protected BigDecimal calculateNewAmount(Date amountDate, BigDecimal oldAmount, Currency targetCurrency) {
+    protected BigDecimal calculateNewAmount(Date amountDate, BigDecimal oldAmount, CurrencyDescriptor targetCurrency) {
         BigDecimal newAmount;
         if (oldAmount != null) {
             newAmount = currencyService.convertAmountToRate(oldAmount, amountDate, dataProvider.getCurrency(), targetCurrency);

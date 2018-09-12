@@ -1,8 +1,8 @@
 package com.haulmont.addon.currency.core;
 
-import com.haulmont.addon.currency.entity.AddonCurrencyValue;
-import com.haulmont.addon.currency.entity.Currency;
+import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRate;
+import com.haulmont.addon.currency.entity.CurrencyRateAware;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.LoadContext;
 import com.haulmont.cuba.core.global.TimeSource;
@@ -37,50 +37,51 @@ public class CurrencyBean implements CurrencyAPI {
 
 
     @Override
-    public Currency getDefaultCurrency() {
-        return dataManager.load(Currency.class)
-                .query("select c from curraddon$Currency c where c.isDefault = true")
+    public CurrencyDescriptor getDefaultCurrency() {
+        return dataManager.load(CurrencyDescriptor.class)
+                .query("select c from curraddon$CurrencyDescriptor c where c.isDefault = true")
                 .one();
     }
 
 
     @Override
-    public List<Currency> getAllCurrencies() {
-        LoadContext<Currency> loadContext = createCurrencyLoadContext("select r from curraddon$Currency r");
+    public List<CurrencyDescriptor> getAllCurrencies() {
+        LoadContext<CurrencyDescriptor> loadContext = createCurrencyLoadContext("select r from curraddon$CurrencyDescriptor r");
         return dataManager.loadList(loadContext);
     }
 
 
     @Override
-    public List<Currency> getActiveCurrencies() {
-        LoadContext<Currency> loadContext = createCurrencyLoadContext("select r from curraddon$Currency r where r.active = true");
+    public List<CurrencyDescriptor> getActiveCurrencies() {
+        LoadContext<CurrencyDescriptor> loadContext = createCurrencyLoadContext("select r from curraddon$CurrencyDescriptor r where r.active = true");
         return dataManager.loadList(loadContext);
     }
 
 
-    protected LoadContext<Currency> createCurrencyLoadContext(String queryString) {
+    protected LoadContext<CurrencyDescriptor> createCurrencyLoadContext(String queryString) {
         LoadContext.Query query = new LoadContext.Query(queryString)
                 .setCacheable(true);
-        return new LoadContext<>(Currency.class)
+        return new LoadContext<>(CurrencyDescriptor.class)
                 .setQuery(query)
                 .setView(View.LOCAL);
     }
 
 
     @Override
-    public BigDecimal convertAmountToCurrentRate(BigDecimal amount, Currency sourceCurrency, Currency targetCurrency) {
+    public BigDecimal convertAmountToCurrentRate(BigDecimal amount, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency) {
         return convertAmount(amount, timeSource.currentTimestamp(), sourceCurrency, targetCurrency);
     }
 
 
     @Override
-    public BigDecimal convertAmount(AddonCurrencyValue sourceCurrencyValue, Currency targetCurrency) {
+    public BigDecimal convertAmount(CurrencyRateAware sourceCurrencyValue, CurrencyDescriptor targetCurrency) {
         return convertAmount(sourceCurrencyValue.getValue(), sourceCurrencyValue.getDate(), sourceCurrencyValue.getCurrency(), targetCurrency);
     }
 
 
-    public Currency getCurrencyByCode(String code) {
-        Optional<Currency> optionalCurrency = getAllCurrencies().stream()
+    @Override
+    public CurrencyDescriptor getCurrencyByCode(String code) {
+        Optional<CurrencyDescriptor> optionalCurrency = getAllCurrencies().stream()
                 .filter(e -> e.getCode().equals(code))
                 .findFirst();
         if (optionalCurrency.isPresent()) {
@@ -92,7 +93,7 @@ public class CurrencyBean implements CurrencyAPI {
 
 
     @Override
-    public BigDecimal convertAmount(BigDecimal amount, Date date, Currency sourceCurrency, Currency targetCurrency) {
+    public BigDecimal convertAmount(BigDecimal amount, Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency) {
         if (amount == null) {
             return null;
         }
@@ -110,7 +111,7 @@ public class CurrencyBean implements CurrencyAPI {
 
 
     @Override
-    public BigDecimal convertAmountToRateReverse(BigDecimal amount, Date date, Currency sourceCurrency, Currency targetCurrency) {
+    public BigDecimal convertAmountToRateReverse(BigDecimal amount, Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency) {
         if (amount == null) {
             return null;
         }
@@ -128,7 +129,7 @@ public class CurrencyBean implements CurrencyAPI {
     }
 
 
-    protected CurrencyRate getRate(Date date, Currency currency, Currency targetCurrency) {
+    protected CurrencyRate getRate(Date date, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency) {
         CurrencyRate localRate = getLocalRate(date, currency, targetCurrency);
         if (localRate != null) {
             return localRate;
@@ -149,7 +150,8 @@ public class CurrencyBean implements CurrencyAPI {
     }
 
 
-    public CurrencyRate getLocalRate(Date date, Currency sourceCurrency, Currency targetCurrency) {
+    @Override
+    public CurrencyRate getLocalRate(Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency) {
         List<CurrencyRate> list = dataManager.loadList(new LoadContext<>(CurrencyRate.class)
                 .setQuery(new LoadContext.Query("select r from curraddon$CurrencyRate r " +
                         "where r.date <= :date " +

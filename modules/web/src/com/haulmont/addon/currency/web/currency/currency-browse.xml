@@ -7,7 +7,7 @@
         messagesPack="com.haulmont.addon.currency.web.currency">
     <dsContext>
         <groupDatasource id="currenciesDs"
-                         class="com.haulmont.addon.currency.entity.Currency"
+                         class="com.haulmont.addon.currency.entity.CurrencyDescriptor"
                          view="_local">
             <query>
                 <![CDATA[select e from curraddon$Currency e]]>

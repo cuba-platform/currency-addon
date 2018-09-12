@@ -1,7 +1,7 @@
 package com.haulmont.addon.currency.service;
 
 
-import com.haulmont.addon.currency.entity.Currency;
+import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,14 +10,14 @@ import java.util.List;
 public interface CurrencyService {
     String NAME = "curraddon_CurrencyService";
 
-    BigDecimal convertAmountToRate(BigDecimal amount, Date date, Currency currency, Currency targetCurrency);
+    BigDecimal convertAmountToRate(BigDecimal amount, Date date, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency);
 
-    BigDecimal convertAmountToCurrentRate(BigDecimal amount, Currency currency, Currency targetCurrency);
+    BigDecimal convertAmountToCurrentRate(BigDecimal amount, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency);
 
-    Currency getCurrencyByCode(String code);
+    CurrencyDescriptor getCurrencyByCode(String code);
 
-    List<Currency> getAvailableCurrencies();
+    List<CurrencyDescriptor> getAvailableCurrencies();
 
-    Currency getDefaultCurrency();
+    CurrencyDescriptor getDefaultCurrency();
 
 }

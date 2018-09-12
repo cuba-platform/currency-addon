@@ -6,20 +6,20 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
-public interface AddonCurrencyValue extends Entity<UUID> {
+public interface CurrencyRateAware extends Entity<UUID> {
 
     String VALUE_PATH = "value";
     String DATE_PATH = "date";
 
     Date getDate();
 
-    Currency getCurrency();
+    CurrencyDescriptor getCurrency();
 
     BigDecimal getValue();
 
     void setDate(Date date);
 
-    void setCurrency(Currency currency);
+    void setCurrency(CurrencyDescriptor currency);
 
     void setValue(BigDecimal value);
 }

@@ -1,6 +1,6 @@
 package com.haulmont.addon.currency.core;
 
-import com.haulmont.addon.currency.entity.Currency;
+import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRate;
 import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Persistence;
@@ -80,11 +80,11 @@ public class CurrencyRateWorkerMBeanImpl implements CurrencyRateWorkerMBean {
         CommitContext commitContext = new CommitContext();
         Collection<Entity> commitInstances = commitContext.getCommitInstances();
 
-        List<Currency> availableCurrencies = currencyAPI.getActiveCurrencies();
-        for (Currency currency : availableCurrencies) {
+        List<CurrencyDescriptor> availableCurrencies = currencyAPI.getActiveCurrencies();
+        for (CurrencyDescriptor currency : availableCurrencies) {
             LOG.debug("Update rate for {} at {}", currency.getCode(), date);
 
-            List<Currency> targetCurrencies = availableCurrencies.stream()
+            List<CurrencyDescriptor> targetCurrencies = availableCurrencies.stream()
                     .filter(e -> !e.equals(currency) && currencyAPI.getLocalRate(date, currency, e) == null)
                     .collect(Collectors.toList());
             try {

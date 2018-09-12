@@ -1,5 +1,5 @@
--- begin CURRADDON_CURRENCY
-create table CURRADDON_CURRENCY (
+-- begin CURRADDON_CURRENCY_DESCRIPTOR
+create table CURRADDON_CURRENCY_DESCRIPTOR (
     ID varchar(36) not null,
     VERSION integer not null,
     CREATE_TS timestamp,
@@ -17,7 +17,7 @@ create table CURRADDON_CURRENCY (
     --
     primary key (ID)
 )^
--- end CURRADDON_CURRENCY
+-- end CURRADDON_CURRENCY_DESCRIPTOR
 -- begin CURRADDON_CURRENCY_RATE
 create table CURRADDON_CURRENCY_RATE (
     ID varchar(36) not null,
@@ -37,8 +37,8 @@ create table CURRADDON_CURRENCY_RATE (
     primary key (ID)
 )^
 -- end CURRADDON_CURRENCY_RATE
--- begin CURRADDON_CURRENCY_VALUE
-create table CURRADDON_CURRENCY_VALUE (
+-- begin CURRADDON_CURRENCY
+create table CURRADDON_CURRENCY (
     ID varchar(36) not null,
     VERSION integer not null,
     CREATE_TS timestamp,
@@ -54,4 +54,4 @@ create table CURRADDON_CURRENCY_VALUE (
     --
     primary key (ID)
 )^
--- end CURRADDON_CURRENCY_VALUE
+-- end CURRADDON_CURRENCY

@@ -1,7 +1,7 @@
 package com.haulmont.addon.currency.web.gui.components.currency_field.impl;
 
-import com.haulmont.addon.currency.entity.AddonCurrencyValue;
-import com.haulmont.addon.currency.entity.Currency;
+import com.haulmont.addon.currency.entity.CurrencyDescriptor;
+import com.haulmont.addon.currency.entity.CurrencyRateAware;
 import com.haulmont.addon.currency.service.CurrencyService;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyValueChangedEventSupplier;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators.AbstractCurrencyButtonPopupContentProvider;
@@ -43,7 +43,7 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
 
     public void updatePopupContent() {
         if (popupContentCreator != null) {
-            Currency currency = currencyValueDataProvider.getCurrency();
+            CurrencyDescriptor currency = currencyValueDataProvider.getCurrency();
             if (currency != null) {
                 changeCurrencyPopupButton.setCaption(currency.getSymbol());
             }
@@ -60,7 +60,7 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
 
     @Override
     public void setCurrency(String currencyCode) {
-        Currency currency = currencyService.getCurrencyByCode(currencyCode);
+        CurrencyDescriptor currency = currencyService.getCurrencyByCode(currencyCode);
         if (currency != null) {
             updatePopupContent();
         }
@@ -80,13 +80,13 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
             MetaProperty metaProperty = datasource.getMetaClass().getPropertyNN(propertyName);
             Class<?> fieldClass = metaProperty.getJavaType();
 
-            if (AddonCurrencyValue.class.isAssignableFrom(fieldClass)) {
+            if (CurrencyRateAware.class.isAssignableFrom(fieldClass)) {
                 SeparateEntityCurrencyValueDataProvider currencyValueDataProvider = new SeparateEntityCurrencyValueDataProvider(
                         datasource, propertyName, this
                 );
                 this.currencyValueDataProvider = currencyValueDataProvider;
                 popupContentCreator = createWriteApplicableContentCreator(datasource, propertyName, currencyValueDataProvider);
-                amountField.setDatasource(datasource, propertyName + "." + AddonCurrencyValue.VALUE_PATH);
+                amountField.setDatasource(datasource, propertyName + "." + CurrencyRateAware.VALUE_PATH);
             } else {
                 CurrencyValue currencyValueAnnotation = metaProperty.getAnnotatedElement().getDeclaredAnnotation(CurrencyValue.class);
                 if (currencyValueAnnotation != null) {
@@ -116,9 +116,9 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
         //On load item to DS
         datasource.addItemChangeListener(event -> {
             Entity item = event.getItem();
-            AddonCurrencyValue addonCurrencyField = item.getValue(propertyName);
+            CurrencyRateAware addonCurrencyField = item.getValue(propertyName);
 
-            Currency currency = null;
+            CurrencyDescriptor currency = null;
             if (addonCurrencyField != null) {
                 currency = addonCurrencyField.getCurrency();
             }

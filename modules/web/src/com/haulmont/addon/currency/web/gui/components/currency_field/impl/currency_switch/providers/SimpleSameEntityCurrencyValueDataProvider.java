@@ -1,6 +1,6 @@
 package com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers;
 
-import com.haulmont.addon.currency.entity.Currency;
+import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.cuba.gui.components.TextField;
 
 import java.math.BigDecimal;
@@ -12,7 +12,7 @@ public class SimpleSameEntityCurrencyValueDataProvider implements CurrencyValueD
 
     private final TextField amountUiField;
 
-    private Currency currency;
+    private CurrencyDescriptor currency;
 
 
     public SimpleSameEntityCurrencyValueDataProvider(TextField amountUiField) {
@@ -27,7 +27,7 @@ public class SimpleSameEntityCurrencyValueDataProvider implements CurrencyValueD
 
 
     @Override
-    public Currency getCurrency() {
+    public CurrencyDescriptor getCurrency() {
         return currency;
     }
 
@@ -39,7 +39,7 @@ public class SimpleSameEntityCurrencyValueDataProvider implements CurrencyValueD
 
 
     @Override
-    public void setCurrency(Currency currency) {
+    public void setCurrency(CurrencyDescriptor currency) {
         this.currency = currency;
     }
 }

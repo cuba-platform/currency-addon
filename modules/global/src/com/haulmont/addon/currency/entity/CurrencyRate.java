@@ -32,20 +32,32 @@ public class CurrencyRate extends StandardEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "CURRENCY_ID")
-    protected Currency currency;
+    protected CurrencyDescriptor currency;
 
     @NotNull
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "TARGET_CURRENCY_ID")
-    protected Currency targetCurrency;
+    protected CurrencyDescriptor targetCurrency;
 
-    public void setCurrency(Currency currency) {
+    public CurrencyDescriptor getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(CurrencyDescriptor currency) {
         this.currency = currency;
     }
 
-    public Currency getCurrency() {
-        return currency;
+    public CurrencyDescriptor getTargetCurrency() {
+        return targetCurrency;
     }
+
+    public void setTargetCurrency(CurrencyDescriptor targetCurrency) {
+        this.targetCurrency = targetCurrency;
+    }
+
+
+
+
 
 
     public void setDate(Date date) {
@@ -64,13 +76,7 @@ public class CurrencyRate extends StandardEntity {
         return rate;
     }
 
-    public void setTargetCurrency(Currency targetCurrency) {
-        this.targetCurrency = targetCurrency;
-    }
 
-    public Currency getTargetCurrency() {
-        return targetCurrency;
-    }
 
 
 }

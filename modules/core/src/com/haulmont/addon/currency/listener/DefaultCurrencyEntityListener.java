@@ -1,6 +1,6 @@
 package com.haulmont.addon.currency.listener;
 
-import com.haulmont.addon.currency.entity.Currency;
+import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.service.CurrencyService;
 import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.listener.BeforeInsertEntityListener;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 
 @Component("curraddon_DefaultCurrencyEntityListener")
-public class DefaultCurrencyEntityListener implements BeforeInsertEntityListener<Currency>, BeforeUpdateEntityListener<Currency> {
+public class DefaultCurrencyEntityListener implements BeforeInsertEntityListener<CurrencyDescriptor>, BeforeUpdateEntityListener<CurrencyDescriptor> {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultCurrencyEntityListener.class);
 
     @Inject
@@ -20,20 +20,20 @@ public class DefaultCurrencyEntityListener implements BeforeInsertEntityListener
 
 
     @Override
-    public void onBeforeInsert(Currency currency, EntityManager entityManager) {
+    public void onBeforeInsert(CurrencyDescriptor currency, EntityManager entityManager) {
         handleChange(currency, entityManager);
     }
 
 
     @Override
-    public void onBeforeUpdate(Currency currency, EntityManager entityManager) {
+    public void onBeforeUpdate(CurrencyDescriptor currency, EntityManager entityManager) {
         handleChange(currency, entityManager);
     }
 
 
-    private void handleChange(Currency currency, EntityManager entityManager) {
+    private void handleChange(CurrencyDescriptor currency, EntityManager entityManager) {
         if (currency.getIsDefault()) {
-            Currency oldDefaultCurrency = currencyService.getDefaultCurrency();
+            CurrencyDescriptor oldDefaultCurrency = currencyService.getDefaultCurrency();
             if (oldDefaultCurrency != null && !currency.equals(oldDefaultCurrency)) {
                 LOG.info("Replace default currency {} by {}", oldDefaultCurrency.getCode(), currency.getCode());
                 oldDefaultCurrency.setIsDefault(false);

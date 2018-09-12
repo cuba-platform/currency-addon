@@ -1,6 +1,6 @@
 package com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators;
 
-import com.haulmont.addon.currency.entity.Currency;
+import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.CurrencyValueDataProvider;
 import com.haulmont.cuba.gui.components.DateField;
 import com.haulmont.cuba.gui.components.Label;
@@ -28,8 +28,8 @@ public class ReadOnlyPopupContentProvider extends AbstractCurrencyButtonPopupCon
 
     @Override
     protected void addCurrencyControls(VBoxLayout layout, Date amountDate) {
-        List<Currency> currencies = currencyService.getAvailableCurrencies();
-        for (Currency targetCurrency : currencies) {
+        List<CurrencyDescriptor> currencies = currencyService.getAvailableCurrencies();
+        for (CurrencyDescriptor targetCurrency : currencies) {
             if (targetCurrency != null && !targetCurrency.equals(dataProvider.getCurrency())) {
                 BigDecimal newAmount = calculateNewAmount(amountDate, dataProvider.getAmount(), targetCurrency);
 

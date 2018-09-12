@@ -1,9 +1,9 @@
 package com.haulmont.addon.currency.core;
 
 
-import com.haulmont.addon.currency.entity.Currency;
+import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRate;
-import com.haulmont.addon.currency.entity.AddonCurrencyValue;
+import com.haulmont.addon.currency.entity.CurrencyRateAware;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
@@ -20,20 +20,20 @@ public interface CurrencyAPI {
     /**
      * @return default currency in system
      */
-    Currency getDefaultCurrency();
+    CurrencyDescriptor getDefaultCurrency();
 
     /**
      * Return all created currencies (include not active)
      * @return Not null list of currencies
      */
-    List<Currency> getAllCurrencies();
+    List<CurrencyDescriptor> getAllCurrencies();
 
 
     /**
      * Return created and active currencies
      * @return Not null list of currencies
      */
-    List<Currency> getActiveCurrencies();
+    List<CurrencyDescriptor> getActiveCurrencies();
 
 
     /**
@@ -56,7 +56,7 @@ public interface CurrencyAPI {
      * convertAmount(4.0, (9:00 22.08.2018), CUR1, CUR2) = null
      */
     @Nullable
-    BigDecimal convertAmount(BigDecimal amount, Date date, Currency sourceCurrency, Currency targetCurrency);
+    BigDecimal convertAmount(BigDecimal amount, Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
 
 
     /**
@@ -80,7 +80,7 @@ public interface CurrencyAPI {
      * convertAmountToCurrentRate(4.0, CUR1, CUR3) = null
      */
     @Nullable
-    BigDecimal convertAmountToCurrentRate(BigDecimal amount, Currency sourceCurrency, Currency targetCurrency);
+    BigDecimal convertAmountToCurrentRate(BigDecimal amount, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
 
 
     /**
@@ -101,7 +101,7 @@ public interface CurrencyAPI {
      * convertAmount({CUR2, 4.0, (11:00 22.08.2018)}, CUR1) = null
      */
     @Nullable
-    BigDecimal convertAmount(AddonCurrencyValue sourceCurrencyValue, Currency targetCurrency);
+    BigDecimal convertAmount(CurrencyRateAware sourceCurrencyValue, CurrencyDescriptor targetCurrency);
 
 
     /**
@@ -109,7 +109,7 @@ public interface CurrencyAPI {
      * @param code Code of currency
      * @return Currency
      */
-    Currency getCurrencyByCode(String code);
+    CurrencyDescriptor getCurrencyByCode(String code);
 
     /**
      * Example:
@@ -119,7 +119,7 @@ public interface CurrencyAPI {
      * In order to use the same rate (1.387077981524121) use convertAmountToRateReverse()
      */
     @Nullable
-    BigDecimal convertAmountToRateReverse(BigDecimal amount, Date date, Currency sourceCurrency, Currency targetCurrency);
+    BigDecimal convertAmountToRateReverse(BigDecimal amount, Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
 
 
     /**
@@ -130,5 +130,5 @@ public interface CurrencyAPI {
      * @return Amount in target currency if conversion rate found or null in other case
      */
     @Nullable
-    CurrencyRate getLocalRate(Date date, Currency sourceCurrency, Currency targetCurrency);
+    CurrencyRate getLocalRate(Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
 }
