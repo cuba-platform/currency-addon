@@ -22,9 +22,9 @@ import java.util.Optional;
 
 import static java.math.BigDecimal.ONE;
 
-@Component(CurrencyAPI.NAME)
-public class CurrencyBean implements CurrencyAPI {
-    private static final Logger LOG = LoggerFactory.getLogger(CurrencyBean.class);
+@Component(Currencies.NAME)
+public class CurrenciesBean implements Currencies {
+    private static final Logger LOG = LoggerFactory.getLogger(CurrenciesBean.class);
 
     private final static RoundingMode FINANCIAL_ROUNDING_MODE = RoundingMode.HALF_UP;
 

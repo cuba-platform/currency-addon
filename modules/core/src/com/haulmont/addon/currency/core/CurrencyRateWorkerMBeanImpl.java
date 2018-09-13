@@ -28,7 +28,7 @@ public class CurrencyRateWorkerMBeanImpl implements CurrencyRateWorkerMBean {
     private static final Logger LOG = LoggerFactory.getLogger(CurrencyRateWorkerMBeanImpl.class);
 
     @Inject
-    private CurrencyAPI currencyAPI;
+    private Currencies currencies;
     @Inject
     private CurrencyRateProvider currencyRateProvider;
     @Inject
@@ -80,12 +80,12 @@ public class CurrencyRateWorkerMBeanImpl implements CurrencyRateWorkerMBean {
         CommitContext commitContext = new CommitContext();
         Collection<Entity> commitInstances = commitContext.getCommitInstances();
 
-        List<CurrencyDescriptor> availableCurrencies = currencyAPI.getActiveCurrencies();
+        List<CurrencyDescriptor> availableCurrencies = currencies.getActiveCurrencies();
         for (CurrencyDescriptor currency : availableCurrencies) {
             LOG.debug("Update rate for {} at {}", currency.getCode(), date);
 
             List<CurrencyDescriptor> targetCurrencies = availableCurrencies.stream()
-                    .filter(e -> !e.equals(currency) && currencyAPI.getLocalRate(date, currency, e) == null)
+                    .filter(e -> !e.equals(currency) && currencies.getLocalRate(date, currency, e) == null)
                     .collect(Collectors.toList());
             try {
                 List<CurrencyRate> currencyRates = currencyRateProvider.getRates(date, currency, targetCurrencies);

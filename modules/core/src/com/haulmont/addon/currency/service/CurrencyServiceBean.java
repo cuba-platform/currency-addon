@@ -1,6 +1,6 @@
 package com.haulmont.addon.currency.service;
 
-import com.haulmont.addon.currency.core.CurrencyAPI;
+import com.haulmont.addon.currency.core.Currencies;
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import org.springframework.stereotype.Service;
 
@@ -14,39 +14,39 @@ import java.util.List;
 public class CurrencyServiceBean implements CurrencyService {
 
     @Inject
-    private CurrencyAPI currencyApi;
+    private Currencies currencies;
 
 
     @Override
     @Transactional
     public BigDecimal convertAmountToRate(BigDecimal amount, Date date, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency) {
-        return currencyApi.convertAmount(amount, date, currency, targetCurrency);
+        return currencies.convertAmount(amount, date, currency, targetCurrency);
     }
 
 
     @Override
     @Transactional
     public BigDecimal convertAmountToCurrentRate(BigDecimal amount, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency) {
-        return currencyApi.convertAmountToCurrentRate(amount, currency, targetCurrency);
+        return currencies.convertAmountToCurrentRate(amount, currency, targetCurrency);
     }
 
 
     @Override
     @Transactional
     public CurrencyDescriptor getCurrencyByCode(String code) {
-        return currencyApi.getCurrencyByCode(code);
+        return currencies.getCurrencyByCode(code);
     }
 
 
     @Override
     public List<CurrencyDescriptor> getAvailableCurrencies() {
-        return currencyApi.getActiveCurrencies();
+        return currencies.getActiveCurrencies();
     }
 
 
     @Override
     public CurrencyDescriptor getDefaultCurrency() {
-        return currencyApi.getDefaultCurrency();
+        return currencies.getDefaultCurrency();
     }
 
 }

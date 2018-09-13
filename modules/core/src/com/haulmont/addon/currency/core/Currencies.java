@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * Set of methods for conversion operations and access to currency addon entities
  */
-public interface CurrencyAPI {
+public interface Currencies {
 
-    String NAME = "curraddon_CurrencyRateAPI";
+    String NAME = "curraddon_Currencies";
 
     /**
      * @return default currency in system

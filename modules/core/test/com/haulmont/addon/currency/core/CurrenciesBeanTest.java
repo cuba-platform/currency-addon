@@ -21,14 +21,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CurrencyBeanTest {
+public class CurrenciesBeanTest {
 
     @ClassRule
     public static TestContainer testContainer = CurrencyIntegrationTestUtil.INSTANCE.initializeHsqlDatabaseAndApplication();
     private static Date rateActualDate;
 
     @Inject
-    private CurrencyAPI api = AppContext.getApplicationContext().getBean(CurrencyAPI.class);
+    private Currencies api = AppContext.getApplicationContext().getBean(Currencies.class);
 
     static Metadata metadata;
 
