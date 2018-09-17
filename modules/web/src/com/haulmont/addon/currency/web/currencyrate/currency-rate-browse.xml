@@ -18,6 +18,10 @@
                 width="800"/>
     <layout expand="currencyRatesTable"
             spacing="true">
+        <flowBox spacing="true">
+            <label value="msg://enableSchedulingCaption"/>
+            <checkBox id="rateUpdateSchedulingEnabled"/>
+        </flowBox>
         <filter id="filter"
                 applyTo="currencyRatesTable"
                 datasource="currencyRatesDs">
@@ -37,9 +41,9 @@
             <columns>
                 <column id="date"/>
                 <column id="currency.name"
-                        caption="currencyFromCaption"/>
+                        caption="msg://currencyFromCaption"/>
                 <column id="targetCurrency.name"
-                        caption="currencyToCaption"/>
+                        caption="msg://currencyToCaption"/>
                 <column id="rate"/>
             </columns>
             <rows datasource="currencyRatesDs"/>
