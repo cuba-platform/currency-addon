@@ -2,13 +2,13 @@ package com.haulmont.addon.currency.service;
 
 import com.haulmont.cuba.core.entity.ScheduledTask;
 import com.haulmont.cuba.core.global.DataManager;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.UUID;
 
-@Component(CurrencyRatesService.NAME)
+@Service(CurrencyRatesService.NAME)
 public class CurrencyRatesServiceBean implements CurrencyRatesService {
 
     @Inject
