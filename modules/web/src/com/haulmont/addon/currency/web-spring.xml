@@ -12,6 +12,8 @@
             <map>
                 <entry key="curraddon_CurrencyService"
                        value="com.haulmont.addon.currency.service.CurrencyService"/>
+                <entry key="curraddon_CurrencyRatesService"
+                       value="com.haulmont.addon.currency.service.CurrencyRatesService"/>
             </map>
         </property>
     </bean>
