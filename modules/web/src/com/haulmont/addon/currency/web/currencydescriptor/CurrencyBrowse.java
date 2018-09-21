@@ -1,4 +1,4 @@
-package com.haulmont.addon.currency.web.currency;
+package com.haulmont.addon.currency.web.currencydescriptor;
 
 import com.haulmont.cuba.gui.components.AbstractLookup;
 

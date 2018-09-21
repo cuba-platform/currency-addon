@@ -6,31 +6,30 @@ import com.haulmont.chile.core.model.MetaClass;
 import com.haulmont.chile.core.model.MetaProperty;
 import com.haulmont.chile.core.model.MetaPropertyPath;
 import com.haulmont.cuba.core.global.Messages;
-import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.components.AbstractComponentGenerationStrategy;
+import com.haulmont.cuba.gui.components.Component;
+import com.haulmont.cuba.gui.components.ComponentGenerationContext;
+import com.haulmont.cuba.gui.components.ComponentGenerationStrategy;
 import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
-import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
-@org.springframework.stereotype.Component(CurrencyFieldRegisterer.NAME)
-public class CurrencyFieldRegisterer extends AbstractComponentGenerationStrategy implements Ordered {
+@Order(CurrencyFieldGenerationStrategy.CURRENCY_FIELD_REGISTERER_ORDER)
+@org.springframework.stereotype.Component(CurrencyFieldGenerationStrategy.NAME)
+public class CurrencyFieldGenerationStrategy extends AbstractComponentGenerationStrategy {
+
     public static final int CURRENCY_FIELD_REGISTERER_ORDER = ComponentGenerationStrategy.HIGHEST_PLATFORM_PRECEDENCE - 5;
 
     public static final String NAME = "curraddon_CurrencyFieldComponentGeneration";
 
 
     @Inject
-    public CurrencyFieldRegisterer(Messages messages, ComponentsFactory componentsFactory) {
+    public CurrencyFieldGenerationStrategy(Messages messages, ComponentsFactory componentsFactory) {
         super(messages);
         this.componentsFactory = componentsFactory;
-    }
-
-
-    @Override
-    public int getOrder() {
-        return CURRENCY_FIELD_REGISTERER_ORDER;
     }
 
 
@@ -55,7 +54,7 @@ public class CurrencyFieldRegisterer extends AbstractComponentGenerationStrategy
     private Component createField(ComponentGenerationContext componentGenerationContext) {
         Datasource datasource = componentGenerationContext.getDatasource();
 
-        CurrencyField currencyField = componentsFactory.createComponent(CurrencyAddonField.class);
+        CurrencyAddonField currencyField = componentsFactory.createComponent(CurrencyAddonField.class);
         currencyField.setDatasource(datasource, componentGenerationContext.getProperty());
 
         return currencyField;

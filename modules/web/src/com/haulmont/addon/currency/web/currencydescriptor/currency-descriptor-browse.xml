@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
         caption="msg://browseCaption"
-        class="com.haulmont.addon.currency.web.currency.CurrencyBrowse"
+        class="com.haulmont.addon.currency.web.currencydescriptor.CurrencyBrowse"
         focusComponent="currenciesTable"
         lookupComponent="currenciesTable"
-        messagesPack="com.haulmont.addon.currency.web.currency">
+        messagesPack="com.haulmont.addon.currency.web.currencydescriptor">
     <dsContext>
         <groupDatasource id="currenciesDs"
                          class="com.haulmont.addon.currency.entity.CurrencyDescriptor"
                          view="_local">
             <query>
-                <![CDATA[select e from curraddon$Currency e]]>
+                <![CDATA[select e from curraddon$CurrencyDescriptor e]]>
             </query>
         </groupDatasource>
     </dsContext>

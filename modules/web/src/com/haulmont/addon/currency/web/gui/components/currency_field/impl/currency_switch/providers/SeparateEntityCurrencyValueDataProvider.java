@@ -1,9 +1,9 @@
 package com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers;
 
-import com.haulmont.addon.currency.entity.Currency;
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRateAware;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyValueChangedEventSupplier;
+import com.haulmont.chile.core.model.MetaProperty;
 import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.Metadata;
@@ -39,11 +39,6 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
     }
 
 
-    public Datasource getDatasource() {
-        return datasource;
-    }
-
-
     private CurrencyRateAware getEntity() {
         Entity item = datasource.getItem();
 
@@ -57,7 +52,8 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
         if (item != null) {
             value = item.getValue(entityReferencePropertyName);
             if (value == null) {
-                value = metadata.create(Currency.class);
+                MetaProperty currencyFieldMetaProperty = datasource.getMetaClass().getPropertyNN(entityReferencePropertyName);
+                value = (CurrencyRateAware) metadata.create(currencyFieldMetaProperty.getDomain());
                 item.setValue(entityReferencePropertyName, value);
             }
         }

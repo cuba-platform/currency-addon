@@ -2,7 +2,7 @@ package com.haulmont.addon.currency.web.gui.components.currency_field.impl.curre
 
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyValueChangedEventSupplier;
-import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.SeparateEntityCurrencyValueDataProvider;
+import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.CurrencyValueDataProvider;
 import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.DateField;
 import com.haulmont.cuba.gui.components.OptionsGroup;
@@ -14,15 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupContentProvider<SeparateEntityCurrencyValueDataProvider> {
+public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupContentProvider {
 
     private final CurrencyValueChangedEventSupplier valueChangedEventSupplier;
 
 
     public WriteApplicablePopupProvider(
-            SeparateEntityCurrencyValueDataProvider dataProvider, CurrencyValueChangedEventSupplier valueChangedEventSupplier
+            CurrencyValueDataProvider dataProvider, CurrencyValueChangedEventSupplier valueChangedEventSupplier, boolean withTime
     ) {
-        super(dataProvider);
+        super(dataProvider, withTime);
 
         this.valueChangedEventSupplier = valueChangedEventSupplier;
     }
@@ -31,12 +31,8 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
     @Override
     protected DateField createDateField() {
         DateField dateField = componentsFactory.createComponent(DateField.class);
-        dateField.addValueChangeListener(new Component.ValueChangeListener() {
-            @Override
-            public void valueChanged(Component.ValueChangeEvent e) {
-                dataProvider.setDate((Date) e.getValue());
-            }
-        });
+        dateField.addValueChangeListener(e -> dataProvider.setDate((Date) e.getValue()));
+        dateField.setResolution(isWithTime() ? DateField.Resolution.MIN : DateField.Resolution.DAY);
         return dateField;
     }
 

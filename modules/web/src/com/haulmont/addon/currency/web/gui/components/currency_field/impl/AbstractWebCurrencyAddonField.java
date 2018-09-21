@@ -3,10 +3,10 @@ package com.haulmont.addon.currency.web.gui.components.currency_field.impl;
 import com.haulmont.addon.currency.web.gui.components.currency_field.CurrencyAddonField;
 import com.haulmont.addon.currency.web.toolkit.ui.cubacurrencyaddonfield.CubaCurrencyAddonField;
 import com.haulmont.bali.util.Preconditions;
-import com.haulmont.chile.core.datatypes.Datatype;
 import com.haulmont.chile.core.model.MetaProperty;
 import com.haulmont.chile.core.model.MetaPropertyPath;
 import com.haulmont.cuba.core.global.AppBeans;
+import com.haulmont.cuba.gui.components.CurrencyField;
 import com.haulmont.cuba.gui.components.TextField;
 import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
@@ -96,39 +96,7 @@ public abstract class AbstractWebCurrencyAddonField extends WebAbstractField<Cub
 
 
     @Override
-    public String getCurrency() {
-        return component.getCurrency();
-    }
-
-
-    @Override
-    public void setShowCurrencyLabel(boolean showCurrencyLabel) {
-        component.setShowCurrencyLabel(showCurrencyLabel);
-    }
-
-
-    @Override
-    public boolean getShowCurrencyLabel() {
-        return component.getShowCurrencyLabel();
-    }
-
-
-    @Override
-    public void setDatatype(Datatype datatype) {
-        Preconditions.checkNotNullArgument(datatype);
-
-        component.setDatatype(datatype);
-    }
-
-
-    @Override
-    public Datatype getDatatype() {
-        return component.getDatatype();
-    }
-
-
-    @Override
-    public void setCurrencyLabelPosition(CurrencyLabelPosition currencyLabelPosition) {
+    public void setCurrencyLabelPosition(CurrencyField.CurrencyLabelPosition currencyLabelPosition) {
         Preconditions.checkNotNullArgument(currencyLabelPosition);
 
         com.haulmont.cuba.web.toolkit.ui.CurrencyLabelPosition wAlign =
@@ -139,7 +107,7 @@ public abstract class AbstractWebCurrencyAddonField extends WebAbstractField<Cub
 
 
     @Override
-    public CurrencyLabelPosition getCurrencyLabelPosition() {
-        return CurrencyLabelPosition.valueOf(component.getCurrencyLabelPosition().name());
+    public CurrencyField.CurrencyLabelPosition getCurrencyLabelPosition() {
+        return CurrencyField.CurrencyLabelPosition.valueOf(component.getCurrencyLabelPosition().name());
     }
 }

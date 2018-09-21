@@ -13,5 +13,9 @@ public interface CurrencyValueDataProvider {
 
     Date getDate();
 
+    void setDate(Date newDate);
+
     BigDecimal getAmount();
+
+    void setAmount(BigDecimal newAmount);
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
         caption="msg://editorCaption"
-        class="com.haulmont.addon.currency.web.currency.CurrencyEdit"
+        class="com.haulmont.addon.currency.web.currencydescriptor.CurrencyEdit"
         datasource="currencyDs"
         focusComponent="fieldGroup"
-        messagesPack="com.haulmont.addon.currency.web.currency">
+        messagesPack="com.haulmont.addon.currency.web.currencydescriptor">
     <dsContext>
         <datasource id="currencyDs"
                     class="com.haulmont.addon.currency.entity.CurrencyDescriptor"

@@ -1,7 +1,8 @@
 package com.haulmont.addon.currency.service;
 
+import com.haulmont.cuba.core.EntityManager;
+import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.entity.ScheduledTask;
-import com.haulmont.cuba.core.global.DataManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,9 +13,11 @@ import java.util.UUID;
 public class CurrencyRatesServiceBean implements CurrencyRatesService {
 
     @Inject
-    private DataManager dataManager;
+    private Persistence persistence;
 
 
+    @Override
+    @Transactional
     public boolean autoUpdateIsActive() {
         ScheduledTask task = loadTask();
 
@@ -23,6 +26,7 @@ public class CurrencyRatesServiceBean implements CurrencyRatesService {
     }
 
 
+    @Override
     @Transactional
     public void setAutoUpdateActive(boolean isActive) {
         loadTask().setActive(isActive);
@@ -30,8 +34,7 @@ public class CurrencyRatesServiceBean implements CurrencyRatesService {
 
 
     protected ScheduledTask loadTask() {
-        return dataManager.load(ScheduledTask.class)
-                .id(UUID.fromString("65dfa486-8c33-1844-268e-58aa85a4c10e"))
-                .one();
+        EntityManager entityManager = persistence.getEntityManager();
+        return entityManager.find(ScheduledTask.class, UUID.fromString("65dfa486-8c33-1844-268e-58aa85a4c10e"));
     }
 }

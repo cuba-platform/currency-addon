@@ -12,20 +12,22 @@ import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public abstract class AbstractCurrencyButtonPopupContentProvider<DataProviderType extends CurrencyValueDataProvider> {
+public abstract class AbstractCurrencyButtonPopupContentProvider {
 
     protected final ComponentsFactory componentsFactory = AppBeans.get(ComponentsFactory.class);
     protected final CurrencyService currencyService = AppBeans.get(CurrencyService.class);
 
-    protected final DataProviderType dataProvider;
+    protected final CurrencyValueDataProvider dataProvider;
 
 
     private final VBoxLayout layout;
     private final DateField currencyDateField;
+    private final boolean withTime;
 
 
-    public AbstractCurrencyButtonPopupContentProvider(DataProviderType dataProvider) {
+    public AbstractCurrencyButtonPopupContentProvider(CurrencyValueDataProvider dataProvider, boolean withTime) {
         this.dataProvider = dataProvider;
+        this.withTime = withTime;
 
         layout = createLayout();
         currencyDateField = createDateField();
@@ -74,4 +76,7 @@ public abstract class AbstractCurrencyButtonPopupContentProvider<DataProviderTyp
     protected abstract DateField createDateField();
 
 
+    public boolean isWithTime() {
+        return withTime;
+    }
 }

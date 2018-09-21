@@ -3,5 +3,5 @@
     <item insertAfter="performanceStatistics"
           screen="curraddon$CurrencyRate.browse"/>
     <item insertAfter="performanceStatistics"
-          screen="curraddon$Currency.browse"/>
+          screen="curraddon$CurrencyDescriptor.browse"/>
 </menu-config>
