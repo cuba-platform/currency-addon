@@ -48,16 +48,17 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
     private CurrencyRateAware getOrCreateEntity() {
         Entity item = datasource.getItem();
 
-        CurrencyRateAware value = null;
+        CurrencyRateAware currencyRateAware = null;
         if (item != null) {
-            value = item.getValue(entityReferencePropertyName);
-            if (value == null) {
+            currencyRateAware = item.getValue(entityReferencePropertyName);
+            if (currencyRateAware == null) {
                 MetaProperty currencyFieldMetaProperty = datasource.getMetaClass().getPropertyNN(entityReferencePropertyName);
-                value = (CurrencyRateAware) metadata.create(currencyFieldMetaProperty.getDomain());
-                item.setValue(entityReferencePropertyName, value);
+                currencyRateAware = (CurrencyRateAware) metadata.create(currencyFieldMetaProperty.getJavaType());
+                currencyRateAware.setDate(new Date());
+                item.setValue(entityReferencePropertyName, currencyRateAware);
             }
         }
-        return value;
+        return currencyRateAware;
     }
 
 
