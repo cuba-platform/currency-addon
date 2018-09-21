@@ -3,6 +3,7 @@ package com.haulmont.addon.currency.web.gui.components.currency_field.impl;
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRateAware;
 import com.haulmont.addon.currency.service.CurrencyService;
+import com.haulmont.addon.currency.web.Constants;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyValueChangedEventSupplier;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators.AbstractCurrencyButtonPopupContentProvider;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators.WriteApplicablePopupProvider;
@@ -29,7 +30,7 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
     protected CurrencyValueDataProvider currencyValueDataProvider;
     protected AbstractCurrencyButtonPopupContentProvider popupContentCreator;
 
-    protected boolean withTime;
+    protected boolean withTime = Constants.CURRENCY_DATE_WITH_TIME_DEFAULT;
 
 
     public WebCurrencyAddonField() {

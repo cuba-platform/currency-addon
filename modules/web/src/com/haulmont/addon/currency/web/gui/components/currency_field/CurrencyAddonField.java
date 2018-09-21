@@ -12,25 +12,25 @@ public interface CurrencyAddonField extends Field, Component.Buffered {
     /**
      * Sets where the currency label will be located: to the left or to the right from the text input component.
      *
-     * @param currencyLabelPosition not-null {@link CurrencyField.CurrencyLabelPosition} value
+     * @param currencyButtonPosition not-null {@link CurrencyField.CurrencyLabelPosition} value
      */
-    void setCurrencyLabelPosition(CurrencyField.CurrencyLabelPosition currencyLabelPosition);
+    void setCurrencyButtonPosition(CurrencyField.CurrencyLabelPosition currencyButtonPosition);
 
 
     /**
      * @return where the currency label is located
      */
-    CurrencyField.CurrencyLabelPosition getCurrencyLabelPosition();
+    CurrencyField.CurrencyLabelPosition getCurrencyButtonPosition();
 
 
     /**
-     * Set show date currency value with time
+     * Set show date currency value with time field
      */
     void setWithTime(boolean withTime);
 
 
     /**
-     * Is show currency value date field with time
+     * Is show currency value date field with time field
      */
     boolean isWithTime();
 }

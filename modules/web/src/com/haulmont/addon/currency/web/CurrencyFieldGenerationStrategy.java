@@ -51,12 +51,24 @@ public class CurrencyFieldGenerationStrategy extends AbstractComponentGeneration
     }
 
 
-    private Component createField(ComponentGenerationContext componentGenerationContext) {
+    protected Component createField(ComponentGenerationContext componentGenerationContext) {
         Datasource datasource = componentGenerationContext.getDatasource();
 
         CurrencyAddonField currencyField = componentsFactory.createComponent(CurrencyAddonField.class);
+        configureParameterWithTime(componentGenerationContext, currencyField);
+
         currencyField.setDatasource(datasource, componentGenerationContext.getProperty());
 
         return currencyField;
+    }
+
+
+    protected void configureParameterWithTime(ComponentGenerationContext componentGenerationContext, CurrencyAddonField currencyField) {
+        String withTimeString = componentGenerationContext.getXmlDescriptor().attributeValue(Constants.CURRENCY_DATE_WITH_TIME_XML_ATTR_NAME);
+        boolean withTime = Constants.CURRENCY_DATE_WITH_TIME_DEFAULT;
+        if (withTimeString != null) {
+            withTime =  Boolean.parseBoolean(withTimeString);
+        }
+        currencyField.setWithTime(withTime);
     }
 }

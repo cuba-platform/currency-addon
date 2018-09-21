@@ -96,18 +96,18 @@ public abstract class AbstractWebCurrencyAddonField extends WebAbstractField<Cub
 
 
     @Override
-    public void setCurrencyLabelPosition(CurrencyField.CurrencyLabelPosition currencyLabelPosition) {
-        Preconditions.checkNotNullArgument(currencyLabelPosition);
+    public void setCurrencyButtonPosition(CurrencyField.CurrencyLabelPosition currencyButtonPosition) {
+        Preconditions.checkNotNullArgument(currencyButtonPosition);
 
         com.haulmont.cuba.web.toolkit.ui.CurrencyLabelPosition wAlign =
-                com.haulmont.cuba.web.toolkit.ui.CurrencyLabelPosition.valueOf(currencyLabelPosition.name());
+                com.haulmont.cuba.web.toolkit.ui.CurrencyLabelPosition.valueOf(currencyButtonPosition.name());
 
         component.setCurrencyLabelPosition(wAlign);
     }
 
 
     @Override
-    public CurrencyField.CurrencyLabelPosition getCurrencyLabelPosition() {
+    public CurrencyField.CurrencyLabelPosition getCurrencyButtonPosition() {
         return CurrencyField.CurrencyLabelPosition.valueOf(component.getCurrencyLabelPosition().name());
     }
 }

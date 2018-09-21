@@ -8,7 +8,15 @@
     <xs:element name="currencyAddonField">
         <xs:complexType>
             <xs:complexContent>
-                <xs:extension base="window:currencyFieldComponent"/>
+                <xs:extension base="window:baseFieldComponent">
+
+                    <!-- Render time field for currency value -->
+                    <xs:attribute name="withTime" type="xs:boolean" default="false"/>
+
+                    <!-- Position of button near field -->
+                    <xs:attribute name="currencyButtonPosition" type="window:currencyAlignMode" default="RIGHT"/>
+
+                </xs:extension>
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
