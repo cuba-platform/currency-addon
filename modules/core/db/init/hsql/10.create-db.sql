@@ -30,7 +30,7 @@ create table CURRADDON_CURRENCY_RATE (
     DELETED_BY varchar(50),
     --
     DATE_ timestamp not null,
-    RATE decimal(19, 6) not null,
+    RATE decimal(19, 12) not null,
     CURRENCY_ID varchar(36) not null,
     TARGET_CURRENCY_ID varchar(36) not null,
     --
@@ -48,7 +48,7 @@ create table CURRADDON_CURRENCY (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    VALUE_ decimal(19, 2) not null,
+    VALUE_ decimal(19, 12) not null,
     DATE_ timestamp not null,
     CURRENCY_ID varchar(36) not null,
     --

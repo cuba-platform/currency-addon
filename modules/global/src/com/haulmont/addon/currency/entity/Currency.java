@@ -15,7 +15,7 @@ public class Currency extends StandardEntity implements CurrencyRateAware {
     private static final long serialVersionUID = 8530608597300769485L;
 
     @NotNull
-    @Column(name = "VALUE_", nullable = false)
+    @Column(name = "VALUE_", nullable = false, precision = 19, scale = 12)
     protected BigDecimal value;
 
     @Temporal(TemporalType.TIMESTAMP)

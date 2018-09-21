@@ -27,7 +27,7 @@ public class CurrencyRate extends StandardEntity {
     protected Date date;
 
     @NotNull
-    @Column(name = "RATE", nullable = false, precision = 19, scale = 6)
+    @Column(name = "RATE", nullable = false, precision = 19, scale = 12)
     protected BigDecimal rate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
