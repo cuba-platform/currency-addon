@@ -79,7 +79,7 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
 
 
     private AbstractCurrencyButtonPopupContentProvider createWriteApplicableContentCreator(
-            Datasource datasource, String propertyName, CurrencyValueDataProvider currencyValueDataProvider
+            Datasource datasource, String currencyFieldPropertyName, CurrencyValueDataProvider currencyValueDataProvider
     ) {
         AbstractCurrencyButtonPopupContentProvider popupContentCreator = new WriteApplicablePopupProvider(currencyValueDataProvider, this, withTime);
         changeCurrencyPopupButton.setAutoClose(false);
@@ -89,16 +89,16 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
         //On load item to DS
         datasource.addItemChangeListener(event -> {
             Entity item = event.getItem();
-            CurrencyRateAware addonCurrencyField = item.getValue(propertyName);
+            CurrencyRateAware addonCurrencyField = item.getValue(currencyFieldPropertyName);
 
-            CurrencyDescriptor currency = null;
+            CurrencyDescriptor currencyDescriptor = null;
             if (addonCurrencyField != null) {
-                currency = addonCurrencyField.getCurrency();
+                currencyDescriptor = addonCurrencyField.getCurrency();
             }
 
-            if (currency == null) {
-                currency = currencyService.getDefaultCurrency();
-                currencyValueDataProvider.setCurrency(currency);
+            if (currencyDescriptor == null) {
+                currencyDescriptor = currencyService.getDefaultCurrency();
+                currencyValueDataProvider.setCurrency(currencyDescriptor);
             }
         });
 

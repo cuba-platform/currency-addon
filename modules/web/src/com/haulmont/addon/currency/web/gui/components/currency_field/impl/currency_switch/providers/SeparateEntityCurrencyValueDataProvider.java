@@ -9,6 +9,7 @@ import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.data.DsContext;
+import com.haulmont.cuba.gui.data.impl.AbstractDatasource;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -45,20 +46,37 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
         return item != null ? item.getValue(entityReferencePropertyName) : null;
     }
 
+
     private CurrencyRateAware getOrCreateEntity() {
         Entity item = datasource.getItem();
+
+        markDataSourceAsModified();
 
         CurrencyRateAware currencyRateAware = null;
         if (item != null) {
             currencyRateAware = item.getValue(entityReferencePropertyName);
             if (currencyRateAware == null) {
-                MetaProperty currencyFieldMetaProperty = datasource.getMetaClass().getPropertyNN(entityReferencePropertyName);
-                currencyRateAware = (CurrencyRateAware) metadata.create(currencyFieldMetaProperty.getJavaType());
-                currencyRateAware.setDate(new Date());
+                currencyRateAware = createCurrencyRateAware();
                 item.setValue(entityReferencePropertyName, currencyRateAware);
             }
         }
         return currencyRateAware;
+    }
+
+
+    private CurrencyRateAware createCurrencyRateAware() {
+        CurrencyRateAware currencyRateAware;
+        MetaProperty currencyFieldMetaProperty = datasource.getMetaClass().getPropertyNN(entityReferencePropertyName);
+        currencyRateAware = (CurrencyRateAware) metadata.create(currencyFieldMetaProperty.getJavaType());
+        currencyRateAware.setDate(new Date());
+        return currencyRateAware;
+    }
+
+
+    // In case when modified only Currency value data source not marked as changed so we need do it manually
+    private void markDataSourceAsModified() {
+        AbstractDatasource abstractDatasource = (AbstractDatasource) datasource;
+        abstractDatasource.setModified(true);
     }
 
 
