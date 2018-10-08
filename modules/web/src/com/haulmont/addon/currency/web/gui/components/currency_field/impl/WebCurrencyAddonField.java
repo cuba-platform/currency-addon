@@ -3,17 +3,19 @@ package com.haulmont.addon.currency.web.gui.components.currency_field.impl;
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRateAware;
 import com.haulmont.addon.currency.service.CurrencyService;
-import com.haulmont.addon.currency.web.Constants;
+import com.haulmont.addon.currency.web.CurrencyWebConstants;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyValueChangedEventSupplier;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators.AbstractCurrencyButtonPopupContentProvider;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators.WriteApplicablePopupProvider;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.CurrencyValueDataProvider;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.SeparateEntityCurrencyValueDataProvider;
 import com.haulmont.addon.currency.web.toolkit.ui.cubacurrencyaddonfield.CubaCurrencyAddonField;
+import com.haulmont.addon.currency.web.toolkit.ui.cubacurrencyaddonfield.StringToCurrencyBigDecimalConverter;
 import com.haulmont.cuba.core.app.dynamicattributes.DynamicAttributesUtils;
 import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.gui.components.PopupButton;
+import com.haulmont.cuba.gui.components.TextField;
 import com.haulmont.cuba.gui.components.ValidationException;
 import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.web.toolkit.ui.CubaPopupButton;
@@ -30,13 +32,17 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
     protected CurrencyValueDataProvider currencyValueDataProvider;
     protected AbstractCurrencyButtonPopupContentProvider popupContentCreator;
 
-    protected boolean withTime = Constants.CURRENCY_DATE_WITH_TIME_DEFAULT;
+    protected boolean withTime = CurrencyWebConstants.CURRENCY_DATE_WITH_TIME_DEFAULT;
 
 
     public WebCurrencyAddonField() {
         changeCurrencyPopupButton = componentsFactory.createComponent(PopupButton.class);
 
         component = new CubaCurrencyAddonField(amountField.unwrap(CubaTextField.class), changeCurrencyPopupButton.unwrap(CubaPopupButton.class));
+
+        //Need to configure twice.
+        //First - immediately after creating field because setConverter called in constructor and first field rendering run immediately
+        configureNewDataTypeAndConverter(amountField);
     }
 
 
@@ -73,8 +79,17 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
             popupContentCreator = createWriteApplicableContentCreator(datasource, propertyName, currencyValueDataProvider);
             amountField.setDatasource(datasource, propertyName + "." + CurrencyRateAware.VALUE_PATH);
             amountField.addValueChangeListener(e -> updatePopupContent());
+
+            //Need to configure twice.
+            //Second - after setting data source because because setConverter called in setDatasource method
+            configureNewDataTypeAndConverter(amountField);
         }
         return popupContentCreator;
+    }
+
+    private void configureNewDataTypeAndConverter(TextField amountField) {
+        int fractionPrecision = StringToCurrencyBigDecimalConverter.DEFAULT_PRECISION;
+        amountField.unwrap(CubaTextField.class).setConverter(new StringToCurrencyBigDecimalConverter(fractionPrecision));
     }
 
 

@@ -8,13 +8,16 @@ public class CubaCurrencyAddonField extends CubaCurrencyField {
 
     private CubaPopupButton currencySelector;
 
-    public CubaCurrencyAddonField(CubaTextField textField, CubaPopupButton currencySelector) {
+    public CubaCurrencyAddonField(CubaTextField textField, CubaPopupButton changeCurrencyButton) {
         super(textField);
-        this.currencySelector = currencySelector;
+
+        this.currencySelector = changeCurrencyButton;
         this.currencySelector.addStyleName(CURRENCY_STYLENAME);
+
         container.addStyleName(CURRENCY_VISIBLE);
         container.addStyleName(currencyLabelPosition.name().toLowerCase());
         container.removeComponent(currencyLabel);
-        container.addComponent(currencySelector);
+        container.addComponent(changeCurrencyButton);
     }
+
 }
