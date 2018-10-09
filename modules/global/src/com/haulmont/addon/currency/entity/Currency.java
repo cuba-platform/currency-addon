@@ -1,6 +1,5 @@
 package com.haulmont.addon.currency.entity;
 
-import com.haulmont.addon.currency.CurrencyGlobalConstants;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
 
@@ -9,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@NamePattern("%s %s|value,currency")
+@NamePattern("#getInstanceName|value,currency")
 @Table(name = "CURRADDON_CURRENCY")
 @Entity(name = "curraddon$Currency")
 public class Currency extends StandardEntity implements CurrencyRateAware {
@@ -56,5 +55,8 @@ public class Currency extends StandardEntity implements CurrencyRateAware {
         return value;
     }
 
+    public String getInstanceName() {
+        return value.stripTrailingZeros() + " " + currency.getSymbol();
+    }
 
 }
