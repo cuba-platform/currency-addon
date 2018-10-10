@@ -2,6 +2,7 @@ package com.haulmont.addon.currency.web.gui.components.currency_field.impl;
 
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRateAware;
+import com.haulmont.addon.currency.format.CurrencyBigDecimalFormat;
 import com.haulmont.addon.currency.service.CurrencyService;
 import com.haulmont.addon.currency.web.CurrencyWebConstants;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyValueChangedEventSupplier;
@@ -88,7 +89,7 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
     }
 
     private void configureNewDataTypeAndConverter(TextField amountField) {
-        int fractionPrecision = StringToCurrencyBigDecimalConverter.DEFAULT_PRECISION;
+        int fractionPrecision = CurrencyBigDecimalFormat.DEFAULT_PRECISION;
         amountField.unwrap(CubaTextField.class).setConverter(new StringToCurrencyBigDecimalConverter(fractionPrecision));
     }
 
