@@ -64,7 +64,8 @@ public class CurrencyFieldGenerationStrategy extends AbstractComponentGeneration
 
 
     protected void configureParameterWithTime(ComponentGenerationContext componentGenerationContext, CurrencyAddonField currencyField) {
-        String withTimeString = componentGenerationContext.getXmlDescriptor().attributeValue(CurrencyWebConstants.CURRENCY_DATE_WITH_TIME_XML_ATTR_NAME);
+        String withTimeString = componentGenerationContext.getXmlDescriptor()
+                .attributeValue(CurrencyWebConstants.CURRENCY_DATE_WITH_TIME_XML_ATTR_NAME);
         boolean withTime = CurrencyWebConstants.CURRENCY_DATE_WITH_TIME_DEFAULT;
         if (withTimeString != null) {
             withTime =  Boolean.parseBoolean(withTimeString);
