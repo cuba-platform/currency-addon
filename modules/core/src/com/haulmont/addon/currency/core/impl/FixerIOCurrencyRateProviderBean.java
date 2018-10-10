@@ -29,12 +29,12 @@ public class FixerIOCurrencyRateProviderBean implements CurrencyRateProvider {
     private static final Logger LOG = LoggerFactory.getLogger(FixerIOCurrencyRateProviderBean.class);
 
     private static final String URL = "http://data.fixer.io/api/";
+    private static final String FIXERIO_SOURCE_NAME = "fixer.io";
 
     private static final SimpleDateFormat FIXERIO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     @Inject
     private Metadata metadata;
-
     @Inject
     private Configuration configuration;
 
@@ -82,6 +82,7 @@ public class FixerIOCurrencyRateProviderBean implements CurrencyRateProvider {
         JSONObject rates = responseJsonObject.getJSONObject("rates");
         for (String code : targetCurrencyMap.keySet()) {
             CurrencyRate currencyRate = metadata.create(CurrencyRate.class);
+            currencyRate.setSource(FIXERIO_SOURCE_NAME);
             currencyRate.setCurrency(currency);
             currencyRate.setTargetCurrency(targetCurrencyMap.get(code));
             currencyRate.setDate(date);

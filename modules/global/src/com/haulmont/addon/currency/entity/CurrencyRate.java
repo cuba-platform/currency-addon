@@ -1,19 +1,12 @@
 package com.haulmont.addon.currency.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.haulmont.chile.core.annotations.NamePattern;
+import com.haulmont.cuba.core.entity.StandardEntity;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import com.haulmont.cuba.core.entity.StandardEntity;
-import com.haulmont.chile.core.annotations.NamePattern;
-import javax.persistence.ManyToOne;
 
 @NamePattern("%s|date")
 @Table(name = "CURRADDON_CURRENCY_RATE")
@@ -39,6 +32,23 @@ public class CurrencyRate extends StandardEntity {
     @JoinColumn(name = "TARGET_CURRENCY_ID")
     protected CurrencyDescriptor targetCurrency;
 
+    /**
+     * Source of rate.
+     * It can be web service name or username who created rate or something else.
+     */
+    @NotNull
+    @Column(name = "SOURCE", length = 100)
+    protected String source;
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+
     public CurrencyDescriptor getCurrency() {
         return currency;
     }
@@ -55,11 +65,6 @@ public class CurrencyRate extends StandardEntity {
         this.targetCurrency = targetCurrency;
     }
 
-
-
-
-
-
     public void setDate(Date date) {
         this.date = date;
     }
@@ -75,8 +80,5 @@ public class CurrencyRate extends StandardEntity {
     public BigDecimal getRate() {
         return rate;
     }
-
-
-
 
 }

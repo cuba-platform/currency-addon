@@ -12,6 +12,8 @@ import java.util.UUID;
 @Service(CurrencyRatesService.NAME)
 public class CurrencyRatesServiceBean implements CurrencyRatesService {
 
+    public static final UUID PREDEFINED_UPDATE_RATES_TASK_ID = UUID.fromString("65dfa486-8c33-1844-268e-58aa85a4c10e");
+
     @Inject
     private Persistence persistence;
 
@@ -35,6 +37,6 @@ public class CurrencyRatesServiceBean implements CurrencyRatesService {
 
     protected ScheduledTask loadTask() {
         EntityManager entityManager = persistence.getEntityManager();
-        return entityManager.find(ScheduledTask.class, UUID.fromString("65dfa486-8c33-1844-268e-58aa85a4c10e"));
+        return entityManager.find(ScheduledTask.class, PREDEFINED_UPDATE_RATES_TASK_ID);
     }
 }

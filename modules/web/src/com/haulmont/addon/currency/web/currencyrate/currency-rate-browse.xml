@@ -45,6 +45,7 @@
                 <column id="targetCurrency.name"
                         caption="msg://currencyToCaption"/>
                 <column id="rate"/>
+                <column id="source"/>
             </columns>
             <rows datasource="currencyRatesDs"/>
             <rowsCount/>

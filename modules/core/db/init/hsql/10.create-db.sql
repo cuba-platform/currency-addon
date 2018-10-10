@@ -33,6 +33,7 @@ create table CURRADDON_CURRENCY_RATE (
     RATE decimal(19, 12) not null,
     CURRENCY_ID varchar(36) not null,
     TARGET_CURRENCY_ID varchar(36) not null,
+    SOURCE varchar(100) not null,
     --
     primary key (ID)
 )^
