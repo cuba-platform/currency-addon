@@ -58,6 +58,7 @@ public class CurrenciesBeanTest {
 
     private static void fillCurrencyRates(EntityManager em) {
         rateCurrency1toCurrency2 = metadata.create(CurrencyRate.class);
+        rateCurrency1toCurrency2.setSource("unit-test");
         rateCurrency1toCurrency2.setCurrency(currency1);
         rateCurrency1toCurrency2.setTargetCurrency(currency2);
         rateCurrency1toCurrency2.setDate(rateActualDate);
@@ -65,6 +66,7 @@ public class CurrenciesBeanTest {
         em.persist(rateCurrency1toCurrency2);
 
         CurrencyRate rateCurrency1toCurrency3 = metadata.create(CurrencyRate.class);
+        rateCurrency1toCurrency3.setSource("unit-test");
         rateCurrency1toCurrency3.setCurrency(currency1);
         rateCurrency1toCurrency3.setTargetCurrency(currency3);
         rateCurrency1toCurrency3.setDate(rateActualDate);
