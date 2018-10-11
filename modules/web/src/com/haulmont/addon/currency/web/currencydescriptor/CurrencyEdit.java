@@ -17,9 +17,9 @@ public class CurrencyEdit extends AbstractEditor<CurrencyDescriptor> {
 
     @Override
     protected void postInit() {
-        CurrencyDescriptor currency = getItem();
-        String currencyCode = currency.getCode();
         codeField.addValueChangeListener(event -> {
+            CurrencyDescriptor currency = getItem();
+            String currencyCode = currency.getCode();
             if (StringUtils.isNotBlank(currencyCode)) {
                 try {
                     java.util.Currency instance = java.util.Currency.getInstance(currencyCode);
