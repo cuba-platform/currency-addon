@@ -11,7 +11,7 @@ public interface CurrencyBigDecimalFormat {
     char DEFAULT_DECIMAL_SEPARATOR = '.';
     char DEFAULT_GROUPING_SEPARATOR = ',';
 
-    int DEFAULT_PRECISION = 5;
+    int DEFAULT_PRECISION = 2;
 
 
     /**

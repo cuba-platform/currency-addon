@@ -1,8 +1,10 @@
 package com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators;
 
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
+import com.haulmont.addon.currency.format.CurrencyBigDecimalFormat;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyValueChangedEventSupplier;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.CurrencyValueDataProvider;
+import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.DateField;
 import com.haulmont.cuba.gui.components.OptionsGroup;
@@ -16,6 +18,7 @@ import java.util.Map;
 
 public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupContentProvider {
 
+    private final CurrencyBigDecimalFormat currencyFormat = AppBeans.get(CurrencyBigDecimalFormat.class);
     private final CurrencyValueChangedEventSupplier valueChangedEventSupplier;
 
 
@@ -45,8 +48,10 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
             if (targetCurrency != null && !targetCurrency.equals(dataProvider.getCurrency())) {
                 BigDecimal newAmount = calculateNewAmount(amountDate, dataProvider.getAmount(), targetCurrency);
 
+                String formattedNewAmount = currencyFormat.format(newAmount, targetCurrency.getPrecision());
+
                 if (newAmount != null) {
-                    options.put(newAmount.stripTrailingZeros().toPlainString() + " " + targetCurrency.getSymbol(), targetCurrency);
+                    options.put(formattedNewAmount + " " + targetCurrency.getSymbol(), targetCurrency);
                 }
             }
         }

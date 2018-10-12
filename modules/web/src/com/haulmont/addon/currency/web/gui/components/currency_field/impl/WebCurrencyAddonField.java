@@ -22,8 +22,6 @@ import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.web.toolkit.ui.CubaPopupButton;
 import com.haulmont.cuba.web.toolkit.ui.CubaTextField;
 
-import java.math.BigDecimal;
-
 public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField implements CurrencyValueChangedEventSupplier {
 
     protected final CurrencyService currencyService = AppBeans.get(CurrencyService.NAME);
@@ -47,6 +45,7 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
     }
 
 
+    @Override
     public void updatePopupContent() {
         if (popupContentCreator != null) {
             CurrencyDescriptor currency = currencyValueDataProvider.getCurrency();
@@ -54,6 +53,9 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
                 changeCurrencyPopupButton.setCaption(currency.getSymbol());
             }
             changeCurrencyPopupButton.setPopupContent(popupContentCreator.get());
+
+            //Because currency changed and precision can be changed too
+            configureNewDataTypeAndConverter(amountField);
         }
     }
 
@@ -89,8 +91,19 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
     }
 
     private void configureNewDataTypeAndConverter(TextField amountField) {
-        int fractionPrecision = CurrencyBigDecimalFormat.DEFAULT_PRECISION;
-        amountField.unwrap(CubaTextField.class).setConverter(new StringToCurrencyBigDecimalConverter(fractionPrecision));
+        int precision = CurrencyBigDecimalFormat.DEFAULT_PRECISION;
+        if (currencyValueDataProvider != null) {
+            CurrencyDescriptor currency = currencyValueDataProvider.getCurrency();
+            if (currency != null) {
+                precision = currency.getPrecision();
+            }
+        }
+        StringToCurrencyBigDecimalConverter converter = new StringToCurrencyBigDecimalConverter(precision);
+        amountField.unwrap(CubaTextField.class).setConverter(converter);
+
+        if (currencyValueDataProvider != null) {
+            amountField.setValue(currencyValueDataProvider.getAmount());
+        }
     }
 
 

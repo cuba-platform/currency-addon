@@ -80,6 +80,7 @@ public class CurrenciesBeanTest {
         currency1.setName("Name1");
         currency1.setCode("C1");
         currency1.setActive(true);
+        currency1.setPrecision(2);
         em.persist(currency1);
         activeCurrencies.add(currency1);
         allCurrencies.add(currency1);
@@ -88,6 +89,7 @@ public class CurrenciesBeanTest {
         currency2.setName("Name2");
         currency2.setCode("C2");
         currency2.setActive(true);
+        currency2.setPrecision(2);
         em.persist(currency2);
         activeCurrencies.add(currency2);
         allCurrencies.add(currency2);
@@ -96,6 +98,7 @@ public class CurrenciesBeanTest {
         currency3.setName("Name3");
         currency3.setCode("C3");
         currency3.setActive(false);
+        currency3.setPrecision(3);
         em.persist(currency3);
         allCurrencies.add(currency3);
     }

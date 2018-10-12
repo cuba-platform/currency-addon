@@ -1,6 +1,5 @@
 package com.haulmont.addon.currency.entity;
 
-import com.haulmont.addon.currency.CurrencyGlobalConstants;
 import com.haulmont.addon.currency.format.CurrencyBigDecimalFormat;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
@@ -59,7 +58,7 @@ public class Currency extends StandardEntity implements CurrencyRateAware {
     }
 
     public String getInstanceName() {
-        String amount = AppBeans.get(CurrencyBigDecimalFormat.class).format(value, CurrencyBigDecimalFormat.DEFAULT_PRECISION);
+        String amount = AppBeans.get(CurrencyBigDecimalFormat.class).format(value, currency.getPrecision());
         return amount + " " + currency.getSymbol();
     }
 

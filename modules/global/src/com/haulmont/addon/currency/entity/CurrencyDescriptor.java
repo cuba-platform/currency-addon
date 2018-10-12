@@ -12,6 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import com.haulmont.chile.core.annotations.NumberFormat;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Listeners({"curraddon_DefaultCurrencyEntityListener", "curraddon_DefaultCurrencyEntityListener", "curraddon_FirstCurrencyAsDefaultEntityListener"})
 @NamePattern("%s|name")
@@ -35,6 +38,13 @@ public class CurrencyDescriptor extends StandardEntity {
     @Column(name = "NAME", nullable = false)
     protected String name;
 
+    @NumberFormat(pattern = "##")
+    @Max(19)
+    @Min(0)
+    @NotNull
+    @Column(name = "PRECISION_", nullable = false)
+    protected Integer precision;
+
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "currency")
     protected List<CurrencyRate> rates;
@@ -43,6 +53,15 @@ public class CurrencyDescriptor extends StandardEntity {
     @NotNull
     @Column(name = "IS_DEFAULT", nullable = false)
     protected Boolean isDefault = false;
+
+    public void setPrecision(Integer precision) {
+        this.precision = precision;
+    }
+
+    public Integer getPrecision() {
+        return precision;
+    }
+
 
     public void setIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;
