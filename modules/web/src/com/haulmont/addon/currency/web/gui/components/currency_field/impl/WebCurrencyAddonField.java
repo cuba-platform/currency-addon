@@ -22,6 +22,8 @@ import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.web.toolkit.ui.CubaPopupButton;
 import com.haulmont.cuba.web.toolkit.ui.CubaTextField;
 
+import java.math.BigDecimal;
+
 public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField implements CurrencyValueChangedEventSupplier {
 
     protected final CurrencyService currencyService = AppBeans.get(CurrencyService.NAME);
@@ -38,10 +40,6 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
         changeCurrencyPopupButton = componentsFactory.createComponent(PopupButton.class);
 
         component = new CubaCurrencyAddonField(amountField.unwrap(CubaTextField.class), changeCurrencyPopupButton.unwrap(CubaPopupButton.class));
-
-        //Need to configure twice.
-        //First - immediately after creating field because setConverter called in constructor and first field rendering run immediately
-        configureNewDataTypeAndConverter(amountField);
     }
 
 
@@ -61,12 +59,6 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
 
 
     @Override
-    public void reloadAmount() {
-        amountField.setValue(currencyValueDataProvider.getAmount());
-    }
-
-
-    @Override
     public void setDatasource(Datasource datasource, String propertyName) {
         popupContentCreator = createPopupContentCreator(datasource, propertyName);
     }
@@ -79,18 +71,23 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
             currencyValueDataProvider = new SeparateEntityCurrencyValueDataProvider(
                     datasource, propertyName, this
             );
+
             popupContentCreator = createWriteApplicableContentCreator(datasource, propertyName, currencyValueDataProvider);
             amountField.setDatasource(datasource, propertyName + "." + CurrencyRateAware.VALUE_PATH);
             amountField.addValueChangeListener(e -> updatePopupContent());
-
-            //Need to configure twice.
-            //Second - after setting data source because because setConverter called in setDatasource method
-            configureNewDataTypeAndConverter(amountField);
         }
         return popupContentCreator;
     }
 
     private void configureNewDataTypeAndConverter(TextField amountField) {
+        int precision = getPrecision();
+
+        StringToCurrencyBigDecimalConverter converter = new StringToCurrencyBigDecimalConverter(precision);
+        amountField.unwrap(CubaTextField.class).setConverter(converter);
+    }
+
+
+    private int getPrecision() {
         int precision = CurrencyBigDecimalFormat.DEFAULT_PRECISION;
         if (currencyValueDataProvider != null) {
             CurrencyDescriptor currency = currencyValueDataProvider.getCurrency();
@@ -98,12 +95,7 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
                 precision = currency.getPrecision();
             }
         }
-        StringToCurrencyBigDecimalConverter converter = new StringToCurrencyBigDecimalConverter(precision);
-        amountField.unwrap(CubaTextField.class).setConverter(converter);
-
-        if (currencyValueDataProvider != null) {
-            amountField.setValue(currencyValueDataProvider.getAmount());
-        }
+        return precision;
     }
 
 
@@ -117,6 +109,8 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
 
         //On load item to DS
         datasource.addItemChangeListener(event -> {
+            configureNewDataTypeAndConverter(amountField);
+
             Entity item = event.getItem();
             CurrencyRateAware addonCurrencyField = item.getValue(currencyFieldPropertyName);
 

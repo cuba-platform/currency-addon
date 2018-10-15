@@ -69,8 +69,6 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
 
                 dataProvider.setCurrency(newCurrency);
                 dataProvider.setAmount(newAmount);
-
-                valueChangedEventSupplier.reloadAmount();
             }
         });
     }

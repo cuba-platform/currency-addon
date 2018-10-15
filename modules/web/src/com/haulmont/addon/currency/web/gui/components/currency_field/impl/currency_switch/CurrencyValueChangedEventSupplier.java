@@ -7,9 +7,4 @@ public interface CurrencyValueChangedEventSupplier {
      */
     void updatePopupContent();
 
-
-    /**
-     * Need to reload amount to field from data provider
-     */
-    void reloadAmount();
 }
