@@ -1,5 +1,6 @@
 package com.haulmont.addon.currency.entity;
 
+import com.haulmont.addon.currency.CurrencyGlobalConstants;
 import com.haulmont.addon.currency.format.CurrencyBigDecimalFormat;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
