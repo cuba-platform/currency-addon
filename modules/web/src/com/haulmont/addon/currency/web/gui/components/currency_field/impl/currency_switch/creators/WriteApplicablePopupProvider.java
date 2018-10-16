@@ -188,7 +188,6 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
     ) {
         String changeCurrencyLabel = String.format(labelPattern, patternParams.toArray());
         options.put(changeCurrencyLabel, optionValue);
-        options.put(changeCurrencyLabel, optionValue);
     }
 
 }
