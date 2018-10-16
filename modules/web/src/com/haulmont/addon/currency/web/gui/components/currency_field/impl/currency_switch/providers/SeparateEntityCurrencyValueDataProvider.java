@@ -36,7 +36,12 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
                 getEntity().setDate(new Date());
             }
         });
-        dsContext.addBeforeCommitListener(context -> context.addInstanceToCommit(getEntity()));
+        dsContext.addBeforeCommitListener(context -> {
+            CurrencyRateAware currencyRateAware = getEntity();
+            if (currencyRateAware instanceof Entity) {
+                context.addInstanceToCommit((Entity) currencyRateAware);
+            }
+        });
     }
 
 

@@ -1,15 +1,11 @@
 package com.haulmont.addon.currency.entity;
 
-import com.haulmont.cuba.core.entity.Entity;
-
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.UUID;
 
-public interface CurrencyRateAware extends Entity<UUID> {
+public interface CurrencyRateAware {
 
     String VALUE_PATH = "value";
-    String DATE_PATH = "date";
 
     Date getDate();
 
