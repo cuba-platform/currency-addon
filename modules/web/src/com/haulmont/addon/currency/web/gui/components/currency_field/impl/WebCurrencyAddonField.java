@@ -102,7 +102,7 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
     private AbstractCurrencyButtonPopupContentProvider createWriteApplicableContentCreator(
             Datasource datasource, String currencyFieldPropertyName, CurrencyValueDataProvider currencyValueDataProvider
     ) {
-        AbstractCurrencyButtonPopupContentProvider popupContentCreator = new WriteApplicablePopupProvider(currencyValueDataProvider, this, withTime);
+        AbstractCurrencyButtonPopupContentProvider popupContentCreator = new WriteApplicablePopupProvider(currencyValueDataProvider, withTime);
         changeCurrencyPopupButton.setAutoClose(false);
 
         amountField.addValueChangeListener(e -> currencyValueDataProvider.setAmount((BigDecimal) e.getValue()));

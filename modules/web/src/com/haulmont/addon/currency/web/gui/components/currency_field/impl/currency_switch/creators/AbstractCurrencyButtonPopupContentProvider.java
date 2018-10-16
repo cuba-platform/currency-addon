@@ -1,6 +1,5 @@
 package com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators;
 
-import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.service.CurrencyService;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.CurrencyValueDataProvider;
 import com.haulmont.cuba.core.global.AppBeans;
@@ -9,7 +8,6 @@ import com.haulmont.cuba.gui.components.DateField;
 import com.haulmont.cuba.gui.components.VBoxLayout;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public abstract class AbstractCurrencyButtonPopupContentProvider {
@@ -56,17 +54,6 @@ public abstract class AbstractCurrencyButtonPopupContentProvider {
         VBoxLayout layout = componentsFactory.createComponent(VBoxLayout.class);
         layout.setSpacing(true);
         return layout;
-    }
-
-
-    protected BigDecimal calculateNewAmount(Date amountDate, BigDecimal oldAmount, CurrencyDescriptor targetCurrency) {
-        BigDecimal newAmount;
-        if (oldAmount != null) {
-            newAmount = currencyService.convertAmountToRate(oldAmount, amountDate, dataProvider.getCurrency(), targetCurrency);
-        } else {
-            newAmount = BigDecimal.ZERO;
-        }
-        return newAmount;
     }
 
 

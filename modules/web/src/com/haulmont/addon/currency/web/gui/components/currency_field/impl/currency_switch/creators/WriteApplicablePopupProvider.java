@@ -1,33 +1,46 @@
 package com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators;
 
+import com.haulmont.addon.currency.config.CurrencyConfig;
+import com.haulmont.addon.currency.config.RateRedundancy;
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.format.CurrencyBigDecimalFormat;
-import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyValueChangedEventSupplier;
+import com.haulmont.addon.currency.service.ConvertResult;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.CurrencyValueDataProvider;
+import com.haulmont.chile.core.datatypes.FormatStringsRegistry;
 import com.haulmont.cuba.core.global.AppBeans;
-import com.haulmont.cuba.gui.components.Component;
+import com.haulmont.cuba.core.global.Configuration;
+import com.haulmont.cuba.core.global.DevelopmentException;
+import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.components.DateField;
 import com.haulmont.cuba.gui.components.OptionsGroup;
 import com.haulmont.cuba.gui.components.VBoxLayout;
+import org.apache.commons.lang3.time.DateUtils;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupContentProvider {
 
-    private final CurrencyBigDecimalFormat currencyFormat = AppBeans.get(CurrencyBigDecimalFormat.class);
-    private final CurrencyValueChangedEventSupplier valueChangedEventSupplier;
+    protected final FormatStringsRegistry formatStringsRegistry = AppBeans.get(FormatStringsRegistry.class);
+    protected final UserSessionSource userSessionSource = AppBeans.get(UserSessionSource.class);
+    protected final CurrencyBigDecimalFormat currencyFormat = AppBeans.get(CurrencyBigDecimalFormat.class);
+    protected final CurrencyConfig config = AppBeans.get(Configuration.class).getConfig(CurrencyConfig.class);
+
+    protected final SimpleDateFormat rateDateFormat;
 
 
     public WriteApplicablePopupProvider(
-            CurrencyValueDataProvider dataProvider, CurrencyValueChangedEventSupplier valueChangedEventSupplier, boolean withTime
+            CurrencyValueDataProvider dataProvider, boolean withTime
     ) {
         super(dataProvider, withTime);
 
-        this.valueChangedEventSupplier = valueChangedEventSupplier;
+        if (config.getShowUsedConversionRateDate()) {
+            String dateTimeFormat = formatStringsRegistry.getFormatStrings(userSessionSource.getLocale()).getDateTimeFormat();
+            rateDateFormat = new SimpleDateFormat(dateTimeFormat);
+        } else {
+            rateDateFormat = null;
+        }
     }
 
 
@@ -40,37 +53,142 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
     }
 
 
-    @Override
-    protected void addCurrencyControls(VBoxLayout layout, Date amountDate) {
-        List<CurrencyDescriptor> currencies = currencyService.getAvailableCurrencies();
-        Map<String, Object> options = new HashMap<>();
-        for (CurrencyDescriptor targetCurrency : currencies) {
-            if (targetCurrency != null && !targetCurrency.equals(dataProvider.getCurrency())) {
-                BigDecimal newAmount = calculateNewAmount(amountDate, dataProvider.getAmount(), targetCurrency);
+    protected static class NewCurrencyValue {
+        protected CurrencyDescriptor currency;
+        protected BigDecimal value;
 
-                String formattedNewAmount = currencyFormat.format(newAmount, targetCurrency.getPrecision());
 
-                if (newAmount != null) {
-                    options.put(formattedNewAmount + " " + targetCurrency.getSymbol(), targetCurrency);
-                }
-            }
+        public NewCurrencyValue(CurrencyDescriptor currency, BigDecimal value) {
+            this.currency = currency;
+            this.value = value;
         }
 
-        OptionsGroup optionsGroup = componentsFactory.createComponent(OptionsGroup.class);
+
+        public CurrencyDescriptor getCurrency() {
+            return currency;
+        }
+
+
+        public BigDecimal getValue() {
+            return value;
+        }
+    }
+
+
+    @Override
+    protected void addCurrencyControls(VBoxLayout layout, Date amountDate) {
+        Map<String, NewCurrencyValue> options = createOptions(amountDate);
+
+        OptionsGroup optionsGroup = createOptionsGroup(options);
         layout.add(optionsGroup);
+    }
+
+
+    private OptionsGroup createOptionsGroup(Map<String, NewCurrencyValue> options) {
+        OptionsGroup optionsGroup = componentsFactory.createComponent(OptionsGroup.class);
         optionsGroup.setOptionsMap(options);
 
-        optionsGroup.addValueChangeListener(new Component.ValueChangeListener() {
-            @Override
-            public void valueChanged(Component.ValueChangeEvent e) {
-                CurrencyDescriptor newCurrency = (CurrencyDescriptor) e.getValue();
+        optionsGroup.addValueChangeListener(e -> {
+            NewCurrencyValue newCurrencyValue = (NewCurrencyValue) e.getValue();
 
-                BigDecimal newAmount = calculateNewAmount(amountDate, dataProvider.getAmount(), newCurrency);
-
-                dataProvider.setCurrency(newCurrency);
-                dataProvider.setAmount(newAmount);
-            }
+            dataProvider.setCurrency(newCurrencyValue.getCurrency());
+            dataProvider.setAmount(newCurrencyValue.getValue());
         });
+        return optionsGroup;
+    }
+
+
+    private Map<String, NewCurrencyValue> createOptions(Date amountDate) {
+        CurrencyDescriptor oldCurrency = dataProvider.getCurrency();
+
+        List<CurrencyDescriptor> currencies = currencyService.getAvailableCurrencies();
+        Map<String, NewCurrencyValue> options = new HashMap<>();
+        for (CurrencyDescriptor targetCurrency : currencies) {
+            if (targetCurrency != null && !targetCurrency.equals(oldCurrency)) {
+                addCurrencyOption(amountDate, options, targetCurrency);
+            }
+        }
+        return options;
+    }
+
+
+    private void addCurrencyOption(Date amountDate, Map<String, NewCurrencyValue> options, CurrencyDescriptor targetCurrency) {
+        CurrencyDescriptor oldCurrency = dataProvider.getCurrency();
+        BigDecimal oldAmount = dataProvider.getAmount();
+        if (oldAmount == null) {
+            oldAmount = BigDecimal.ZERO;
+        }
+
+        ConvertResult convertResult = currencyService.convertAmountToRate(oldAmount, amountDate, oldCurrency, targetCurrency);
+
+        String labelPattern = "";
+        List<String> patternParams = new ArrayList<>();
+
+        if (convertResult != null) {
+            BigDecimal newAmount = convertResult.getResultAmount();
+
+            String formattedNewAmount = currencyFormat.format(newAmount, targetCurrency.getPrecision());
+            labelPattern += "%s" ;
+            patternParams.add(formattedNewAmount);
+
+            labelPattern += " %s";
+            patternParams.add(targetCurrency.getSymbol());
+
+            labelPattern = addRateDateToLabel(convertResult, labelPattern, patternParams);
+
+            NewCurrencyValue optionValue = new NewCurrencyValue(targetCurrency, newAmount);
+
+            boolean sameDay = DateUtils.isSameDay(convertResult.getUsedRate().getDate(), amountDate);
+
+            formatAndAddOption(options, labelPattern, patternParams, optionValue, sameDay);
+        }
+    }
+
+
+    private void formatAndAddOption(
+            Map<String, NewCurrencyValue> options,
+            String labelPattern,
+            List<String> patternParams,
+            NewCurrencyValue optionValue,
+            boolean sameDay
+    ) {
+        RateRedundancy rateRedundancy = config.getRateRedundancy();
+        if (rateRedundancy == RateRedundancy.SAME_DATE_REQUIRED) {
+            if (sameDay) {
+                addOptionToMap(options, labelPattern, patternParams, optionValue);
+            }
+        } else if (rateRedundancy == RateRedundancy.SAME_DATE_WARNING) {
+            if (!sameDay) {
+                labelPattern += " TO OLD";
+            }
+            addOptionToMap(options, labelPattern, patternParams, optionValue);
+        } else if (rateRedundancy == RateRedundancy.LAST_DATE) {
+            addOptionToMap(options, labelPattern, patternParams, optionValue);
+        } else {
+            throw new DevelopmentException("Unknown rate redundancy: " + rateRedundancy);
+        }
+    }
+
+
+    private String addRateDateToLabel(ConvertResult convertResult, String labelPattern, List<String> patternParams) {
+        if (rateDateFormat != null) {
+            labelPattern += " (%s)";
+            String formattedRateDate = rateDateFormat.format(convertResult.getUsedRate().getDate());
+            patternParams.add(formattedRateDate);
+        }
+        return labelPattern;
+    }
+
+
+    private void addOptionToMap(
+            Map<String, NewCurrencyValue> options,
+            String labelPattern,
+            List<String> patternParams,
+            NewCurrencyValue optionValue
+    ) {
+        String changeCurrencyLabel = String.format(labelPattern, patternParams.toArray());
+        options.put(changeCurrencyLabel, optionValue);
+        options.put(changeCurrencyLabel, optionValue);
     }
 
 }
