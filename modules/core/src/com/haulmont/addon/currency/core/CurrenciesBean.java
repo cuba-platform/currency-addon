@@ -3,6 +3,7 @@ package com.haulmont.addon.currency.core;
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRate;
 import com.haulmont.addon.currency.entity.CurrencyRateAware;
+import com.haulmont.addon.currency.service.ConvertResult;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.LoadContext;
 import com.haulmont.cuba.core.global.TimeSource;
@@ -40,7 +41,7 @@ public class CurrenciesBean implements Currencies {
     public CurrencyDescriptor getDefaultCurrency() {
         return dataManager.load(CurrencyDescriptor.class)
                 .query("select c from curraddon$CurrencyDescriptor c where c.isDefault = true")
-                .one();
+                .optional().orElse(null);
     }
 
 
@@ -68,13 +69,13 @@ public class CurrenciesBean implements Currencies {
 
 
     @Override
-    public BigDecimal convertAmountToCurrentRate(BigDecimal amount, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency) {
+    public ConvertResult convertAmountToCurrentRate(BigDecimal amount, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency) {
         return convertAmount(amount, timeSource.currentTimestamp(), sourceCurrency, targetCurrency);
     }
 
 
     @Override
-    public BigDecimal convertAmount(CurrencyRateAware sourceCurrencyValue, CurrencyDescriptor targetCurrency) {
+    public ConvertResult convertAmount(CurrencyRateAware sourceCurrencyValue, CurrencyDescriptor targetCurrency) {
         return convertAmount(sourceCurrencyValue.getValue(), sourceCurrencyValue.getDate(), sourceCurrencyValue.getCurrency(), targetCurrency);
     }
 
@@ -93,30 +94,34 @@ public class CurrenciesBean implements Currencies {
 
 
     @Override
-    public BigDecimal convertAmount(BigDecimal amount, Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency) {
+    public ConvertResult convertAmount(BigDecimal amount, Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency) {
         if (amount == null) {
             return null;
         }
         if (sourceCurrency.getCode().equals(targetCurrency.getCode())) {
-            return amount;
+            return new ConvertResult(null, amount);
         }
         CurrencyRate currencyRate = getRate(date, sourceCurrency, targetCurrency);
+
         if (currencyRate == null) {
-            LOG.error(String.format("Currency rate %s/%s is not found for date %s",
-                    sourceCurrency.getCode(), targetCurrency.getCode(), date));
+            LOG.error("Currency rate {}/{} is not found for date {}", sourceCurrency.getCode(), targetCurrency.getCode(), date);
             return null;
         }
-        return amount.multiply(currencyRate.getRate());
+
+        BigDecimal resultAMount = amount.multiply(currencyRate.getRate());
+        return new ConvertResult(currencyRate, resultAMount);
     }
 
 
     @Override
-    public BigDecimal convertAmountToRateReverse(BigDecimal amount, Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency) {
+    public ConvertResult convertAmountToRateReverse(
+            BigDecimal amount, Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency
+    ) {
         if (amount == null) {
             return null;
         }
         if (sourceCurrency.getCode().equals(targetCurrency.getCode())) {
-            return amount;
+            return new ConvertResult(null, amount);
         }
         CurrencyRate currencyRate = getRate(date, targetCurrency, sourceCurrency);
         if (currencyRate == null) {
@@ -125,7 +130,9 @@ public class CurrenciesBean implements Currencies {
             return null;
         }
         BigDecimal rate = currencyRate.getRate();
-        return amount.multiply(ONE.divide(rate, rate.scale(), FINANCIAL_ROUNDING_MODE));
+        BigDecimal resultAmount = amount.multiply(ONE.divide(rate, rate.scale(), FINANCIAL_ROUNDING_MODE));
+
+        return new ConvertResult(currencyRate, resultAmount);
     }
 
 

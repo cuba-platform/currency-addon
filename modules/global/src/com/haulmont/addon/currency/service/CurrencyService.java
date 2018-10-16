@@ -10,9 +10,9 @@ import java.util.List;
 public interface CurrencyService {
     String NAME = "curraddon_CurrencyService";
 
-    BigDecimal convertAmountToRate(BigDecimal amount, Date date, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency);
+    ConvertResult convertAmountToRate(BigDecimal amount, Date date, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency);
 
-    BigDecimal convertAmountToCurrentRate(BigDecimal amount, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency);
+    ConvertResult convertAmountToCurrentRate(BigDecimal amount, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency);
 
     CurrencyDescriptor getCurrencyByCode(String code);
 

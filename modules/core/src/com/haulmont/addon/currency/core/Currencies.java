@@ -4,6 +4,7 @@ package com.haulmont.addon.currency.core;
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRate;
 import com.haulmont.addon.currency.entity.CurrencyRateAware;
+import com.haulmont.addon.currency.service.ConvertResult;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
@@ -56,7 +57,7 @@ public interface Currencies {
      * convertAmount(4.0, (9:00 22.08.2018), CUR1, CUR2) = null
      */
     @Nullable
-    BigDecimal convertAmount(BigDecimal amount, Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
+    ConvertResult convertAmount(BigDecimal amount, Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
 
 
     /**
@@ -80,7 +81,7 @@ public interface Currencies {
      * convertAmountToCurrentRate(4.0, CUR1, CUR3) = null
      */
     @Nullable
-    BigDecimal convertAmountToCurrentRate(BigDecimal amount, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
+    ConvertResult convertAmountToCurrentRate(BigDecimal amount, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
 
 
     /**
@@ -101,7 +102,7 @@ public interface Currencies {
      * convertAmount({CUR2, 4.0, (11:00 22.08.2018)}, CUR1) = null
      */
     @Nullable
-    BigDecimal convertAmount(CurrencyRateAware sourceCurrencyValue, CurrencyDescriptor targetCurrency);
+    ConvertResult convertAmount(CurrencyRateAware sourceCurrencyValue, CurrencyDescriptor targetCurrency);
 
 
     /**
@@ -119,7 +120,7 @@ public interface Currencies {
      * In order to use the same rate (1.387077981524121) use convertAmountToRateReverse()
      */
     @Nullable
-    BigDecimal convertAmountToRateReverse(BigDecimal amount, Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
+    ConvertResult convertAmountToRateReverse(BigDecimal amount, Date date, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
 
 
     /**

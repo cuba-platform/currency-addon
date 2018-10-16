@@ -2,6 +2,7 @@ package com.haulmont.addon.currency.core;
 
 import com.haulmont.addon.currency.core.integration_tests.CurrencyIntegrationTestUtil;
 import com.haulmont.addon.currency.entity.*;
+import com.haulmont.addon.currency.service.ConvertResult;
 import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Transaction;
 import com.haulmont.cuba.core.global.Metadata;
@@ -128,7 +129,8 @@ public class CurrenciesBeanTest {
         currencyValue.setCurrency(currency1);
         currencyValue.setValue(value);
 
-        BigDecimal resultAmount = api.convertAmount(currencyValue, currency2);
+        ConvertResult convertResult = api.convertAmount(currencyValue, currency2);
+        BigDecimal resultAmount = convertResult.getResultAmount();
 
         int compareResult = expectedResult.compareTo(resultAmount);
         Assert.assertEquals(0, compareResult);
@@ -138,7 +140,8 @@ public class CurrenciesBeanTest {
     @Test
     public void testConvertAmountToCurrentRate() {
         BigDecimal value = BigDecimal.valueOf(3);
-        BigDecimal actualResult = api.convertAmountToCurrentRate(value, currency1, currency2);
+        ConvertResult convertResult = api.convertAmountToCurrentRate(value, currency1, currency2);
+        BigDecimal actualResult = convertResult.getResultAmount();
 
         BigDecimal expectedResult = value.multiply(rateCurrency1toCurrency2.getRate());
 
@@ -151,7 +154,8 @@ public class CurrenciesBeanTest {
     public void testConvertAmount() {
         BigDecimal value = BigDecimal.valueOf(3);
 
-        BigDecimal actualValue = api.convertAmount(value, rateActualDate, currency1, currency2);
+        ConvertResult convertResult = api.convertAmount(value, rateActualDate, currency1, currency2);
+        BigDecimal actualValue = convertResult.getResultAmount();
 
         BigDecimal expectedValue = value.multiply(rateCurrency1toCurrency2.getRate());
 
@@ -188,7 +192,8 @@ public class CurrenciesBeanTest {
     public void testConvertAmountToRateReverse() {
         BigDecimal value = BigDecimal.valueOf(6);
 
-        BigDecimal actualResult = api.convertAmountToRateReverse(value, rateActualDate, currency2, currency1);
+        ConvertResult convertResult = api.convertAmountToRateReverse(value, rateActualDate, currency2, currency1);
+        BigDecimal actualResult = convertResult.getResultAmount();
 
         BigDecimal expectedResult = value.divide(rateCurrency1toCurrency2.getRate(), RoundingMode.HALF_UP);
         int compareResult = expectedResult.compareTo(actualResult);
