@@ -22,7 +22,6 @@
                 <field property="symbol"/>
                 <field property="name"/>
                 <field property="active"/>
-                <field property="isDefault"/>
                 <field property="precision"/>
             </column>
         </fieldGroup>

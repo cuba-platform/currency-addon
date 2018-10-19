@@ -1,13 +1,11 @@
 package com.haulmont.addon.currency.core;
 
+import com.haulmont.addon.currency.core.config.CurrencyApplicationProperties;
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRate;
 import com.haulmont.addon.currency.entity.CurrencyRateAware;
 import com.haulmont.addon.currency.service.ConvertResult;
-import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.LoadContext;
-import com.haulmont.cuba.core.global.TimeSource;
-import com.haulmont.cuba.core.global.View;
+import com.haulmont.cuba.core.global.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,13 +33,13 @@ public class CurrenciesBean implements Currencies {
     private TimeSource timeSource;
     @Inject
     private CurrencyRateProvider currencyRateProvider;
-
+    @Inject
+    private Configuration configuration;
 
     @Override
     public CurrencyDescriptor getDefaultCurrency() {
-        return dataManager.load(CurrencyDescriptor.class)
-                .query("select c from curraddon$CurrencyDescriptor c where c.isDefault = true")
-                .optional().orElse(null);
+        String defaultCurrencyCode = configuration.getConfig(CurrencyApplicationProperties.class).getDefaultCurrencyCode();
+        return getCurrencyByCode(defaultCurrencyCode);
     }
 
 

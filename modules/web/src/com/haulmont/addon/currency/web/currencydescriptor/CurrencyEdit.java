@@ -37,7 +37,6 @@ public class CurrencyEdit extends AbstractEditor<CurrencyDescriptor> {
     @Override
     protected void initNewItem(CurrencyDescriptor item) {
         item.setActive(true);
-        item.setIsDefault(false);
         item.setPrecision(CurrencyBigDecimalFormat.DEFAULT_PRECISION);
     }
 }

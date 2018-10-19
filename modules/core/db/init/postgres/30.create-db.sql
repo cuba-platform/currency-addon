@@ -43,8 +43,8 @@ values (
 
 insert into CURRADDON_CURRENCY_DESCRIPTOR
 (
-    ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, CODE, ACTIVE, SYMBOL, NAME, PRECISION_, IS_DEFAULT
+    ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, CODE, ACTIVE, SYMBOL, NAME, PRECISION_
 )
 values (
-    '62f31cc9-0603-90a8-7634-aa21f2ff5a11', 3, null, null, '2018-10-17 16:13:05', 'admin', null, null, 'USD', true, 'USD', 'US Dollar', 2, true
+    '62f31cc9-0603-90a8-7634-aa21f2ff5a11', 3, null, null, '2018-10-17 16:13:05', 'admin', null, null, 'USD', true, 'USD', 'US Dollar', 2
 )^

@@ -1,8 +1,8 @@
 package com.haulmont.addon.currency.entity;
 
 import com.haulmont.chile.core.annotations.NamePattern;
+import com.haulmont.chile.core.annotations.NumberFormat;
 import com.haulmont.cuba.core.entity.StandardEntity;
-import com.haulmont.cuba.core.entity.annotation.Listeners;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
@@ -10,13 +10,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import com.haulmont.chile.core.annotations.NumberFormat;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
-@Listeners({"curraddon_DefaultCurrencyEntityListener", "curraddon_DefaultCurrencyEntityListener", "curraddon_FirstCurrencyAsDefaultEntityListener"})
 @NamePattern("%s|name")
 @Table(name = "CURRADDON_CURRENCY_DESCRIPTOR")
 @Entity(name = "curraddon$CurrencyDescriptor")
@@ -50,9 +48,6 @@ public class CurrencyDescriptor extends StandardEntity {
     protected List<CurrencyRate> rates;
 
 
-    @NotNull
-    @Column(name = "IS_DEFAULT", nullable = false)
-    protected Boolean isDefault = false;
 
     public void setPrecision(Integer precision) {
         this.precision = precision;
@@ -63,13 +58,7 @@ public class CurrencyDescriptor extends StandardEntity {
     }
 
 
-    public void setIsDefault(Boolean isDefault) {
-        this.isDefault = isDefault;
-    }
 
-    public Boolean getIsDefault() {
-        return isDefault;
-    }
 
 
     public void setActive(Boolean active) {

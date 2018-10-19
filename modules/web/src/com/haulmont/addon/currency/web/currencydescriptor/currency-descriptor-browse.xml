@@ -39,7 +39,6 @@
                 <column id="symbol"/>
                 <column id="name"/>
                 <column id="active"/>
-                <column id="isDefault"/>
                 <column id="precision"/>
             </columns>
             <rows datasource="currenciesDs"/>
