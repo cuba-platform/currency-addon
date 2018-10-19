@@ -118,6 +118,7 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
     }
 
 
+    @Override
     public void setAmount(BigDecimal newAmount) {
         CurrencyRateAware entity = getOrCreateEntity();
         if (entity != null) {
@@ -127,6 +128,7 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
     }
 
 
+    @Override
     public void setDate(Date value) {
         CurrencyRateAware entity = getOrCreateEntity();
         if (entity != null) {

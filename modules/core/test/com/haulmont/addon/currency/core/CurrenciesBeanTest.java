@@ -2,6 +2,7 @@ package com.haulmont.addon.currency.core;
 
 import com.haulmont.addon.currency.core.integration_tests.CurrencyIntegrationTestUtil;
 import com.haulmont.addon.currency.entity.*;
+import com.haulmont.addon.currency.entity.Currency;
 import com.haulmont.addon.currency.service.ConvertResult;
 import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Transaction;
@@ -17,10 +18,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CurrenciesBeanTest {
 
@@ -77,11 +75,9 @@ public class CurrenciesBeanTest {
 
 
     private static void fillCurrencies(EntityManager em) {
-        currency1 = metadata.create(CurrencyDescriptor.class);
-        currency1.setName("Name1");
-        currency1.setCode("C1");
-        currency1.setActive(true);
-        currency1.setPrecision(2);
+        UUID defaultUsdCurrencyId = UUID.fromString("62f31cc9-0603-90a8-7634-aa21f2ff5a11");
+
+        currency1 = em.find(CurrencyDescriptor.class, defaultUsdCurrencyId);
         em.persist(currency1);
         activeCurrencies.add(currency1);
         allCurrencies.add(currency1);
