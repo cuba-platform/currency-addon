@@ -7,11 +7,9 @@ import com.haulmont.addon.currency.format.CurrencyBigDecimalFormat;
 import com.haulmont.addon.currency.service.ConvertResult;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.CurrencyValueDataProvider;
 import com.haulmont.chile.core.datatypes.FormatStringsRegistry;
-import com.haulmont.cuba.core.global.AppBeans;
-import com.haulmont.cuba.core.global.Configuration;
-import com.haulmont.cuba.core.global.DevelopmentException;
-import com.haulmont.cuba.core.global.UserSessionSource;
+import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.components.DateField;
+import com.haulmont.cuba.gui.components.Label;
 import com.haulmont.cuba.gui.components.OptionsGroup;
 import com.haulmont.cuba.gui.components.VBoxLayout;
 
@@ -21,10 +19,13 @@ import java.util.*;
 
 public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupContentProvider {
 
+    protected static final String CURRENCY_FIELD_NAMESPACE = "com.haulmont.addon.currency.web.toolkit.ui.cubacurrencyaddonfield";
+
     protected final FormatStringsRegistry formatStringsRegistry = AppBeans.get(FormatStringsRegistry.class);
     protected final UserSessionSource userSessionSource = AppBeans.get(UserSessionSource.class);
     protected final CurrencyBigDecimalFormat currencyFormat = AppBeans.get(CurrencyBigDecimalFormat.class);
     protected final CurrencyConfig config = AppBeans.get(Configuration.class).getConfig(CurrencyConfig.class);
+    protected final Messages messages = AppBeans.get(Messages.class);
 
     protected final SimpleDateFormat rateDateFormat;
 
@@ -78,8 +79,16 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
     protected void addCurrencyControls(VBoxLayout layout, Date amountDate) {
         Map<String, NewCurrencyValue> options = createOptions(amountDate);
 
-        OptionsGroup optionsGroup = createOptionsGroup(options);
-        layout.add(optionsGroup);
+        if (options.isEmpty()) {
+            Label noRatesLabel = componentsFactory.createComponent(Label.class);
+            String message = messages.getMessage(CURRENCY_FIELD_NAMESPACE, "rates_not_found");
+            noRatesLabel.setValue(message);
+
+            layout.add(noRatesLabel);
+        } else {
+            OptionsGroup optionsGroup = createOptionsGroup(options);
+            layout.add(optionsGroup);
+        }
     }
 
 
@@ -159,7 +168,8 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
             }
         } else if (rateStrategy == RateStrategy.WARNING) {
             if (rateToOld) {
-                labelPattern += " TO OLD";
+                labelPattern += " %s";
+                patternParams.add(messages.getMessage(CURRENCY_FIELD_NAMESPACE, "to_old"));
             }
             addOptionToMap(options, labelPattern, patternParams, optionValue);
         } else if (rateStrategy == RateStrategy.LAST_DATE) {
