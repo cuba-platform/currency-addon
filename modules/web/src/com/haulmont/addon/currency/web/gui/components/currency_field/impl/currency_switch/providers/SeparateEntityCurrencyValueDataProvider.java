@@ -7,6 +7,7 @@ import com.haulmont.chile.core.model.MetaProperty;
 import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.Metadata;
+import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.data.DsContext;
 import com.haulmont.cuba.gui.data.impl.AbstractDatasource;
@@ -17,6 +18,7 @@ import java.util.Date;
 public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDataProvider {
 
     private final Metadata metadata = AppBeans.get(Metadata.class);
+    private final TimeSource timeSource = AppBeans.get(TimeSource.class);
 
     private final Datasource datasource;
     private final String entityReferencePropertyName;
@@ -33,7 +35,7 @@ public class SeparateEntityCurrencyValueDataProvider implements CurrencyValueDat
         DsContext dsContext = datasource.getDsContext();
         dsContext.addBeforeCommitListener(context -> {
             if (getEntity().getDate() == null) {
-                getEntity().setDate(new Date());
+                getEntity().setDate(timeSource.currentTimestamp());
             }
         });
         dsContext.addBeforeCommitListener(context -> {

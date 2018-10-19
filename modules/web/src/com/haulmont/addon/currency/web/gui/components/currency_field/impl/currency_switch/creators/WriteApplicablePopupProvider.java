@@ -1,7 +1,7 @@
 package com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators;
 
 import com.haulmont.addon.currency.config.CurrencyConfig;
-import com.haulmont.addon.currency.config.RateRedundancy;
+import com.haulmont.addon.currency.config.RateStrategy;
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.format.CurrencyBigDecimalFormat;
 import com.haulmont.addon.currency.service.ConvertResult;
@@ -14,7 +14,6 @@ import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.components.DateField;
 import com.haulmont.cuba.gui.components.OptionsGroup;
 import com.haulmont.cuba.gui.components.VBoxLayout;
-import org.apache.commons.lang3.time.DateUtils;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -137,10 +136,9 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
             labelPattern = addRateDateToLabel(convertResult, labelPattern, patternParams);
 
             NewCurrencyValue optionValue = new NewCurrencyValue(targetCurrency, newAmount);
+            long secondsDifference = amountDate.toInstant().getEpochSecond() - convertResult.getUsedRate().getDate().toInstant().getEpochSecond();
 
-            boolean sameDay = DateUtils.isSameDay(convertResult.getUsedRate().getDate(), amountDate);
-
-            formatAndAddOption(options, labelPattern, patternParams, optionValue, sameDay);
+            formatAndAddOption(options, labelPattern, patternParams, optionValue, secondsDifference);
         }
     }
 
@@ -150,22 +148,24 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
             String labelPattern,
             List<String> patternParams,
             NewCurrencyValue optionValue,
-            boolean sameDay
+            long secondsDifference
     ) {
-        RateRedundancy rateRedundancy = config.getRateRedundancy();
-        if (rateRedundancy == RateRedundancy.SAME_DATE_REQUIRED) {
-            if (sameDay) {
+        RateStrategy rateStrategy = config.getRateStrategy();
+        boolean rateToOld = secondsDifference > config.getRateActualPeriodSeconds();
+
+        if (rateStrategy == RateStrategy.REQUIRED) {
+            if (!rateToOld) {
                 addOptionToMap(options, labelPattern, patternParams, optionValue);
             }
-        } else if (rateRedundancy == RateRedundancy.SAME_DATE_WARNING) {
-            if (!sameDay) {
+        } else if (rateStrategy == RateStrategy.WARNING) {
+            if (rateToOld) {
                 labelPattern += " TO OLD";
             }
             addOptionToMap(options, labelPattern, patternParams, optionValue);
-        } else if (rateRedundancy == RateRedundancy.LAST_DATE) {
+        } else if (rateStrategy == RateStrategy.LAST_DATE) {
             addOptionToMap(options, labelPattern, patternParams, optionValue);
         } else {
-            throw new DevelopmentException("Unknown rate redundancy: " + rateRedundancy);
+            throw new DevelopmentException("Unknown rate strategy: " + rateStrategy);
         }
     }
 

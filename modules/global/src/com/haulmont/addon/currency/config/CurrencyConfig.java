@@ -2,7 +2,10 @@ package com.haulmont.addon.currency.config;
 
 import com.haulmont.cuba.core.config.*;
 import com.haulmont.cuba.core.config.defaults.DefaultBoolean;
+import com.haulmont.cuba.core.config.defaults.DefaultLong;
 import com.haulmont.cuba.core.config.defaults.DefaultString;
+
+import static com.haulmont.addon.currency.CurrencyGlobalConstants.RateStrategyConstants;
 
 @Source(type = SourceType.DATABASE)
 public interface CurrencyConfig extends Config {
@@ -12,9 +15,9 @@ public interface CurrencyConfig extends Config {
      * Which strategy will be used if rate not found for current date
      */
     @EnumStore(value = EnumStoreMode.ID)
-    @Property("addon.currency.ui.rate_redundancy")
-    @DefaultString("SAME_DATE_REQUIRED")
-    RateRedundancy getRateRedundancy();
+    @Property("addon.currency.ui.rate_strategy")
+    @DefaultString(RateStrategyConstants.REQUIRED)
+    RateStrategy getRateStrategy();
 
 
     /**
@@ -23,5 +26,12 @@ public interface CurrencyConfig extends Config {
     @DefaultBoolean(false)
     @Property("addon.currency.ui.show_used_conversion_rate")
     boolean getShowUsedConversionRateDate();
+
+
+    long ONE_DAY = 24 * 60 * 60;
+
+    @Property("addon.currency.ui.rate_actual_period_seconds")
+    @DefaultLong(ONE_DAY)
+    long getRateActualPeriodSeconds();
 
 }
