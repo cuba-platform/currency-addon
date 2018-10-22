@@ -1,6 +1,5 @@
 package com.haulmont.addon.currency.entity;
 
-import com.haulmont.addon.currency.CurrencyGlobalConstants;
 import com.haulmont.addon.currency.format.CurrencyBigDecimalFormat;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
@@ -18,7 +17,7 @@ public class Currency extends StandardEntity implements CurrencyRateAware {
     private static final long serialVersionUID = 8530608597300769485L;
 
     @NotNull
-    @Column(name = "VALUE_", nullable = false, precision = CurrencyGlobalConstants.CURRENCY_PRECISION, scale = 12)
+    @Column(name = "VALUE_", nullable = false, precision = 19, scale = 12)
     protected BigDecimal value;
 
     @Temporal(TemporalType.TIMESTAMP)

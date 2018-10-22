@@ -16,7 +16,7 @@ public interface CurrencyConfig extends Config {
      */
     @EnumStore(value = EnumStoreMode.ID)
     @Property("addon.currency.ui.rate_strategy")
-    @DefaultString(RateStrategyConstants.REQUIRED)
+    @DefaultString(RateStrategyConstants.WARNING)
     RateStrategy getRateStrategy();
 
 
