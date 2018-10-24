@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 
 public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField implements CurrencyValueChangedEventSupplier {
 
-    //Components
     protected final PopupButton changeCurrencyPopupButton = componentsFactory.createComponent(PopupButton.class);
 
     protected CurrencyDataProvider currencyDataProvider;
@@ -139,9 +138,6 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
 
     @Override
     public void setCurrencyRateAware(CurrencyRateAware currencyRateAware) {
-        if (currencyRateAware == null) {
-            configureAmountField(amountField);
-        }
         currencyDataProvider.setItem(currencyRateAware);
     }
 

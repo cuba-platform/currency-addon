@@ -2,11 +2,9 @@ package com.haulmont.addon.currency.web.gui.components.currency_field.impl;
 
 import com.haulmont.addon.currency.web.gui.components.currency_field.CurrencyAddonField;
 import com.haulmont.addon.currency.web.toolkit.ui.cubacurrencyaddonfield.CubaCurrencyAddonField;
-import com.haulmont.bali.util.Preconditions;
 import com.haulmont.chile.core.model.MetaProperty;
 import com.haulmont.chile.core.model.MetaPropertyPath;
 import com.haulmont.cuba.core.global.AppBeans;
-import com.haulmont.cuba.gui.components.CurrencyField;
 import com.haulmont.cuba.gui.components.TextField;
 import com.haulmont.cuba.gui.components.ValidationException;
 import com.haulmont.cuba.gui.data.Datasource;
@@ -94,22 +92,6 @@ public abstract class AbstractWebCurrencyAddonField extends WebAbstractField<Cub
         return amountField.getMetaPropertyPath();
     }
 
-
-    @Override
-    public void setCurrencyButtonPosition(CurrencyField.CurrencyLabelPosition currencyButtonPosition) {
-        Preconditions.checkNotNullArgument(currencyButtonPosition);
-
-        com.haulmont.cuba.web.toolkit.ui.CurrencyLabelPosition wAlign =
-                com.haulmont.cuba.web.toolkit.ui.CurrencyLabelPosition.valueOf(currencyButtonPosition.name());
-
-        component.setCurrencyLabelPosition(wAlign);
-    }
-
-
-    @Override
-    public CurrencyField.CurrencyLabelPosition getCurrencyButtonPosition() {
-        return CurrencyField.CurrencyLabelPosition.valueOf(component.getCurrencyLabelPosition().name());
-    }
 
     @Override
     public void setValue(Object value) {
