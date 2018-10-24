@@ -52,14 +52,19 @@ public class CurrencyFieldGenerationStrategy extends AbstractComponentGeneration
 
 
     protected Component createField(ComponentGenerationContext componentGenerationContext) {
-        Datasource datasource = componentGenerationContext.getDatasource();
-
         CurrencyAddonField currencyField = componentsFactory.createComponent(CurrencyAddonField.class);
+
         configureParameterWithTime(componentGenerationContext, currencyField);
 
-        currencyField.setDatasource(datasource, componentGenerationContext.getProperty());
+        configureDataSource(componentGenerationContext, currencyField);
 
         return currencyField;
+    }
+
+
+    private void configureDataSource(ComponentGenerationContext componentGenerationContext, CurrencyAddonField currencyField) {
+        Datasource datasource = componentGenerationContext.getDatasource();
+        currencyField.setDatasource(datasource, componentGenerationContext.getProperty());
     }
 
 

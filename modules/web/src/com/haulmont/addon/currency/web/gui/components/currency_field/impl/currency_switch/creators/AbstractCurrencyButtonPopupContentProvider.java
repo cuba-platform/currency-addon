@@ -1,7 +1,8 @@
 package com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators;
 
 import com.haulmont.addon.currency.service.CurrencyService;
-import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.CurrencyValueDataProvider;
+import com.haulmont.addon.currency.web.CurrencyWebConstants;
+import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.CurrencyDataProvider;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.DateField;
@@ -15,22 +16,23 @@ public abstract class AbstractCurrencyButtonPopupContentProvider {
     protected final ComponentsFactory componentsFactory = AppBeans.get(ComponentsFactory.class);
     protected final CurrencyService currencyService = AppBeans.get(CurrencyService.class);
 
-    protected final CurrencyValueDataProvider dataProvider;
+    protected CurrencyDataProvider dataProvider;
 
 
     private final VBoxLayout layout;
-    private final DateField currencyDateField;
-    private final boolean withTime;
+    protected final DateField currencyDateField;
+    private boolean withTime = CurrencyWebConstants.CURRENCY_DATE_WITH_TIME_DEFAULT;
 
 
-    public AbstractCurrencyButtonPopupContentProvider(CurrencyValueDataProvider dataProvider, boolean withTime) {
-        this.dataProvider = dataProvider;
-        this.withTime = withTime;
-
+    public AbstractCurrencyButtonPopupContentProvider() {
         layout = createLayout();
         currencyDateField = createDateField();
     }
 
+
+    public void setDataProvider(CurrencyDataProvider dataProvider) {
+        this.dataProvider = dataProvider;
+    }
 
 
     /**
@@ -65,5 +67,10 @@ public abstract class AbstractCurrencyButtonPopupContentProvider {
 
     public boolean isWithTime() {
         return withTime;
+    }
+
+
+    public void setWithTime(boolean withTime) {
+        this.withTime = withTime;
     }
 }

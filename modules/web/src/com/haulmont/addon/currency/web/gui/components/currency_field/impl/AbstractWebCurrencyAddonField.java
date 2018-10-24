@@ -8,6 +8,7 @@ import com.haulmont.chile.core.model.MetaPropertyPath;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.gui.components.CurrencyField;
 import com.haulmont.cuba.gui.components.TextField;
+import com.haulmont.cuba.gui.components.ValidationException;
 import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import com.haulmont.cuba.web.gui.components.WebAbstractField;
@@ -15,8 +16,7 @@ import com.haulmont.cuba.web.gui.components.WebAbstractField;
 public abstract class AbstractWebCurrencyAddonField extends WebAbstractField<CubaCurrencyAddonField> implements CurrencyAddonField {
 
     protected final ComponentsFactory componentsFactory = AppBeans.get(ComponentsFactory.class);
-
-    protected TextField amountField = componentsFactory.createComponent(TextField.class);
+    protected final TextField amountField = componentsFactory.createComponent(TextField.class);
 
 
     public AbstractWebCurrencyAddonField() {
@@ -109,5 +109,29 @@ public abstract class AbstractWebCurrencyAddonField extends WebAbstractField<Cub
     @Override
     public CurrencyField.CurrencyLabelPosition getCurrencyButtonPosition() {
         return CurrencyField.CurrencyLabelPosition.valueOf(component.getCurrencyLabelPosition().name());
+    }
+
+    @Override
+    public void setValue(Object value) {
+        amountField.setValue(value);
+    }
+
+
+    @Override
+    public void validate() throws ValidationException {
+        if (hasValidationError()) {
+            setValidationError(null);
+        }
+
+        if (!isVisible() || !isEditableWithParent() || !isEnabled()) {
+            return;
+        }
+
+        amountField.validate();
+    }
+
+    @Override
+    public <V> V getValue() {
+        return (V) amountField.getValue();
     }
 }

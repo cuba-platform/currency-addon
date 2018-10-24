@@ -1,11 +1,13 @@
 package com.haulmont.addon.currency.web.gui.components.currency_field;
 
 
+import com.haulmont.addon.currency.entity.CurrencyRateAware;
+import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyValueChangedEventSupplier;
 import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.CurrencyField;
 import com.haulmont.cuba.gui.components.Field;
 
-public interface CurrencyAddonField extends Field, Component.Buffered {
+public interface CurrencyAddonField extends Field, Component.Buffered, CurrencyValueChangedEventSupplier {
     String NAME = "currencyAddonField";
 
 
@@ -33,4 +35,14 @@ public interface CurrencyAddonField extends Field, Component.Buffered {
      * Is show currency value date field with time field
      */
     boolean isWithTime();
+
+
+    /**
+     * When we work with field programmatically
+     */
+    void setCurrencyRateAware(CurrencyRateAware currencyRateAware);
+
+
+    CurrencyRateAware getCurrencyRateAware();
+
 }

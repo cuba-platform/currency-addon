@@ -5,7 +5,6 @@ import com.haulmont.addon.currency.config.RateStrategy;
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.format.CurrencyBigDecimalFormat;
 import com.haulmont.addon.currency.service.ConvertResult;
-import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.providers.CurrencyValueDataProvider;
 import com.haulmont.chile.core.datatypes.FormatStringsRegistry;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.components.DateField;
@@ -30,11 +29,7 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
     protected final SimpleDateFormat rateDateFormat;
 
 
-    public WriteApplicablePopupProvider(
-            CurrencyValueDataProvider dataProvider, boolean withTime
-    ) {
-        super(dataProvider, withTime);
-
+    public WriteApplicablePopupProvider() {
         if (config.getShowUsedConversionRateDate()) {
             String dateTimeFormat = formatStringsRegistry.getFormatStrings(userSessionSource.getLocale()).getDateTimeFormat();
             rateDateFormat = new SimpleDateFormat(dateTimeFormat);
@@ -48,8 +43,20 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
     protected DateField createDateField() {
         DateField dateField = componentsFactory.createComponent(DateField.class);
         dateField.addValueChangeListener(e -> dataProvider.setDate((Date) e.getValue()));
-        dateField.setResolution(isWithTime() ? DateField.Resolution.MIN : DateField.Resolution.DAY);
+        setDateFieldResolution(dateField);
         return dateField;
+    }
+
+
+    private void setDateFieldResolution(DateField dateField) {
+        dateField.setResolution(isWithTime() ? DateField.Resolution.MIN : DateField.Resolution.DAY);
+    }
+
+
+    @Override
+    public void setWithTime(boolean withTime) {
+        super.setWithTime(withTime);
+        setDateFieldResolution(currencyDateField);
     }
 
 
@@ -168,7 +175,7 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
             }
         } else if (rateStrategy == RateStrategy.WARNING) {
             if (rateToOld) {
-                labelPattern += " %s";
+                labelPattern += " (%s)";
                 patternParams.add(messages.getMessage(CURRENCY_FIELD_NAMESPACE, "to_old"));
             }
             addOptionToMap(options, labelPattern, patternParams, optionValue);
