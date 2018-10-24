@@ -2,10 +2,8 @@ package com.haulmont.addon.currency.web.gui.xml.layout.loaders;
 
 import com.haulmont.addon.currency.web.CurrencyWebConstants;
 import com.haulmont.addon.currency.web.gui.components.currency_field.CurrencyAddonField;
-import com.haulmont.cuba.gui.components.CurrencyField;
 import com.haulmont.cuba.gui.components.DatasourceComponent;
 import com.haulmont.cuba.gui.xml.layout.loaders.AbstractFieldLoader;
-import org.apache.commons.lang.StringUtils;
 import org.dom4j.Element;
 
 public class CurrencyAddonFieldLoader extends AbstractFieldLoader<CurrencyAddonField> {
@@ -21,7 +19,6 @@ public class CurrencyAddonFieldLoader extends AbstractFieldLoader<CurrencyAddonF
     public void loadComponent() {
         super.loadComponent();
 
-        loadCurrencyLabelPosition(resultComponent, element);
         loadFlagWithTime(resultComponent, element);
     }
 
@@ -36,14 +33,6 @@ public class CurrencyAddonFieldLoader extends AbstractFieldLoader<CurrencyAddonF
     }
 
 
-    protected void loadCurrencyLabelPosition(CurrencyAddonField resultComponent, Element element) {
-        String currencyButtonPosition = element.attributeValue(CurrencyWebConstants.CURRENCY_BUTTON_POSITION_XML_ATTR_NAME);
-        CurrencyField.CurrencyLabelPosition position = CurrencyWebConstants.CURRENCY_BUTTON_POSITION_DEFAULT;
-        if (StringUtils.isNotEmpty(currencyButtonPosition)) {
-            position = CurrencyField.CurrencyLabelPosition.valueOf(currencyButtonPosition);
-        }
-        resultComponent.setCurrencyButtonPosition(position);
-    }
 
 
     @Override
