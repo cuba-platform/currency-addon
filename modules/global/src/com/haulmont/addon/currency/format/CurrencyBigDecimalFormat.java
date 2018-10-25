@@ -16,24 +16,38 @@ public interface CurrencyBigDecimalFormat {
 
     /**
      * Locale will be fetched automatically
-     * @param value
-     * @param fractionPrecision number of digits after fraction delimiter
-     * @return
+     * @param amount currency amount
+     * @param fractionPrecision number of digits after fraction delimiter, different currencies has different precision
+     * @return formatted amount
      */
-    String format(BigDecimal value, int fractionPrecision);
-
-
-    String format(BigDecimal value, int fractionPrecision, @Nullable Locale locale);
+    String format(BigDecimal amount, int fractionPrecision);
 
 
     /**
      * Locale will be fetched automatically
-     * @param value
-     * @param fractionPrecision
-     * @return
+     * @param amount currency amount
+     * @param fractionPrecision number of digits after fraction delimiter, different currencies has different precision
+     * @param locale user's locale for determining fraction separator, format, etc
+     * @return formatted amount
      */
-    BigDecimal parse(String value, int fractionPrecision);
+    String format(BigDecimal amount, int fractionPrecision, @Nullable Locale locale);
 
 
-    BigDecimal parse(String value, int fractionPrecision, @Nullable Locale locale);
+    /**
+     * Locale will be fetched automatically
+     * @param amount formatted currency amount
+     * @param fractionPrecision number of digits after fraction delimiter, different currencies has different precision
+     * @return amount
+     */
+    BigDecimal parse(String amount, int fractionPrecision);
+
+
+    /**
+     * Locale will be fetched automatically
+     * @param amount formatted currency amount
+     * @param fractionPrecision number of digits after fraction delimiter, different currencies has different precision
+     * @param locale user's locale for determining fraction separator, format, etc
+     * @return amount
+     */
+    BigDecimal parse(String amount, int fractionPrecision, @Nullable Locale locale);
 }

@@ -4,6 +4,10 @@ import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.Date;
 
+
+/**
+ * Amount in specific world currency on specific date
+ */
 public interface CurrencyRateAware {
 
     String VALUE_PATH = "value";

@@ -10,14 +10,47 @@ import java.util.List;
 public interface CurrencyService {
     String NAME = "curraddon_CurrencyService";
 
-    ConvertResult convertAmountToRate(BigDecimal amount, Date date, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency);
 
-    ConvertResult convertAmountToCurrentRate(BigDecimal amount, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency);
+    /**
+     * @param sourceAmount amount int source currency
+     * @param exchangeDate date for looking exchange rate
+     * @param sourceCurrency currency for converting from
+     * @param targetCurrency currency for converting to
+     * @return result of exchange
+     */
+    ConvertResult convertAmountToRate(BigDecimal sourceAmount, Date exchangeDate, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
 
-    CurrencyDescriptor getCurrencyByCode(String code);
 
+    /**
+     * Exchange currency amount via now moment rates
+     *
+     * @param sourceAmount amount int source currency
+     * @param sourceCurrency currency for converting from
+     * @param targetCurrency currency for converting to
+     * @return result of exchange
+     */
+    ConvertResult convertAmountToCurrentRate(BigDecimal sourceAmount, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
+
+
+    /**
+     * Looking currency by currency code
+     * @param currencyCode code of currency e.g. USD, EUR, RUB, ...
+     * @return currency wit passed code or exception
+     */
+    CurrencyDescriptor getCurrencyByCode(String currencyCode);
+
+
+    /**
+     * Fetch list of available currencies
+     * @return not null list
+     */
     List<CurrencyDescriptor> getAvailableCurrencies();
 
+
+    /**
+     * Get default application currency
+     * @return currency or exception
+     */
     CurrencyDescriptor getDefaultCurrency();
 
 }

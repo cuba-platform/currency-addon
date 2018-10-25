@@ -15,27 +15,51 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+
+/**
+ * Description of currency from real world
+ */
 @NamePattern("%s|name")
 @Table(name = "CURRADDON_CURRENCY_DESCRIPTOR")
 @Entity(name = "curraddon$CurrencyDescriptor")
 public class CurrencyDescriptor extends StandardEntity {
     private static final long serialVersionUID = 9158629870540811438L;
 
+    /**
+     * Code of currency, e.g. USD, EUR, RUB, ...
+     */
     @NotNull
     @Column(name = "CODE", nullable = false, unique = true, length = 20)
     protected String code;
 
+
+    /**
+     * Should be currency active for exchange and select
+     */
     @NotNull
     @Column(name = "ACTIVE", nullable = false)
     protected Boolean active = false;
 
+
+    /**
+     * Symbols near to amount e.g. $, €, руб., ...
+     */
     @Column(name = "SYMBOL", length = 4)
     protected String symbol;
 
+
+    /**
+     * Name of currency
+     * E.g. "US Dollar", "Euro", "Russian Ruble", ...
+     */
     @NotNull
     @Column(name = "NAME", nullable = false)
     protected String name;
 
+
+    /**
+     * Count of digits after fraction separator
+     */
     @NumberFormat(pattern = "##")
     @Max(19)
     @Min(0)

@@ -10,6 +10,10 @@ import com.haulmont.cuba.core.config.defaults.DefaultString;
 public interface FixerIOConfig extends Config {
     String REST_API_KEY_ID = "addon.currency.fixerIO.apiKey";
 
+    /**
+     * http://fixer.io API KEY for integration with service
+     * @return
+     */
     @Property(REST_API_KEY_ID)
     @DefaultString("")
     String getApiKey();

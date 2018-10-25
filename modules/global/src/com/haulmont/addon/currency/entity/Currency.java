@@ -10,33 +10,51 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
+
+/**
+ * Persisted implementation of {@link CurrencyRateAware}
+ */
 @NamePattern("#getInstanceName|value,currency")
 @Table(name = "CURRADDON_CURRENCY")
 @Entity(name = "curraddon$Currency")
 public class Currency extends StandardEntity implements CurrencyRateAware {
     private static final long serialVersionUID = 8530608597300769485L;
 
+    /**
+     * Amount of currency
+     */
     @NotNull
     @Column(name = "VALUE_", nullable = false, precision = 19, scale = 12)
     protected BigDecimal value;
 
+
+    /**
+     * Date when amount in specific currency was actual
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     @Column(name = "DATE_", nullable = false)
     protected Date date;
 
+
+    /**
+     * Currency of amount
+     */
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "CURRENCY_ID")
     protected CurrencyDescriptor currency;
+
+
+
     public CurrencyDescriptor getCurrency() {
         return currency;
     }
 
+
     public void setCurrency(CurrencyDescriptor currency) {
         this.currency = currency;
     }
-
 
 
     public void setDate(Date date) {
@@ -46,7 +64,6 @@ public class Currency extends StandardEntity implements CurrencyRateAware {
     public Date getDate() {
         return date;
     }
-
 
 
     public void setValue(BigDecimal value) {

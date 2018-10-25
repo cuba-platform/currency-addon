@@ -19,22 +19,22 @@ public class CurrencyServiceBean implements CurrencyService {
 
     @Override
     @Transactional
-    public ConvertResult convertAmountToRate(BigDecimal amount, Date date, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency) {
-        return currencies.convertAmount(amount, date, currency, targetCurrency);
+    public ConvertResult convertAmountToRate(BigDecimal sourceAmount, Date exchangeDate, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency) {
+        return currencies.convertAmount(sourceAmount, exchangeDate, sourceCurrency, targetCurrency);
     }
 
 
     @Override
     @Transactional
-    public ConvertResult convertAmountToCurrentRate(BigDecimal amount, CurrencyDescriptor currency, CurrencyDescriptor targetCurrency) {
-        return currencies.convertAmountToCurrentRate(amount, currency, targetCurrency);
+    public ConvertResult convertAmountToCurrentRate(BigDecimal sourceAmount, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency) {
+        return currencies.convertAmountToCurrentRate(sourceAmount, sourceCurrency, targetCurrency);
     }
 
 
     @Override
     @Transactional
-    public CurrencyDescriptor getCurrencyByCode(String code) {
-        return currencies.getCurrencyByCode(code);
+    public CurrencyDescriptor getCurrencyByCode(String currencyCode) {
+        return currencies.getCurrencyByCode(currencyCode);
     }
 
 

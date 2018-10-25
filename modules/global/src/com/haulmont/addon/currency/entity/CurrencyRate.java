@@ -8,29 +8,49 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * Exchange rate for transfer from <strong>currency</strong> to <strong>targetCurrency</strong>
+ */
 @NamePattern("%s|date")
 @Table(name = "CURRADDON_CURRENCY_RATE")
 @Entity(name = "curraddon$CurrencyRate")
 public class CurrencyRate extends StandardEntity {
     private static final long serialVersionUID = 6258974533631716401L;
 
+
+    /**
+     * Date when rate is actual
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     @Column(name = "DATE_", nullable = false)
     protected Date date;
 
+
+    /**
+     * Multiplicator of exchange from <strong>currency</strong> to <strong>targetCurrency</strong>
+     */
     @NotNull
     @Column(name = "RATE", nullable = false, precision = 19, scale = 12)
     protected BigDecimal rate;
 
+
+    /**
+     * Currency for converting from
+     */
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "CURRENCY_ID")
     protected CurrencyDescriptor currency;
 
+
+    /**
+     * Currency for converting to
+     */
     @NotNull
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "TARGET_CURRENCY_ID")
     protected CurrencyDescriptor targetCurrency;
+
 
     /**
      * Source of rate.
@@ -39,6 +59,7 @@ public class CurrencyRate extends StandardEntity {
     @NotNull
     @Column(name = "SOURCE", length = 100)
     protected String source;
+
 
     public void setSource(String source) {
         this.source = source;

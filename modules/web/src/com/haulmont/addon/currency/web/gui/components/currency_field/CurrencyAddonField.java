@@ -6,6 +6,11 @@ import com.haulmont.addon.currency.web.gui.components.currency_field.impl.curren
 import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.Field;
 
+import javax.annotation.Nullable;
+
+/**
+ * Field which show amount, currency, date to user and have ability to exchange between currencies
+ */
 public interface CurrencyAddonField extends Field, Component.Buffered, CurrencyValueChangedEventSupplier {
     String NAME = "currencyAddonField";
 
@@ -23,11 +28,15 @@ public interface CurrencyAddonField extends Field, Component.Buffered, CurrencyV
 
 
     /**
-     * When we work with field programmatically
+     * @param currencyRateAware currency value
      */
-    void setCurrencyRateAware(CurrencyRateAware currencyRateAware);
+    void setCurrencyRateAware(@Nullable CurrencyRateAware currencyRateAware);
 
 
+    /**
+     * @return currency value or null
+     */
+    @Nullable
     CurrencyRateAware getCurrencyRateAware();
 
 }

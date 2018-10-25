@@ -8,6 +8,7 @@ import com.haulmont.cuba.core.global.Metadata;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
@@ -45,24 +46,17 @@ public class FixerIOCurrencyRateProviderBean implements CurrencyRateProvider {
                 .map(CurrencyDescriptor::getCode)
                 .collect(Collectors.joining(","));
         try {
-            Map<String, CurrencyDescriptor> targetCurrencyMap = targetCurrencies.stream()
-                    .collect(Collectors.toMap(CurrencyDescriptor::getCode, e -> e));
             String apiKey = configuration.getConfig(FixerIOConfig.class).getApiKey();
-            if (StringUtils.isBlank(apiKey)) {
-                throw new Exception("REST API key is empty, please specify it by parameter " + FixerIOConfig.REST_API_KEY_ID);
-            }
+            checkApiKey(apiKey);
 
-            HttpRequest request = Unirest.get(URL + dateParam)
-                    .queryString("access_key", apiKey)
-                    .queryString("base", currency.getCode())
-                    .queryString("symbols", targetCurrencyCodes);
-            HttpResponse<JsonNode> httpResponse = request.asJson();
+            HttpResponse<JsonNode> httpResponse = doRequest(currency, dateParam, targetCurrencyCodes, apiKey);
+            JsonNode httpResponseBody = httpResponse.getBody();
 
-            if (HttpStatus.OK.value() == httpResponse.getStatus()) {
-                return parseRates(date, currency, targetCurrencyMap, httpResponse);
-            } else {
-                throw new IllegalStateException("Unable to get fixer.IO currency rate, response code is not 200, " + httpResponse.getBody());
-            }
+            LOG.trace("Service response: {}", httpResponseBody);
+
+            checkResponseStatus(httpResponse);
+
+            return parseRates(date, currency, targetCurrencies, httpResponseBody);
         } catch (Exception e) {
             throw new Exception(String.format("Unable to get fixer.IO currency rate %s/%s for date %s",
                     currency.getCode(), targetCurrencyCodes, dateParam), e);
@@ -70,12 +64,38 @@ public class FixerIOCurrencyRateProviderBean implements CurrencyRateProvider {
     }
 
 
+    private void checkResponseStatus(HttpResponse<JsonNode> httpResponse) {
+        if (HttpStatus.OK.value() != httpResponse.getStatus()) {
+            throw new IllegalStateException("Unable to get fixer.IO currency rate, response code is not 200, " + httpResponse.getBody());
+        }
+    }
+
+
+    private HttpResponse<JsonNode> doRequest(CurrencyDescriptor currency, String dateParam, String targetCurrencyCodes, String apiKey) throws UnirestException {
+        HttpRequest request = Unirest.get(URL + dateParam)
+                .queryString("access_key", apiKey)
+                .queryString("base", currency.getCode())
+                .queryString("symbols", targetCurrencyCodes);
+        return request.asJson();
+    }
+
+
+    private void checkApiKey(String apiKey) throws Exception {
+        if (StringUtils.isBlank(apiKey)) {
+            throw new Exception("REST API key is empty, please specify it by parameter " + FixerIOConfig.REST_API_KEY_ID);
+        }
+    }
+
+
     private List<CurrencyRate> parseRates(
-            Date date, CurrencyDescriptor currency, Map<String, CurrencyDescriptor> targetCurrencyMap, HttpResponse<JsonNode> httpResponse
+            Date date, CurrencyDescriptor currency, List<CurrencyDescriptor> targetCurrencies, JsonNode httpResponseBody
     ) throws Exception {
-        LOG.trace("Service response: {}", httpResponse.getBody());
+        Map<String, CurrencyDescriptor> targetCurrencyMap = targetCurrencies.stream()
+                .collect(Collectors.toMap(CurrencyDescriptor::getCode, e -> e));
+
+
         List<CurrencyRate> currencyRates = new ArrayList<>();
-        JSONObject responseJsonObject = httpResponse.getBody()
+        JSONObject responseJsonObject = httpResponseBody
                 .getObject();
         checkSuccess(responseJsonObject);
 

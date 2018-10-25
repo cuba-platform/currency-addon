@@ -2,7 +2,7 @@
 Currency CUBA addon provides currencies and currency rates for CUBA application. Component is under development.
 
 # Content
-* [Global Application Part]()
+* [Global Application Part](#global-application-part)
     * [Entities](#entities)
     * [Services](#services)
 * [Core Part](#core-part)

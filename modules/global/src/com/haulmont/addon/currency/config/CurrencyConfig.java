@@ -30,6 +30,10 @@ public interface CurrencyConfig extends Config {
 
     long ONE_DAY = 24 * 60 * 60;
 
+
+    /**
+     * Count of seconds when exchange rate is still actual
+     */
     @Property("addon.currency.ui.rate_actual_period_seconds")
     @DefaultLong(ONE_DAY)
     long getRateActualPeriodSeconds();
