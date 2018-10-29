@@ -71,7 +71,9 @@ public class FixerIOCurrencyRateProviderBean implements CurrencyRateProvider {
     }
 
 
-    private HttpResponse<JsonNode> doRequest(CurrencyDescriptor currency, String dateParam, String targetCurrencyCodes, String apiKey) throws UnirestException {
+    private HttpResponse<JsonNode> doRequest(
+            CurrencyDescriptor currency, String dateParam, String targetCurrencyCodes, String apiKey
+    ) throws UnirestException {
         HttpRequest request = Unirest.get(URL + dateParam)
                 .queryString("access_key", apiKey)
                 .queryString("base", currency.getCode())

@@ -18,7 +18,9 @@ public interface CurrencyService {
      * @param targetCurrency currency for converting to
      * @return result of exchange
      */
-    ConvertResult convertAmountToRate(BigDecimal sourceAmount, Date exchangeDate, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency);
+    ConvertResult convertAmountToRate(
+            BigDecimal sourceAmount, Date exchangeDate, CurrencyDescriptor sourceCurrency, CurrencyDescriptor targetCurrency
+    );
 
 
     /**
