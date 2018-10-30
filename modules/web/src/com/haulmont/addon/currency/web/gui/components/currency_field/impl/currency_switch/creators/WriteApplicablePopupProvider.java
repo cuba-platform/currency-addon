@@ -88,7 +88,7 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
 
         if (options.isEmpty()) {
             Label noRatesLabel = componentsFactory.createComponent(Label.class);
-            String message = messages.getMessage(CURRENCY_FIELD_NAMESPACE, "rates_not_found");
+            String message = messages.getMessage(CURRENCY_FIELD_NAMESPACE, "ratesNotFound");
             noRatesLabel.setValue(message);
 
             layout.add(noRatesLabel);
@@ -176,7 +176,7 @@ public class WriteApplicablePopupProvider extends AbstractCurrencyButtonPopupCon
         } else if (rateStrategy == RateStrategy.WARNING) {
             if (rateToOld) {
                 labelPattern += " (%s)";
-                patternParams.add(messages.getMessage(CURRENCY_FIELD_NAMESPACE, "to_old"));
+                patternParams.add(messages.getMessage(CURRENCY_FIELD_NAMESPACE, "toOld"));
             }
             addOptionToMap(options, labelPattern, patternParams, optionValue);
         } else if (rateStrategy == RateStrategy.LAST_DATE) {
