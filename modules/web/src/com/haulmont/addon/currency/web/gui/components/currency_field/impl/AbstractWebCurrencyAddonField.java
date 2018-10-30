@@ -81,6 +81,7 @@ public abstract class AbstractWebCurrencyAddonField extends WebAbstractField<Cub
     }
 
 
+    @SuppressWarnings("deprecation")
     @Override
     public MetaProperty getMetaProperty() {
         return amountField.getMetaProperty();
