@@ -15,7 +15,7 @@ public interface CurrencyConfig extends Config {
      * Which strategy will be used if rate not found for current date
      */
     @EnumStore(value = EnumStoreMode.ID)
-    @Property("addon.currency.ui.rate_strategy")
+    @Property("addon.currency.ui.rateStrategy")
     @DefaultString(RateStrategyConstants.WARNING)
     RateStrategy getRateStrategy();
 
@@ -24,7 +24,7 @@ public interface CurrencyConfig extends Config {
      * Show date of rate which used to convert currency value
      */
     @DefaultBoolean(false)
-    @Property("addon.currency.ui.show_used_conversion_rate")
+    @Property("addon.currency.ui.showUsedConversionRate")
     boolean getShowUsedConversionRateDate();
 
 
@@ -34,7 +34,7 @@ public interface CurrencyConfig extends Config {
     /**
      * Count of seconds when exchange rate is still actual
      */
-    @Property("addon.currency.ui.rate_actual_period_seconds")
+    @Property("addon.currency.ui.rateActualPeriodSeconds")
     @DefaultLong(ONE_DAY)
     long getRateActualPeriodSeconds();
 

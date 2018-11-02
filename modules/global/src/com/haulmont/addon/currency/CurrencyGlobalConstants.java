@@ -10,7 +10,7 @@ public interface CurrencyGlobalConstants {
     }
 
     interface CurrencyProperties {
-        String DEFAULT_CURRENCY_CODE = "default_currency_code";
+        String DEFAULT_CURRENCY_CODE = "defaultCurrencyCode";
         String DEFAULT_CURRENCY_CODE_VALUE = "USD";
     }
 }
