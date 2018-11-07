@@ -6,6 +6,7 @@ import com.haulmont.addon.currency.web.gui.components.currency_field.impl.curren
 import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.Field;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -25,6 +26,18 @@ public interface CurrencyAddonField extends Field, Component.Buffered, CurrencyV
      * Is show currency value date field with time field
      */
     boolean isWithTime();
+
+
+    /**
+     * Set position of "Change Currency" button
+     */
+    void setCurrencyButtonPosition(@Nonnull Side side);
+
+
+    /**
+     * Get actual position of "Change Currency" button
+     */
+    Side getCurrencyButtonPosition();
 
 
     /**

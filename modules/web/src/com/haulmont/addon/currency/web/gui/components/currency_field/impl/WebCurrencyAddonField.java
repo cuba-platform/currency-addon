@@ -3,6 +3,7 @@ package com.haulmont.addon.currency.web.gui.components.currency_field.impl;
 import com.haulmont.addon.currency.entity.CurrencyDescriptor;
 import com.haulmont.addon.currency.entity.CurrencyRateAware;
 import com.haulmont.addon.currency.format.CurrencyBigDecimalFormat;
+import com.haulmont.addon.currency.web.gui.components.currency_field.Side;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.CurrencyValueChangedEventSupplier;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators.AbstractCurrencyButtonPopupContentProvider;
 import com.haulmont.addon.currency.web.gui.components.currency_field.impl.currency_switch.creators.WriteApplicablePopupProvider;
@@ -121,6 +122,18 @@ public class WebCurrencyAddonField extends AbstractWebCurrencyAddonField impleme
     @Override
     public boolean isWithTime() {
         return popupContentCreator.isWithTime();
+    }
+
+
+    @Override
+    public void setCurrencyButtonPosition(Side side) {
+        component.setCurrencyLabelPosition(side.getCurrencyLabelPosition());
+    }
+
+
+    @Override
+    public Side getCurrencyButtonPosition() {
+        return Side.byCurrencyLabelPosition(component.getCurrencyLabelPosition());
     }
 
 
