@@ -45,11 +45,12 @@ public class FixerIOCurrencyRateProviderBean implements CurrencyRateProvider {
         String targetCurrencyCodes = targetCurrencies.stream()
                 .map(CurrencyDescriptor::getCode)
                 .collect(Collectors.joining(","));
+        LOG.debug("Get rates from '{}' to '{}'", currency.getCode(), targetCurrencyCodes);
         try {
             String apiKey = configuration.getConfig(FixerIOConfig.class).getApiKey();
             checkApiKey(apiKey);
 
-            HttpResponse<JsonNode> httpResponse = doRequest(currency, dateParam, targetCurrencyCodes, apiKey);
+            HttpResponse<JsonNode> httpResponse = doRequest(currency.getCode(), dateParam, targetCurrencyCodes, apiKey);
             JsonNode httpResponseBody = httpResponse.getBody();
 
             LOG.trace("Service response: {}", httpResponseBody);
@@ -72,11 +73,13 @@ public class FixerIOCurrencyRateProviderBean implements CurrencyRateProvider {
 
 
     private HttpResponse<JsonNode> doRequest(
-            CurrencyDescriptor currency, String dateParam, String targetCurrencyCodes, String apiKey
+            String baseCurrencyCode, String dateParam, String targetCurrencyCodes, String apiKey
     ) throws UnirestException {
-        HttpRequest request = Unirest.get(URL + dateParam)
+        String url = URL + dateParam;
+        LOG.debug("Send request to '{}' with base '{}', symbols: '{}'", url, baseCurrencyCode, targetCurrencyCodes);
+        HttpRequest request = Unirest.get(url)
                 .queryString("access_key", apiKey)
-                .queryString("base", currency.getCode())
+                .queryString("base", baseCurrencyCode)
                 .queryString("symbols", targetCurrencyCodes);
         return request.asJson();
     }
