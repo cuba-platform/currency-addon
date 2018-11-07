@@ -77,11 +77,15 @@ public class CurrencyRateWorker {
             List<CurrencyDescriptor> targetCurrencies = availableCurrencies.stream()
                     .filter(e -> !e.equals(currency) && currencies.getLocalRate(date, currency, e) == null)
                     .collect(Collectors.toList());
-            try {
-                List<CurrencyRate> currencyRates = currencyRateProvider.getRates(date, currency, targetCurrencies);
-                commitInstances.addAll(currencyRates);
-            } catch (Exception e) {
-                LOG.error("Can't fetch rates for {} at {} for converting to {} from external service", currency, date, targetCurrencies, e);
+            if (!targetCurrencies.isEmpty()) {
+                try {
+                    List<CurrencyRate> currencyRates = currencyRateProvider.getRates(date, currency, targetCurrencies);
+                    commitInstances.addAll(currencyRates);
+                } catch (Exception e) {
+                    LOG.error("Can't fetch rates for {} at {} for converting to {} from external service", currency, date, targetCurrencies, e);
+                }
+            } else {
+                LOG.info("Target currencies is empty for {}", currency.getCode());
             }
         }
         dataManager.commit(commitContext);
